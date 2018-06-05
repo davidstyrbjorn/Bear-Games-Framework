@@ -19,7 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\GLFW_window.h" />
     <ClInclude Include="include\window.h" />
+    <ClInclude Include="include\window_framework.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -72,24 +77,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-<<<<<<< HEAD
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\window\builds\debug\</OutDir>
     <IntDir>$(SolutionDir)\window\intermediate\debug\</IntDir>
   </PropertyGroup>
-=======
->>>>>>> c1e6f2b026d2d89e69871ae63b460f0414601431
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\window\builds\release\</OutDir>
     <IntDir>$(SolutionDir)\window\intermediate\release\</IntDir>
   </PropertyGroup>
-<<<<<<< HEAD
-=======
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\window\builds\debug\</OutDir>
-    <IntDir>$(SolutionDir)\window\intermediate\debug\</IntDir>
-  </PropertyGroup>
->>>>>>> c1e6f2b026d2d89e69871ae63b460f0414601431
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
