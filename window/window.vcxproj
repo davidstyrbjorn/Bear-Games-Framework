@@ -130,7 +130,7 @@
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;sfml-system-s.lib;sfml-window-s.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;sfml-system-s.lib;sfml-window-s.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\sfml\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
