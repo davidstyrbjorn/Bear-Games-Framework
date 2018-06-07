@@ -21,6 +21,12 @@ void bear::window::SFML_Window::close()
 void bear::window::SFML_Window::clear()
 {
 	// @ Nothing here?
+	sf::Event event;
+	while (m_Window->pollEvent(event)) {
+		if (event.type == sf::Event::Closed) {
+			this->close();
+		}
+	}
 }
 
 void bear::window::SFML_Window::display()
