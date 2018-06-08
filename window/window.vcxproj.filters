@@ -27,6 +27,12 @@
     <ClInclude Include="include\SFML_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\GLFW_event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SFML_event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>

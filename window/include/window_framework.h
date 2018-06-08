@@ -1,7 +1,7 @@
 #pragma once
 
-#include<deque>
 #include"event.h"
+#include<deque>
 
 namespace bear { namespace window {
 
@@ -31,7 +31,7 @@ namespace bear { namespace window {
 			...
 		}
 		*/
-		virtual const std::deque<Event> getRegisteredEvents() const = 0;
+		virtual const std::deque<bear::Event> getRegisteredEvents() const = 0;
 	};
 
 } }

@@ -25,17 +25,31 @@ void bear::window::SFML_Window::clear()
 	sf::Event event;
 	while (m_Window->pollEvent(event)) {
 		if (event.type == sf::Event::KeyPressed) {
+			// Register event
 			bear::Event _event;
 			_event.type = bear::EventType::KeyPressed;
-			_event.key = event.key.code; // @ This is fucked 
-			// This code is not equel to what GLFW uses 
-			std::cout << event.key.code << std::endl,
+			_event.key = event.key.code; 
 			m_Events.push_back(_event);
 		}
 		else if (event.type == sf::Event::KeyReleased) {
+			// Register event
 			bear::Event _event;
 			_event.type = bear::EventType::KeyReleased;
 			_event.key = event.key.code;
+			m_Events.push_back(_event);
+		}
+		else if (event.type == sf::Event::MouseButtonPressed) {
+			// Register event
+			bear::Event _event;
+			_event.type = bear::EventType::MousePressed;
+			_event.button = event.mouseButton.button;
+			m_Events.push_back(_event);
+		}
+		else if (event.type == sf::Event::MouseButtonReleased) {
+			// Register event
+			bear::Event _event;
+			_event.type = bear::EventType::MouseReleased;
+			_event.button = event.mouseButton.button;
 			m_Events.push_back(_event);
 		}
 
@@ -49,4 +63,9 @@ void bear::window::SFML_Window::display()
 {
 	m_Events.clear();
 	m_Window->display();
+}
+
+const std::deque<bear::Event> bear::window::SFML_Window::getRegisteredEvents() const
+{
+	return m_Events;
 }

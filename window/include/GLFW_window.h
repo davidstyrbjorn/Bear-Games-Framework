@@ -1,7 +1,8 @@
 #pragma once
 
 #include"window_framework.h"
-
+#include"GLFW_event.h"
+#include<deque>
 #include<string>
 
 struct GLFWwindow; // GLFW struct

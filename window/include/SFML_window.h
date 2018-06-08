@@ -1,8 +1,9 @@
 #pragma once
 
-#include<string>
-
 #include"window_framework.h"
+
+#include<string>
+#include<deque>
 
 namespace sf {
 	class Window;
@@ -24,7 +25,7 @@ namespace bear { namespace window {
 		void clear() override;
 		void display() override;
 	
-		const std::deque<bear::Event> getRegisteredEvents() const override { return std::deque<bear::Event>(); }
+		const std::deque<bear::Event> getRegisteredEvents() const override;
 
 		/*
 		static bool init();

@@ -6,21 +6,24 @@
 int main()
 {
 	// SFML
-	
 	bear::window::SFML_Window window(400, 400, "SFML FUCKY");
 	while (window.is_open()) {
 
+		window.clear();
+		
 		for(bear::Event _event : window.getRegisteredEvents())
 		{
-			if(_event.type == bear::EventType::KeyPressed){
-				printf("sitt");
+			if(_event.type == bear::EventType::KeyReleased){
 				if(_event.key == bear::Key::X){
-					printf(" ner");
+					window.close();
 				}
+			}
+			if (_event.type == bear::EventType::MouseReleased) {
+				if(_event.button == bear::Mouse::MOUSE_BUTTON_RIGHT)
+					printf("mouse pressed!!\n");
 			}
 		}
 
-		window.clear();
 
 		window.display();
 	}
