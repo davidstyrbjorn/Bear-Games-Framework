@@ -1,5 +1,7 @@
 #include"../include/SFML_window.h"
 
+#include<iostream>
+
 #include<SFML\Window.hpp>
 
 bear::window::SFML_Window::SFML_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
@@ -20,9 +22,23 @@ void bear::window::SFML_Window::close()
 
 void bear::window::SFML_Window::clear()
 {
-	// @ Nothing here?
 	sf::Event event;
 	while (m_Window->pollEvent(event)) {
+		if (event.type == sf::Event::KeyPressed) {
+			bear::Event _event;
+			_event.type = bear::EventType::KeyPressed;
+			_event.key = event.key.code; // @ This is fucked 
+			// This code is not equel to what GLFW uses 
+			std::cout << event.key.code << std::endl,
+			m_Events.push_back(_event);
+		}
+		else if (event.type == sf::Event::KeyReleased) {
+			bear::Event _event;
+			_event.type = bear::EventType::KeyReleased;
+			_event.key = event.key.code;
+			m_Events.push_back(_event);
+		}
+
 		if (event.type == sf::Event::Closed) {
 			this->close();
 		}
@@ -31,5 +47,6 @@ void bear::window::SFML_Window::clear()
 
 void bear::window::SFML_Window::display()
 {
+	m_Events.clear();
 	m_Window->display();
 }

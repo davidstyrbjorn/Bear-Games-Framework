@@ -1,5 +1,8 @@
 #pragma once
 
+#include<deque>
+#include"event.h"
+
 namespace bear { namespace window {
 
 	enum WINDOW_FRAMEWORKS {
@@ -19,6 +22,16 @@ namespace bear { namespace window {
 		virtual void clear() { }
 		/* Called at the end of every frame */
 		virtual void display() { }
+
+		/* Event related methods */
+		/*
+		for(Event event : window.getRegisteredEvents()){
+			...
+			deal with event
+			...
+		}
+		*/
+		virtual const std::deque<Event> getRegisteredEvents() const = 0;
 	};
 
 } }

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\event.h" />
     <ClInclude Include="include\GLFW_window.h" />
     <ClInclude Include="include\SFML_window.h" />
     <ClInclude Include="include\window.h" />

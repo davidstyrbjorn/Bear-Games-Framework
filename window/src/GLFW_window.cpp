@@ -7,6 +7,10 @@ bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Heig
 {
 	// Create GLFW window (assuming init has already been called)
 	m_Window = glfwCreateWindow(a_Width, a_Height, a_Caption.c_str(), nullptr, nullptr);
+
+	glfwSetKeyCallback(m_Window, key_callback);
+	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
+	
 	glfwSetWindowUserPointer(m_Window, this); // @ We might now want to do this?
 }
 
@@ -27,7 +31,13 @@ void bear::window::GLFW_Window::clear()
 
 void bear::window::GLFW_Window::display()
 {
+	m_Events.clear();
 	glfwSwapBuffers(m_Window);
+}
+
+const std::deque<bear::Event> bear::window::GLFW_Window::getRegisteredEvents() const
+{
+	return m_Events;
 }
 
 /* Static */
@@ -45,4 +55,36 @@ bool bear::window::GLFW_Window::exit()
 {
 	glfwTerminate();
 	return true;
+}
+
+void bear::window::GLFW_Window::key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
+{
+	// Take event and push back into event queue
+	if (action == GLFW_PRESS || action == GLFW_RELEASE || action == GLFW_REPEAT) {
+		bear::Event event;
+
+		event.key = key;
+		if (action == GLFW_REPEAT) event.type = EventType::KeyDown;
+		else if (action == GLFW_PRESS) event.type = EventType::KeyPressed;
+		else if (action == GLFW_RELEASE) event.type = EventType::KeyReleased;
+
+		GLFW_Window* temp = (GLFW_Window*)(glfwGetWindowUserPointer(window));
+		temp->m_Events.push_back(event);
+	}
+}
+
+void bear::window::GLFW_Window::mouse_button_callback(GLFWwindow * window, int button, int action, int mods)
+{
+	// Take event and push back into event queue
+	if (action == GLFW_PRESS || action == GLFW_RELEASE || action == GLFW_REPEAT) {
+		bear::Event event;
+
+		event.button = button;
+
+		if (action == GLFW_PRESS) event.type = EventType::MousePressed;
+		else if (action == GLFW_RELEASE) event.type = EventType::MouseReleased;
+
+		GLFW_Window* temp = (GLFW_Window*)(glfwGetWindowUserPointer(window));
+		temp->m_Events.push_back(event);
+	}
 }

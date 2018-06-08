@@ -14,6 +14,7 @@ namespace bear { namespace window {
 	private:
 		sf::Window* m_Window;
 		unsigned int m_Width, m_Height;
+		std::deque<bear::Event> m_Events;
 
 	public:
 		SFML_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption);
@@ -23,6 +24,8 @@ namespace bear { namespace window {
 		void clear() override;
 		void display() override;
 	
+		const std::deque<bear::Event> getRegisteredEvents() const override { return std::deque<bear::Event>(); }
+
 		/*
 		static bool init();
 		static bool exit();
