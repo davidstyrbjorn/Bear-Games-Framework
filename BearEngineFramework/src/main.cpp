@@ -13,17 +13,12 @@ int main()
 		
 		for(bear::Event _event : window.getRegisteredEvents())
 		{
-			if(_event.type == bear::EventType::KeyReleased){
-				if(_event.key == bear::Key::X){
-					window.close();
-				}
-			}
-			if (_event.type == bear::EventType::MouseReleased) {
-				if(_event.button == bear::Mouse::MOUSE_BUTTON_RIGHT)
-					printf("mouse pressed!!\n");
-			}
+			
 		}
-
+		// Realtime test
+		if (window.isMouseDown(bear::Mouse::MOUSE_BUTTON_LEFT)) {
+			printf(" _DOWN_ ");
+		}
 
 		window.display();
 	}
@@ -42,10 +37,10 @@ int main()
 			//		printf("silly boy");
 			//	}
 			//}
-			if (_event.type == bear::EventType::MousePressed) {
-				if (_event.button == bear::Mouse::MOUSE_BUTTON_RIGHT)
-					printf("ass");
-			}
+		}
+		// Realtime test
+		if (window.isMouseDown(bear::Mouse::MOUSE_BUTTON_MIDDLE)) {
+			printf(" _DOWN_ ");
 		}
 
 		window.display();

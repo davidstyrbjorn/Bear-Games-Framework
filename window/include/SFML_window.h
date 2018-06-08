@@ -26,6 +26,8 @@ namespace bear { namespace window {
 		void display() override;
 	
 		const std::deque<bear::Event> getRegisteredEvents() const override;
+		const bool isKeyDown(int a_Key) override;
+		const bool isMouseDown(int a_Button) override;
 
 		/*
 		static bool init();

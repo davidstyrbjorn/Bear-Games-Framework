@@ -69,3 +69,13 @@ const std::deque<bear::Event> bear::window::SFML_Window::getRegisteredEvents() c
 {
 	return m_Events;
 }
+
+const bool bear::window::SFML_Window::isKeyDown(int a_Key)
+{
+	return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(a_Key));
+}
+
+const bool bear::window::SFML_Window::isMouseDown(int a_Button)
+{
+	return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(a_Button));
+}

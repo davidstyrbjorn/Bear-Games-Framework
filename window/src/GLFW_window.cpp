@@ -40,6 +40,16 @@ const std::deque<bear::Event> bear::window::GLFW_Window::getRegisteredEvents() c
 	return m_Events;
 }
 
+const bool bear::window::GLFW_Window::isKeyDown(int a_Key)
+{
+	return glfwGetKey(m_Window, a_Key);
+}
+
+const bool bear::window::GLFW_Window::isMouseDown(int a_Button)
+{
+	return glfwGetMouseButton(m_Window, a_Button);
+}
+
 /* Static */
 bool bear::window::GLFW_Window::init()
 {
