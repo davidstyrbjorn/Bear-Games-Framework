@@ -95,7 +95,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\third_party\glfw\include\;$(SolutionDir)\third_party\sfml\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\third_party\glfw\include\;$(SolutionDir)\third_party\sfml\include;$(SolutionDir)\core\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -103,10 +103,10 @@
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;sfml-system-s-d.lib;sfml-window-s-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;core.lib;sfml-system-s-d.lib;sfml-window-s-d.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\sfml\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;$(SolutionDir)\third_party\sfml\lib;$(SolutionDir)\core\builds\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,7 +123,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\third_party\glfw\include\;$(SolutionDir)\third_party\sfml\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\third_party\glfw\include\;$(SolutionDir)\third_party\sfml\include;$(SolutionDir)\core\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -133,10 +133,10 @@
       <AdditionalDependencies>opengl32.lib;glfw3.lib;sfml-system-s.lib;sfml-window-s.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;sfml-system-s.lib;sfml-window-s.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;core.lib;sfml-system-s.lib;sfml-window-s.lib;winmm.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\sfml\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;$(SolutionDir)\third_party\sfml\lib;$(SolutionDir)\core\builds\release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
