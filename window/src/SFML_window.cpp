@@ -1,4 +1,4 @@
-#include"../include/SFML_window.h"
+#include"../include/window/SFML_window.h"
 
 #include<iostream>
 
@@ -78,4 +78,9 @@ const bool bear::window::SFML_Window::isKeyDown(int a_Key)
 const bool bear::window::SFML_Window::isMouseDown(int a_Button)
 {
 	return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(a_Button));
+}
+
+const bear::core::Vector2d bear::window::SFML_Window::getMousePosition()
+{
+	return bear::core::Vector2d(sf::Mouse::getPosition(*m_Window).x, sf::Mouse::getPosition(*m_Window).y);
 }

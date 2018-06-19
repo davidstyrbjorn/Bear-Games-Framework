@@ -47,5 +47,6 @@ namespace bear { namespace core {
 	typedef Vector2<int> Vector2i;
 	typedef Vector2<float> Vector2f;
 	typedef Vector2<unsigned int> Vector2ui;
+	typedef Vector2<double> Vector2d;
 }
 }

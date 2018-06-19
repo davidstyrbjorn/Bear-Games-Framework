@@ -2,6 +2,7 @@
 
 #include"event.h"
 #include<deque>
+#include"core\vector2.h"
 
 namespace bear { namespace window {
 
@@ -25,7 +26,7 @@ namespace bear { namespace window {
 
 		/* Event related methods */
 		/*
-		for(Event event : window.getRegisteredEvents()){
+		for(Event event : getRegisteredEvents()){
 			...
 			deal with event
 			...
@@ -35,6 +36,7 @@ namespace bear { namespace window {
 		/* Realtime input methods */
 		virtual const bool isKeyDown(int a_Key) = 0;
 		virtual const bool isMouseDown(int a_Button) = 0;
+		virtual const core::Vector2d getMousePosition() { return core::Vector2d(); }
 	};
 
 } }

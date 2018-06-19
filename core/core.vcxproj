@@ -118,9 +118,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\color.h" />
-    <ClInclude Include="include\vector2.h" />
-    <ClInclude Include="include\vector3.h" />
+    <ClInclude Include="include\core\color.h" />
+    <ClInclude Include="include\core\vector2.h" />
+    <ClInclude Include="include\core\vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vector2.cpp" />

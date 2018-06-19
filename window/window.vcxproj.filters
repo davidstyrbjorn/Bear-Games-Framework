@@ -15,25 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\GLFW_window.h">
+    <ClInclude Include="include\window\window_framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\window.h">
+    <ClInclude Include="include\window\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\window_framework.h">
+    <ClInclude Include="include\window\GLFW_event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFML_window.h">
+    <ClInclude Include="include\window\GLFW_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GLFW_event.h">
+    <ClInclude Include="include\window\SFML_event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFML_event.h">
+    <ClInclude Include="include\window\SFML_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\event.h">
+    <ClInclude Include="include\window\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include<iostream>
 
 #define BEAR_SFML_WINDOW
-#include<window.h>
+#include<window/window.h>
 
 int main()
 {
@@ -16,13 +16,11 @@ int main()
 			
 		}
 		// Realtime test
-		if (window.isMouseDown(bear::Mouse::MOUSE_BUTTON_LEFT)) {
-			printf(" _DOWN_ ");
-		}
+		std::cout << window.getMousePosition().x << std::endl;
 
 		window.display();
 	}
-	
+
 	// GLFW
 	/*
 	bear::window::GLFW_Window::init();
@@ -32,15 +30,15 @@ int main()
 		window.clear();
 	
 		for (bear::Event _event : window.getRegisteredEvents()) {
-			//if (_event.type == bear::EventType::KeyDown) {
-			//	if (_event.key == bear::Key::X) {
-			//		printf("silly boy");
-			//	}
-			//}
+			if (_event.type == bear::EventType::KeyDown) {
+				if (_event.key == bear::Key::X) {
+					printf("silly boy");
+				}
+			}
 		}
 		// Realtime test
-		if (window.isMouseDown(bear::Mouse::MOUSE_BUTTON_MIDDLE)) {
-			printf(" _DOWN_ ");
+		if (window.isKeyDown(bear::X)) {
+			//printf(" _DOWN_ ");
 		}
 
 		window.display();

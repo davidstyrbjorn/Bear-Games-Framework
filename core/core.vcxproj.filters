@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\vector2.h">
+    <ClInclude Include="include\core\vector3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\color.h">
+    <ClInclude Include="include\core\vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\vector3.h">
+    <ClInclude Include="include\core\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

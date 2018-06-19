@@ -19,13 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\event.h" />
-    <ClInclude Include="include\GLFW_event.h" />
-    <ClInclude Include="include\GLFW_window.h" />
-    <ClInclude Include="include\SFML_event.h" />
-    <ClInclude Include="include\SFML_window.h" />
-    <ClInclude Include="include\window.h" />
-    <ClInclude Include="include\window_framework.h" />
+    <ClInclude Include="include\window\event.h" />
+    <ClInclude Include="include\window\GLFW_event.h" />
+    <ClInclude Include="include\window\GLFW_window.h" />
+    <ClInclude Include="include\window\SFML_event.h" />
+    <ClInclude Include="include\window\SFML_window.h" />
+    <ClInclude Include="include\window\window.h" />
+    <ClInclude Include="include\window\window_framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GLFW_window.cpp" />
@@ -103,7 +103,7 @@
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;core.lib;sfml-system-s-d.lib;sfml-window-s-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;core.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;winmm.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;$(SolutionDir)\third_party\sfml\lib;$(SolutionDir)\core\builds\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

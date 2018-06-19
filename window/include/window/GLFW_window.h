@@ -22,6 +22,7 @@ namespace bear { namespace window {
 		const std::deque<bear::Event> getRegisteredEvents() const override;
 		const bool isKeyDown(int a_Key) override;
 		const bool isMouseDown(int a_Button) override;
+		const core::Vector2d getMousePosition() override;
 
 		static bool init();
 		static bool exit();
@@ -34,6 +35,7 @@ namespace bear { namespace window {
 		GLFWwindow *m_Window;
 		unsigned int m_Width, m_Height;
 		std::deque<Event> m_Events;
+		core::Vector2d m_MousePosition;
 	};
 
 } }

@@ -1,4 +1,4 @@
-#include"../include/GLFW_window.h"
+#include"../include/window/GLFW_window.h"
 
 #include<GLFW\glfw3.h>
 
@@ -27,6 +27,7 @@ void bear::window::GLFW_Window::close()
 void bear::window::GLFW_Window::clear()
 {
 	glfwPollEvents();
+	glfwGetCursorPos(m_Window, &m_MousePosition.x, &m_MousePosition.y);
 }
 
 void bear::window::GLFW_Window::display()
@@ -48,6 +49,11 @@ const bool bear::window::GLFW_Window::isKeyDown(int a_Key)
 const bool bear::window::GLFW_Window::isMouseDown(int a_Button)
 {
 	return glfwGetMouseButton(m_Window, a_Button);
+}
+
+const bear::core::Vector2d bear::window::GLFW_Window::getMousePosition()
+{
+	return m_MousePosition;
 }
 
 /* Static */
