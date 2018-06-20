@@ -18,6 +18,7 @@ bool bear::window::SFML_Window::is_open()
 void bear::window::SFML_Window::close()
 {
 	m_Window->close();
+	delete m_Window;
 }
 
 void bear::window::SFML_Window::clear()

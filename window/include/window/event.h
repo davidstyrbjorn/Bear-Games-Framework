@@ -9,7 +9,6 @@ namespace bear {
 	*/
 	enum EventType {
 		KeyPressed,
-		KeyDown,
 		KeyReleased,
 		MousePressed,
 		MouseReleased,
