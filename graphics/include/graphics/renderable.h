@@ -3,6 +3,8 @@
 #include<core\vector2.h>
 #include<core\color.h>
 
+#include"types.h"
+
 namespace bear { namespace graphics { 
 
 	class Shader;
@@ -12,20 +14,30 @@ namespace bear { namespace graphics {
 		/* Shared renderable members */
 		core::Vector2f m_Position;
 		core::Color m_Color;
+		const renderable_type m_Type;
+#if defined( BEAR_DIRTY_RENDER ) /* Enable dirty rendering? */
+		bool dirtyRender = true;
+		unsigned int m_VAO;
+		unsigned int m_VBO;
+		unsigned int m_IBO;
+#else
+		bool dirtyRender = false;
+#endif
 
 	public:
 		/* Constructor(s) */
-		Renderable() : m_Position(), m_Color() { }
-		Renderable(core::Vector2f a_P, core::Color a_C) : m_Position(a_P), m_Color(a_C) { }
+		Renderable(renderable_type a_T) : m_Type(a_T), m_Position(), m_Color() { }
+		Renderable(renderable_type a_T, core::Vector2f a_P, core::Color a_C) : m_Type(a_T), m_Position(a_P), m_Color(a_C) { }
 
-		/* Shared renderable methods */
-
+		/* 
+		*** Shared renderable methods ***
+		*/
 		/*
 		( VIRTUAL )
 		* Method used for dirty rendering (rendering with single drawcalls without a centralized renderer) 
 		* Use case: games with limited rendering target ( < 100 )
 		*/
-		virtual void draw(Shader &a_Shader) = 0;
+		virtual void draw(Shader &a_Shader);
 
 		/*
 		( NON-VIRTUAL )

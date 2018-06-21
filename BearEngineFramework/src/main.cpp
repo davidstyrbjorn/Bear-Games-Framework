@@ -3,11 +3,21 @@
 #define BEAR_GLFW_WINDOW
 #include<window/window.h>
 
-#include<graphics\rectangle.h>
+#define BEAR_DIRTY_RENDER
+#include<graphics\graphics.h>
+
+#include<gl\GLU.h>
+
+using namespace bear;
 
 int main()
 {
-	bear::graphics::Rectangle rect;
+	graphics::Graphics::init();
+
+	graphics::Renderable shape(graphics::renderable_type::Rectangle);
+	graphics::Shader shader;
+
+	graphics::Graphics::exit();
 
 	// SFML
 	//bear::window::SFML_Window window(400, 400, "SFML FUCKY");
@@ -44,8 +54,14 @@ int main()
 		if (window.isKeyDown(bear::X)) {
 			//printf(" _DOWN_ ");
 		}
-	
-		//rect.draw();
+		
+		glBegin(GL_TRIANGLES);
+		glVertex2f(0, 0);
+		glVertex2f(0.5, 0);
+		glVertex2f(0.5, 0.5);
+		glEnd();
+		
+		shape.draw(shader);
 	
 		window.display();
 	}

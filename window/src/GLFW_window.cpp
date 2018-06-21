@@ -26,6 +26,8 @@ void bear::window::GLFW_Window::close()
 
 void bear::window::GLFW_Window::clear()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glfwPollEvents();
 	glfwGetCursorPos(m_Window, &m_MousePosition.x, &m_MousePosition.y);
 }
@@ -80,8 +82,7 @@ void bear::window::GLFW_Window::key_callback(GLFWwindow * window, int key, int s
 		bear::Event event;
 
 		event.key = key;
-		if (action == GLFW_REPEAT) event.type = EventType::KeyDown;
-		else if (action == GLFW_PRESS) event.type = EventType::KeyPressed;
+		if (action == GLFW_PRESS) event.type = EventType::KeyPressed;
 		else if (action == GLFW_RELEASE) event.type = EventType::KeyReleased;
 
 		GLFW_Window* temp = (GLFW_Window*)(glfwGetWindowUserPointer(window));

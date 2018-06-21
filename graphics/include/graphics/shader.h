@@ -2,6 +2,8 @@
 
 namespace bear { namespace graphics {
 
+	class Shader {
 
+	};
 
 } }
