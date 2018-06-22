@@ -6,18 +6,10 @@
 #define BEAR_DIRTY_RENDER
 #include<graphics\graphics.h>
 
-#include<gl\GLU.h>
-
 using namespace bear;
 
 int main()
 {
-	graphics::Graphics::init();
-
-	graphics::Renderable shape(graphics::renderable_type::Rectangle);
-	graphics::Shader shader;
-
-	graphics::Graphics::exit();
 
 	// SFML
 	//bear::window::SFML_Window window(400, 400, "SFML FUCKY");
@@ -36,10 +28,16 @@ int main()
 	//}
 
 	// GLFW
+	if (graphics::Graphics::init()) {
+		printf("flowers");
+	}
+
+	graphics::Renderable shape(graphics::renderable_type::Rectangle);
+	graphics::Shader shader;
+
 	bear::window::GLFW_Window::init();
-	
-	
 	bear::window::GLFW_Window window(400, 400, "Fuck");
+
 	while (window.is_open()) {
 		window.clear();
 	
@@ -55,18 +53,13 @@ int main()
 			//printf(" _DOWN_ ");
 		}
 		
-		glBegin(GL_TRIANGLES);
-		glVertex2f(0, 0);
-		glVertex2f(0.5, 0);
-		glVertex2f(0.5, 0.5);
-		glEnd();
-		
 		shape.draw(shader);
 	
 		window.display();
 	}
 	
 	bear::window::GLFW_Window::exit();
+	graphics::Graphics::exit();
 
 	return 0;
 }

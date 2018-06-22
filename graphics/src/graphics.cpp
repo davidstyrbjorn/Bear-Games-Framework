@@ -5,7 +5,9 @@
 
 bool bear::graphics::Graphics::init()
 {
-	glewInit();
+	if (!glewInit()) {
+		return false;
+	}
 	return true;
 }
 

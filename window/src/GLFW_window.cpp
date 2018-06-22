@@ -7,6 +7,7 @@ bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Heig
 {
 	// Create GLFW window (assuming init has already been called)
 	m_Window = glfwCreateWindow(a_Width, a_Height, a_Caption.c_str(), nullptr, nullptr);
+	glfwMakeContextCurrent(m_Window);
 
 	glfwSetKeyCallback(m_Window, key_callback);
 	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
