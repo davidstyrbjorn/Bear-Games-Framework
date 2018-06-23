@@ -3,12 +3,20 @@
 namespace bear { namespace graphics {
 
 	class Graphics {
+	private:
+		static bool s_DirtyRender;
+
 	public:
-		/* Initalize GLEW OpenGL bindings */
-		static bool init();
+		/* 
+		* Initalize GLEW OpenGL bindings 
+		* \param value for enabling/disabling dirty rendering 
+		*/
+		static bool init(bool a_V);
 
 		/* */
 		static bool exit();
+
+		static bool doDirtyRender() { return s_DirtyRender; }
 	};
 
 } }

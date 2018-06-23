@@ -15,14 +15,11 @@ namespace bear { namespace graphics {
 		core::Vector2f m_Position;
 		core::Color m_Color;
 		const renderable_type m_Type;
-#if defined( BEAR_DIRTY_RENDER ) /* Enable dirty rendering? */
-		bool dirtyRender = true;
+
+		/* These values are used if we're dirty rendering! */
 		unsigned int m_VAO;
 		unsigned int m_VBO;
 		unsigned int m_IBO;
-#else
-		bool dirtyRender = false;
-#endif
 
 	public:
 		/* Constructor(s) */

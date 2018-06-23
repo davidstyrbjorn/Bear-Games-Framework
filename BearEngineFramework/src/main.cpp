@@ -28,12 +28,12 @@ int main()
 	//}
 
 	// GLFW
-	if (graphics::Graphics::init()) {
-		printf("flowers");
+	if (graphics::Graphics::init(true)) {
+		//printf("flowers");
 	}
 
 	graphics::Renderable shape(graphics::renderable_type::Rectangle);
-	graphics::Shader shader;
+	graphics::Shader shader("nah", "nah");
 
 	bear::window::GLFW_Window::init();
 	bear::window::GLFW_Window window(400, 400, "Fuck");
