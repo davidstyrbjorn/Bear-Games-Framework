@@ -13,6 +13,7 @@ namespace bear { namespace graphics {
 	private:
 		/* Shared renderable members */
 		core::Vector2f m_Position;
+		core::Vector2f m_Size;
 		core::Color m_Color;
 		const renderable_type m_Type;
 
@@ -23,8 +24,8 @@ namespace bear { namespace graphics {
 
 	public:
 		/* Constructor(s) */
-		Renderable(renderable_type a_T) : m_Type(a_T), m_Position(), m_Color() { }
-		Renderable(renderable_type a_T, core::Vector2f a_P, core::Color a_C) : m_Type(a_T), m_Position(a_P), m_Color(a_C) { }
+		Renderable(renderable_type a_T);
+		Renderable(renderable_type a_T, core::Vector2f a_P, core::Vector2f a_S, core::Color a_C);
 
 		/* 
 		*** Shared renderable methods ***
@@ -44,6 +45,14 @@ namespace bear { namespace graphics {
 		void setColor(core::Color &a_C);
 		const core::Vector2f getPosition();
 		const core::Color getColor();
+
+	private:
+		/*
+		( NON_VIRTUAL )
+		* Gets called if dirty rendering is enabled by the user
+		* Does OpenGL calls and sets up the renderable shape for OpenGL render calls through Renderable::draw()
+		*/
+		void setupBuffers();
 	};
 
 }} 

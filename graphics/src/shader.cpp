@@ -9,8 +9,10 @@
 bear::graphics::Shader::Shader(std::string a_VertexPath, std::string a_FragmentPath)
 {
 	// Get shader sources
-	const char* vertexSource = core::get_file_content(a_VertexPath).c_str();
-	const char* fragmentSource = core::get_file_content(a_FragmentPath).c_str();
+	std::string _vertexSource = core::get_file_content(a_VertexPath);
+	std::string _fragmentSource = core::get_file_content(a_FragmentPath);
+	const char* vertexSource = _vertexSource.c_str();
+	const char* fragmentSource = _fragmentSource.c_str();
 
 	/* Vertex */
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);

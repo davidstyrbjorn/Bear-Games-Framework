@@ -9,8 +9,17 @@ bool bear::graphics::Graphics::init(bool a_V)
 {
 	bear::graphics::Graphics::s_DirtyRender = a_V;
 
-	if (!glewInit()) {
+	glewExperimental = true;
+	GLenum result = glewInit();
+
+	if (result != GLEW_OK) {
+		if (result == GLEW_ERROR_NO_GL_VERSION) {
+			printf("No GL context ( GLEW_ERROR_NO_GL_VERSION )\n");
+		}
 		return false;
+	}
+	else {
+		return true;
 	}
 	return true;
 }

@@ -1,10 +1,10 @@
 #include<iostream>
 
-#define BEAR_GLFW_WINDOW
-#include<window/window.h>
-
 #define BEAR_DIRTY_RENDER
 #include<graphics\graphics.h>
+
+#define BEAR_GLFW_WINDOW
+#include<window/window.h>
 
 using namespace bear;
 
@@ -13,6 +13,13 @@ int main()
 
 	// SFML
 	//bear::window::SFML_Window window(400, 400, "SFML FUCKY");
+	//
+	//if (!graphics::Graphics::init(true)) {
+	//	printf("False returned from Graphics::init()\n");
+	//}
+	//graphics::Renderable shape(graphics::renderable_type::Rectangle);
+	//graphics::Shader shader("D:\\temp\\vert.txt", "D:\\temp\\frag.txt");
+	//
 	//while (window.is_open()) {
 	//
 	//	window.clear();
@@ -22,22 +29,23 @@ int main()
 	//
 	//	}
 	//	// Realtime test
-	//	rect.Draw();
 	//
 	//	window.display();
 	//}
 
-	// GLFW
-	if (graphics::Graphics::init(true)) {
-		//printf("flowers");
-	}
 
-	graphics::Renderable shape(graphics::renderable_type::Rectangle);
-	graphics::Shader shader("nah", "nah");
 
 	bear::window::GLFW_Window::init();
 	bear::window::GLFW_Window window(400, 400, "Fuck");
+	
+	if (!graphics::Graphics::init(true)) {
+		printf("False returned from Graphics::init()\n");
+	}
+	graphics::Shader shader("D:\\temp\\vert.txt", "D:\\temp\\frag.txt");
+	shader.enable();
 
+	graphics::Renderable triangle(graphics::renderable_type::Rectangle, core::Vector2f(0,0), core::Vector2f(100, 100), core::Color::Blue());
+	
 	while (window.is_open()) {
 		window.clear();
 	
@@ -53,7 +61,7 @@ int main()
 			//printf(" _DOWN_ ");
 		}
 		
-		shape.draw(shader);
+		triangle.draw(shader);
 	
 		window.display();
 	}
