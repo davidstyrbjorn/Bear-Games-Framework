@@ -1,5 +1,6 @@
 #include"../include/graphics/shader.h"
 
+#include<core\matrix4x4.h>
 #include<core\file_utility.h>
 #include<iostream>
 
@@ -54,6 +55,11 @@ void bear::graphics::Shader::disable() const
 	glUseProgram(0);
 }
 
+void bear::graphics::Shader::setUniformMatrix4x4(const char * a_UniformName, core::Matrix4x4 & a_Matrix)
+{
+	glUniformMatrix4fv(getUniformLocation(a_UniformName), 1, false, a_Matrix.elements);
+}
+
 bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a_ErrMsg)
 {
 	GLint _didCompile;
@@ -71,4 +77,17 @@ bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a
 	}
 
 	return true;
+}
+
+int bear::graphics::Shader::getUniformLocation(const char * a_UniformName)
+{
+	// Check if a_UniforName already exists inside m_UniformMap
+	auto iterator = m_UniformMap.find(a_UniformName);
+	if (iterator == m_UniformMap.end()) {
+		// It does not exist inside m_UniformMap
+		// so insert 
+		m_UniformMap.insert(std::pair<const char*, int>(a_UniformName, glGetUniformLocation(m_Program, a_UniformName)));
+	}
+	
+	return m_UniformMap.at(a_UniformName);
 }

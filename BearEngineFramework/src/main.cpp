@@ -6,11 +6,12 @@
 #define BEAR_GLFW_WINDOW
 #include<window/window.h>
 
+#include<core\matrix4x4.h>
+
 using namespace bear;
 
 int main()
 {
-
 	// SFML
 	//bear::window::SFML_Window window(400, 400, "SFML FUCKY");
 	//
@@ -43,9 +44,11 @@ int main()
 	}
 	graphics::Shader shader("D:\\temp\\vert.txt", "D:\\temp\\frag.txt");
 	shader.enable();
+	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 400, 400, 0, -1, 1));
 
-	graphics::Renderable triangle(graphics::renderable_type::Rectangle, core::Vector2f(0,0), core::Vector2f(100, 100), core::Color::Blue());
-	
+	graphics::Renderable triangle(graphics::renderable_type::Rectangle, core::Vector2f(10,10), core::Vector2f(100, 100), core::Color::Blue());
+	graphics::Renderable rect(graphics::renderable_type::Triangle, core::Vector2f(100, 150), core::Vector2f(200, 100), core::Color::Red());
+
 	while (window.is_open()) {
 		window.clear();
 	
@@ -62,6 +65,7 @@ int main()
 		}
 		
 		triangle.draw(shader);
+		rect.draw(shader);
 	
 		window.display();
 	}

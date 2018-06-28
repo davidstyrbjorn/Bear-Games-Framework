@@ -4,6 +4,7 @@
 #include"../include/graphics/vertex.h"
 
 #include<core\vector2.h>
+#include<core\matrix4x4.h>
 
 #include<vector>
 
@@ -32,6 +33,8 @@ void bear::graphics::Renderable::draw(Shader & a_Shader)
 {
 	if (bear::graphics::Graphics::doDirtyRender()) {
 		// Do OpenGL stuff
+		a_Shader.setUniformMatrix4x4("model_matrix", core::Matrix4x4::Translation(core::Vector3f(m_Position.x, m_Position.y, 0)));
+
 		glBindVertexArray(m_VAO);
 		if (m_Type == graphics::renderable_type::Triangle)
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
