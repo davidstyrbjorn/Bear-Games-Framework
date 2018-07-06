@@ -3,6 +3,7 @@
 #include"event.h"
 #include<deque>
 #include"core\vector2.h"
+#include"core\color.h"
 
 namespace bear { namespace window {
 
@@ -17,12 +18,14 @@ namespace bear { namespace window {
 		~WindowFramework() { }
 
 		// Shared methods for every window framework implementation (BearWindow)
-		virtual bool is_open() { return false; }
+		virtual bool isOpen() { return false; }
 		virtual void close() { }
 		/* Called at the top of every frame */
-		virtual void clear() { }
+		/* Default aqua clear color */
+		virtual void clear(core::Color a_Color = core::Color(72/255.0f, 214/255.0f, 190/255.0f)) { }
 		/* Called at the end of every frame */
 		virtual void display() { }
+		virtual void setFrameRateLimit(unsigned int a_Limit) { }
 
 		/* Event related methods */
 		/*

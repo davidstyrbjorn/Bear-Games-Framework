@@ -1,0 +1,14 @@
+snake_case
+camelCase
+PascalCase = UpperCamelCase
+
+Naming Conventions:
+For .cpp and .h files use snake case, example: window_framework.h & window_framework.cpp
+In .h files ->
+- namespaces should always be one word lower cased, example: bear::sound::
+- classes uses camel case, example: WindowFramework & Rendeable 
+- structs should use the same naming as classes
+- enumerators should always use snake case same as .cpp & .h files, example: context_settings_option::
+Members of a class ->
+- private members uses m_ prefix and the member name uses upper camel case, example: m_UniformMap
+- for public methods use lower camel case, example: void setColor(...), bool isUniformLive(...)

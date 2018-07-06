@@ -11,10 +11,10 @@
 #define GLEW_STATIC
 #include"GL\glew.h"
 
-bear::graphics::Renderable::Renderable(renderable_type a_T) : m_Type(a_T), m_Position(), m_Size(), m_Color()
+bear::graphics::Renderable::Renderable(renderable_type a_T, core::Vector2f a_P, std::string a_ImagePath) : m_Type(a_T), m_Position(a_P), m_Size(), m_Color()
 {
 	if (bear::graphics::Graphics::doDirtyRender()) {
-		this->setupBuffers();
+		this->setupBuffers(a_ImagePath);
 	}
 }
 
@@ -25,21 +25,46 @@ bear::graphics::Renderable::Renderable(renderable_type a_T, core::Vector2f a_P, 
 	m_Color(a_C) 
 {
 	if (bear::graphics::Graphics::doDirtyRender()) {
-		this->setupBuffers();
+		this->setupBuffers("");
+	}
+}
+
+bear::graphics::Renderable::~Renderable()
+{
+	if (bear::graphics::Graphics::doDirtyRender()) {
+		// Remove buffers & vertex array objects
+		glDeleteVertexArrays(1, &m_VAO);
+		glDeleteBuffers(1, &m_VBO);
+		glDeleteBuffers(1, &m_IBO);
 	}
 }
 
 void bear::graphics::Renderable::draw(Shader & a_Shader)
 {
 	if (bear::graphics::Graphics::doDirtyRender()) {
+		bool shaderActivationFlag = false;
+		if (a_Shader.isActive() != true)
+		{
+			a_Shader.enable();
+			shaderActivationFlag = true;
+		}
 		// Do OpenGL stuff
 		a_Shader.setUniformMatrix4x4("model_matrix", core::Matrix4x4::Translation(core::Vector3f(m_Position.x, m_Position.y, 0)));
 
 		glBindVertexArray(m_VAO);
 		if (m_Type == graphics::renderable_type::Triangle)
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
-		else
+		else {
+			if (m_Type == graphics::renderable_type::Sprite)
+				glBindTexture(GL_TEXTURE_2D, m_TBO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		// End
+		if (shaderActivationFlag) {
+			a_Shader.disable();
+		}
 	}
 }
 
@@ -63,7 +88,7 @@ const bear::core::Color bear::graphics::Renderable::getColor()
 	return m_Color;
 }
 
-void bear::graphics::Renderable::setupBuffers()
+void bear::graphics::Renderable::setupBuffers(std::string a_ImagePath)
 {
 	/* 
 	1. Create VBO and fill with data
@@ -79,20 +104,48 @@ void bear::graphics::Renderable::setupBuffers()
 	std::vector<GLuint> indexData;
 	if (m_Type == graphics::renderable_type::Triangle) {
 		// VBO data 
-		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color });
-		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color });
-		vertexData.push_back({ core::Vector2f(m_Size), m_Color });
+		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2 };
 	}
 	else if (m_Type == graphics::renderable_type::Rectangle) {
 		// VBO data 
-		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color });
-		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color });
-		vertexData.push_back({ core::Vector2f(m_Size), m_Color });
-		vertexData.push_back({ core::Vector2f(m_Size.x, 0.0f), m_Color });
+		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(m_Size.x, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2, 2, 3, 0 };
+	}
+	else if (m_Type == graphics::renderable_type::Circle) {
+
+	}
+	else if (m_Type == graphics::renderable_type::Sprite) {
+		// VBO data 
+
+		Image image(a_ImagePath);
+		m_Size = core::Vector2f((int)(image.m_ImageSize.x), (int)(image.m_ImageSize.y));
+
+		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color, core::Vector2f(0.0f, 1.0f) });
+		vertexData.push_back({ core::Vector2f(m_Size), m_Color, core::Vector2f(1.0f, 1.0f) });
+		vertexData.push_back({ core::Vector2f(m_Size.x, 0.0f), m_Color, core::Vector2f(1.0f, 0.0f) });
+		// IBO data
+		indexData = { 0, 1, 2, 2, 3, 0 };
+		// TBO Creation
+		glActiveTexture(GL_TEXTURE0);
+
+		glGenTextures(1, &m_TBO);
+		glBindTexture(GL_TEXTURE_2D, m_TBO);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, image.m_Format, image.m_ImageSize.x, image.m_ImageSize.y, 0, image.m_Format, GL_UNSIGNED_BYTE, image.m_ImageData);
+		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	// VBO
@@ -110,6 +163,8 @@ void bear::graphics::Renderable::setupBuffers()
 	glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(Vertex), (GLvoid*)0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f)));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
 
 	// IBO 
 	glGenBuffers(1, &m_IBO);

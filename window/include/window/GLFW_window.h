@@ -15,10 +15,12 @@ namespace bear { namespace window {
 	public:
 		GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption = "GLFW Window");
 
-		bool is_open() override;
+		bool isOpen() override;
 		void close() override;
-		void clear() override;
+		void clear(core::Color a_Color = core::Color(72 / 255.0f, 214 / 255.0f, 190 / 255.0f)) override;
 		void display() override;
+		void setFrameRateLimit(unsigned int a_Limit) override;
+
 		const std::deque<bear::Event> getRegisteredEvents() const override;
 		const bool isKeyDown(int a_Key) override;
 		const bool isMouseDown(int a_Button) override;

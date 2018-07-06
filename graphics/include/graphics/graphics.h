@@ -24,3 +24,4 @@ namespace bear { namespace graphics {
 // Include files for the graphics module to work 
 #include"shader.h"
 #include"renderable.h"
+#include"image.h"

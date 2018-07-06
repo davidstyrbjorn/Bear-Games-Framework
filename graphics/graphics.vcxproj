@@ -82,7 +82,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\core\include;D:\C++\BearEngineFramework\third_party\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\core\include;D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>opengl32.lib;core.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -103,7 +103,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\core\include;D:\C++\BearEngineFramework\third_party\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\core\include;D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\graphics\graphics.h" />
+    <ClInclude Include="include\graphics\image.h" />
     <ClInclude Include="include\graphics\renderable.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\types.h" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\graphics.cpp" />
+    <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\renderable.cpp" />
     <ClCompile Include="src\shader.cpp" />
   </ItemGroup>

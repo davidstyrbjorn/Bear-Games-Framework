@@ -45,19 +45,31 @@ bear::graphics::Shader::Shader(std::string a_VertexPath, std::string a_FragmentP
 	glDeleteShader(fragmentShader);
 }
 
-void bear::graphics::Shader::enable() const
+void bear::graphics::Shader::enable() 
 {
 	glUseProgram(m_Program);
+	m_IsActive = true;
 }
 
-void bear::graphics::Shader::disable() const
+void bear::graphics::Shader::disable()
 {
 	glUseProgram(0);
+	m_IsActive = false;
+}
+
+const bool bear::graphics::Shader::isActive() const
+{
+	return m_IsActive;
 }
 
 void bear::graphics::Shader::setUniformMatrix4x4(const char * a_UniformName, core::Matrix4x4 & a_Matrix)
 {
 	glUniformMatrix4fv(getUniformLocation(a_UniformName), 1, false, a_Matrix.elements);
+}
+
+void bear::graphics::Shader::setUniformInteger(const char * a_UniformName, int a_Integer)
+{
+	glUniform1i(getUniformLocation(a_UniformName), a_Integer);
 }
 
 bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a_ErrMsg)

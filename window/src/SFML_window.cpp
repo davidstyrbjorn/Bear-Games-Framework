@@ -3,6 +3,7 @@
 #include<iostream>
 
 #include<SFML\Window.hpp>
+#include<GLFW\glfw3.h>
 
 bear::window::SFML_Window::SFML_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
 	: m_Width(a_Width), m_Height(a_Height)
@@ -10,7 +11,7 @@ bear::window::SFML_Window::SFML_Window(unsigned int a_Width, unsigned int a_Heig
 	m_Window = new sf::Window(sf::VideoMode(a_Width, a_Height), a_Caption);
 }
 
-bool bear::window::SFML_Window::is_open()
+bool bear::window::SFML_Window::isOpen()
 {
 	return m_Window->isOpen();
 }
@@ -21,40 +22,21 @@ void bear::window::SFML_Window::close()
 	delete m_Window;
 }
 
-void bear::window::SFML_Window::clear()
+void bear::window::SFML_Window::clear(core::Color a_Color)
 {
-	sf::Event event;
-	while (m_Window->pollEvent(event)) {
-		if (event.type == sf::Event::KeyPressed) {
-			// Register event
-			bear::Event _event;
-			_event.type = bear::EventType::KeyPressed;
-			_event.key = event.key.code; 
-			m_Events.push_back(_event);
-		}
-		else if (event.type == sf::Event::KeyReleased) {
-			// Register event
-			bear::Event _event;
-			_event.type = bear::EventType::KeyReleased;
-			_event.key = event.key.code;
-			m_Events.push_back(_event);
-		}
-		else if (event.type == sf::Event::MouseButtonPressed) {
-			// Register event
-			bear::Event _event;
-			_event.type = bear::EventType::MousePressed;
-			_event.button = event.mouseButton.button;
-			m_Events.push_back(_event);
-		}
-		else if (event.type == sf::Event::MouseButtonReleased) {
-			// Register event
-			bear::Event _event;
-			_event.type = bear::EventType::MouseReleased;
-			_event.button = event.mouseButton.button;
-			m_Events.push_back(_event);
-		}
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(a_Color.r, a_Color.g, a_Color.b, a_Color.a);
 
-		if (event.type == sf::Event::Closed) {
+	sf::Event sfml_event;
+	while (m_Window->pollEvent(sfml_event))
+	{
+		bear::Event event;
+		event.type = sfmlToBearEventType(sfml_event);
+		event.key = sfml_event.key.code;
+		event.button = sfml_event.mouseButton.button;
+		m_Events.push_back(event);
+
+		if (sfml_event.type == sf::Event::Closed) {
 			this->close();
 		}
 	}
@@ -64,6 +46,11 @@ void bear::window::SFML_Window::display()
 {
 	m_Events.clear();
 	m_Window->display();
+}
+
+void bear::window::SFML_Window::setFrameRateLimit(unsigned int a_Limit)
+{
+	m_Window->setFramerateLimit(a_Limit);
 }
 
 const std::deque<bear::Event> bear::window::SFML_Window::getRegisteredEvents() const
@@ -84,4 +71,20 @@ const bool bear::window::SFML_Window::isMouseDown(int a_Button)
 const bear::core::Vector2d bear::window::SFML_Window::getMousePosition()
 {
 	return bear::core::Vector2d(sf::Mouse::getPosition(*m_Window).x, sf::Mouse::getPosition(*m_Window).y);
+}
+
+bear::EventType bear::window::SFML_Window::sfmlToBearEventType(sf::Event a_SFMLEvent)
+{
+	if (a_SFMLEvent.type == sf::Event::KeyPressed) {
+		return bear::EventType::KeyPressed;
+	}
+	else if (a_SFMLEvent.type == sf::Event::KeyReleased) {
+		return bear::EventType::KeyReleased;
+	}
+	else if (a_SFMLEvent.type == sf::Event::MouseButtonPressed) {
+		return bear::EventType::MousePressed;
+	}
+	else if (a_SFMLEvent.type == sf::Event::MouseButtonReleased) {
+		return bear::EventType::MouseReleased;
+	}
 }

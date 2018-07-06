@@ -2,6 +2,8 @@
 
 #include<GLFW\glfw3.h>
 
+#include<core\color.h>
+
 bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
 	: m_Width(a_Width), m_Height(a_Height)
 {
@@ -15,7 +17,7 @@ bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Heig
 	glfwSetWindowUserPointer(m_Window, this); // @ We might now want to do this?
 }
 
-bool bear::window::GLFW_Window::is_open()
+bool bear::window::GLFW_Window::isOpen()
 {
 	return !glfwWindowShouldClose(m_Window);
 }
@@ -25,9 +27,10 @@ void bear::window::GLFW_Window::close()
 	glfwSetWindowShouldClose(m_Window, true);
 }
 
-void bear::window::GLFW_Window::clear()
+void bear::window::GLFW_Window::clear(core::Color a_Color)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(a_Color.r, a_Color.g, a_Color.b, a_Color.a);
 
 	glfwPollEvents();
 	glfwGetCursorPos(m_Window, &m_MousePosition.x, &m_MousePosition.y);
@@ -37,6 +40,11 @@ void bear::window::GLFW_Window::display()
 {
 	m_Events.clear();
 	glfwSwapBuffers(m_Window);
+}
+
+void bear::window::GLFW_Window::setFrameRateLimit(unsigned int a_Limit)
+{
+	printf("GLFW SET FRAME RATE NOT IMPLEMENTED");
 }
 
 const std::deque<bear::Event> bear::window::GLFW_Window::getRegisteredEvents() const

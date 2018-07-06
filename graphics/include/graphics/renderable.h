@@ -21,11 +21,15 @@ namespace bear { namespace graphics {
 		unsigned int m_VAO;
 		unsigned int m_VBO;
 		unsigned int m_IBO;
+		unsigned int m_TBO;
 
 	public:
 		/* Constructor(s) */
-		Renderable(renderable_type a_T);
+		Renderable(renderable_type a_T, core::Vector2f a_P, std::string a_ImagePath);
 		Renderable(renderable_type a_T, core::Vector2f a_P, core::Vector2f a_S, core::Color a_C);
+
+		/* Destructor */
+		~Renderable();
 
 		/* 
 		*** Shared renderable methods ***
@@ -52,7 +56,7 @@ namespace bear { namespace graphics {
 		* Gets called if dirty rendering is enabled by the user
 		* Does OpenGL calls and sets up the renderable shape for OpenGL render calls through Renderable::draw()
 		*/
-		void setupBuffers();
+		void setupBuffers(std::string a_ImagePath);
 	};
 
 }} 
