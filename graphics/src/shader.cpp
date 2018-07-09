@@ -7,17 +7,22 @@
 #define GLEW_STATIC
 #include<GL\glew.h>
 
-bear::graphics::Shader::Shader(std::string a_VertexPath, std::string a_FragmentPath)
+bear::graphics::Shader::Shader()
+{
+
+}
+
+void bear::graphics::Shader::compile(std::string a_VertexPath, std::string a_FragmentPath)
 {
 	// Get shader sources
 	std::string _vertexSource = core::get_file_content(a_VertexPath);
 	std::string _fragmentSource = core::get_file_content(a_FragmentPath);
-	const char* vertexSource = _vertexSource.c_str();
-	const char* fragmentSource = _fragmentSource.c_str();
+	m_VertexSource = _vertexSource.c_str();
+	m_FragmentSource = _fragmentSource.c_str();
 
 	/* Vertex */
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexSource, 0);
+	glShaderSource(vertexShader, 1, &m_VertexSource, 0);
 	glCompileShader(vertexShader);
 	std::string vertexCompileLog = "";
 	if (!didCompile(vertexShader, vertexCompileLog)) {
@@ -26,7 +31,7 @@ bear::graphics::Shader::Shader(std::string a_VertexPath, std::string a_FragmentP
 
 	/* Fragment */
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentSource, 0);
+	glShaderSource(fragmentShader, 1, &m_FragmentSource, 0);
 	glCompileShader(fragmentShader);
 	std::string fragmentCompileLog = "";
 	if (!didCompile(fragmentShader, fragmentCompileLog)) {
@@ -45,7 +50,7 @@ bear::graphics::Shader::Shader(std::string a_VertexPath, std::string a_FragmentP
 	glDeleteShader(fragmentShader);
 }
 
-void bear::graphics::Shader::enable() 
+void bear::graphics::Shader::enable()
 {
 	glUseProgram(m_Program);
 	m_IsActive = true;

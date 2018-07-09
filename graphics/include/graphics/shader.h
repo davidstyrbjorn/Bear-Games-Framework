@@ -17,10 +17,13 @@ namespace bear { namespace graphics {
 		// Cache maping for the uniform locations
 		std::map<const char*, int> m_UniformMap;
 		bool m_IsActive;
+		const char* m_VertexSource;
+		const char* m_FragmentSource;
 
 	public:
-		Shader(std::string a_VertexPath, std::string a_FragmentPath);
+		Shader();
 
+		void compile(std::string a_VertexPath, std::string a_FragmentPath);
 		void enable();
 		void disable();
 		const bool isActive() const;

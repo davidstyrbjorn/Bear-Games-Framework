@@ -4,7 +4,8 @@
 
 #include<core\color.h>
 
-bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
+template<typename T>
+bear::window::GLFW_Window<T>::GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
 	: m_Width(a_Width), m_Height(a_Height)
 {
 	// Create GLFW window (assuming init has already been called)
@@ -13,21 +14,25 @@ bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Heig
 
 	glfwSetKeyCallback(m_Window, key_callback);
 	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
+	glfwSetWindowSizeCallback(m_Window, window_resize_callback);
 	
 	glfwSetWindowUserPointer(m_Window, this); // @ We might now want to do this?
 }
 
-bool bear::window::GLFW_Window::isOpen()
+template<typename T>
+bool bear::window::GLFW_Window<T>::isOpen()
 {
 	return !glfwWindowShouldClose(m_Window);
 }
 
-void bear::window::GLFW_Window::close()
+template<typename T>
+void bear::window::GLFW_Window<T>::close()
 {
 	glfwSetWindowShouldClose(m_Window, true);
 }
 
-void bear::window::GLFW_Window::clear(core::Color a_Color)
+template<typename T>
+void bear::window::GLFW_Window<T>::clear(core::Color a_Color)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(a_Color.r, a_Color.g, a_Color.b, a_Color.a);
@@ -36,39 +41,46 @@ void bear::window::GLFW_Window::clear(core::Color a_Color)
 	glfwGetCursorPos(m_Window, &m_MousePosition.x, &m_MousePosition.y);
 }
 
-void bear::window::GLFW_Window::display()
+template<typename T>
+void bear::window::GLFW_Window<T>::display()
 {
 	m_Events.clear();
 	glfwSwapBuffers(m_Window);
 }
 
-void bear::window::GLFW_Window::setFrameRateLimit(unsigned int a_Limit)
+template<typename T>
+void bear::window::GLFW_Window<T>::setFrameRateLimit(unsigned int a_Limit)
 {
 	printf("GLFW SET FRAME RATE NOT IMPLEMENTED");
 }
 
-const std::deque<bear::Event> bear::window::GLFW_Window::getRegisteredEvents() const
+template<typename T>
+const std::deque<bear::Event> bear::window::GLFW_Window<T>::getRegisteredEvents() const
 {
 	return m_Events;
 }
 
-const bool bear::window::GLFW_Window::isKeyDown(int a_Key)
+template<typename T>
+const bool bear::window::GLFW_Window<T>::isKeyDown(int a_Key)
 {
 	return glfwGetKey(m_Window, a_Key);
 }
 
-const bool bear::window::GLFW_Window::isMouseDown(int a_Button)
+template<typename T>
+const bool bear::window::GLFW_Window<T>::isMouseDown(int a_Button)
 {
 	return glfwGetMouseButton(m_Window, a_Button);
 }
 
-const bear::core::Vector2d bear::window::GLFW_Window::getMousePosition()
+template<typename T>
+const bear::core::Vector2d bear::window::GLFW_Window<T>::getMousePosition()
 {
 	return m_MousePosition;
 }
 
 /* Static */
-bool bear::window::GLFW_Window::init()
+template<typename T>
+bool bear::window::GLFW_Window<T>::init()
 {
 	if (!glfwInit()) {
 		/* @ Print some kind of error maybe? */
@@ -78,13 +90,15 @@ bool bear::window::GLFW_Window::init()
 }
 
 /* Static */
-bool bear::window::GLFW_Window::exit()
+template<typename T>
+bool bear::window::GLFW_Window<T>::exit()
 {
 	glfwTerminate();
 	return true;
 }
 
-void bear::window::GLFW_Window::key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
+template<typename T>
+void bear::window::GLFW_Window<T>::key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
 	// Take event and push back into event queue
 	if (action == GLFW_PRESS || action == GLFW_RELEASE || action == GLFW_REPEAT) {
@@ -94,12 +108,13 @@ void bear::window::GLFW_Window::key_callback(GLFWwindow * window, int key, int s
 		if (action == GLFW_PRESS) event.type = EventType::KeyPressed;
 		else if (action == GLFW_RELEASE) event.type = EventType::KeyReleased;
 
-		GLFW_Window* temp = (GLFW_Window*)(glfwGetWindowUserPointer(window));
+		GLFW_Window* temp = static_cast<GLFW_Window*>(glfwGetWindowUserPointer(window));
 		temp->m_Events.push_back(event);
 	}
 }
 
-void bear::window::GLFW_Window::mouse_button_callback(GLFWwindow * window, int button, int action, int mods)
+template<typename T>
+void bear::window::GLFW_Window<T>::mouse_button_callback(GLFWwindow * window, int button, int action, int mods)
 {
 	// Take event and push back into event queue
 	if (action == GLFW_PRESS || action == GLFW_RELEASE || action == GLFW_REPEAT) {
@@ -110,7 +125,15 @@ void bear::window::GLFW_Window::mouse_button_callback(GLFWwindow * window, int b
 		if (action == GLFW_PRESS) event.type = EventType::MousePressed;
 		else if (action == GLFW_RELEASE) event.type = EventType::MouseReleased;
 
-		GLFW_Window* temp = (GLFW_Window*)(glfwGetWindowUserPointer(window));
+		GLFW_Window* temp = static_cast<GLFW_Window*>(glfwGetWindowUserPointer(window));
 		temp->m_Events.push_back(event);
 	}
+}
+
+template<typename T>
+void bear::window::GLFW_Window<T>::window_resize_callback(GLFWwindow * window, int width, int height)
+{
+	GLFW_Window* temp = static_cast<GLFW_Window*>(glfwGetWindowUserPointer(window));
+	temp->resize_callback(width, height);
+	glViewport(0, 0, width, height);
 }
