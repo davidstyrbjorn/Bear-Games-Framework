@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include<core\vector2.h>
+
 namespace bear {
 
 	/*
@@ -12,6 +14,7 @@ namespace bear {
 		KeyReleased,
 		MousePressed,
 		MouseReleased,
+		WindowReiszed,
 		Closed
 	};
 
@@ -21,6 +24,7 @@ namespace bear {
 		EventType type;
 		int key; // keyboard
 		int button; // mouse
+		core::Vector2f size; // example use: window resize 
 	};
 
 }

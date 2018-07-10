@@ -23,8 +23,6 @@ private:
 	int x = 0;
 };
 
-void foo(int a_Width, int a_Height);
-
 graphics::Shader shader;
 
 // BRB
@@ -65,8 +63,8 @@ int main()
 	//	window.display();
 	//}
 
-	bear::window::GLFW_Window<Foo>::init();
-	bear::window::GLFW_Window<Foo> myWindow(720, 540, "Fuck");
+	bear::window::GLFW_Window::init();
+	bear::window::GLFW_Window myWindow(720, 540, "Fuck");
 
 	if (!graphics::Graphics::init(true)) {
 		printf("False returned from Graphics::init()\n");
@@ -77,18 +75,15 @@ int main()
 	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 540, 0, -1, 1));
 	shader.setUniformInteger("textureSampler", 0);
 
-	myWindow.resize_callback = &foo;
-
 	graphics::Renderable rect(graphics::renderable_type::Sprite, core::Vector2f(100, 100), "D:\\temp\\cat.png");
 
 	while (myWindow.isOpen()) {
 		myWindow.clear(core::Color::Black());
 	
 		for (bear::Event _event : myWindow.getRegisteredEvents()) {
-			if (_event.type == bear::EventType::KeyPressed) {
-				if (_event.key == bear::Key::X) {
-					printf("silly boy");
-				}
+			if (_event.type == bear::EventType::WindowReiszed)
+			{
+				shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, _event.size.x, _event.size.y, 0, -1, 1));
 			}
 		}
 		
@@ -97,14 +92,9 @@ int main()
 		myWindow.display();
 	}
 	
-	bear::window::GLFW_Window<Foo>::exit();
+	bear::window::GLFW_Window::exit();
 	
 	graphics::Graphics::exit();
 
 	return 0;
-}
-
-void foo(int a_Width, int a_Height)
-{
-	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, a_Width, a_Height, 0, -1, 1));
 }

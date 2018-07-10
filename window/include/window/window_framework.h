@@ -35,7 +35,7 @@ namespace bear { namespace window {
 			...
 		}
 		*/
-		virtual const std::deque<bear::Event> getRegisteredEvents() const = 0;
+		virtual const std::deque<bear::Event>& getRegisteredEvents() const = 0;
 		/* Realtime input methods */
 		virtual const bool isKeyDown(int a_Key) = 0;
 		virtual const bool isMouseDown(int a_Button) = 0;

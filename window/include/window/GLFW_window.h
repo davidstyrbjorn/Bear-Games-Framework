@@ -11,7 +11,6 @@ namespace bear { namespace window {
 
 	/* Type: GLFW Window */
 	/* GLFW Implementation */
-	template<typename T>
 	class GLFW_Window : public WindowFramework {
 	public:
 		GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption = "GLFW Window");
@@ -22,7 +21,7 @@ namespace bear { namespace window {
 		void display() override;
 		void setFrameRateLimit(unsigned int a_Limit) override;
 
-		const std::deque<bear::Event> getRegisteredEvents() const override;
+		const std::deque<bear::Event>& getRegisteredEvents() const override;
 		const bool isKeyDown(int a_Key) override;
 		const bool isMouseDown(int a_Button) override;
 		const core::Vector2d getMousePosition() override;
@@ -35,16 +34,7 @@ namespace bear { namespace window {
 		static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		static void window_resize_callback(GLFWwindow* window, int width, int height);
 
-		void (*resize_callback)(int, int);
-		//void registerWindowResizeCallback(_Type a_ObjectType)
-		//{
-
-		//}
-
 	private:
-		T m_ObjectType;
-		void (T::*resizeCallback)(int, int);
-
 		GLFWwindow *m_Window;
 		unsigned int m_Width, m_Height;
 		std::deque<Event> m_Events;

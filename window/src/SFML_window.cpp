@@ -53,7 +53,7 @@ void bear::window::SFML_Window::setFrameRateLimit(unsigned int a_Limit)
 	m_Window->setFramerateLimit(a_Limit);
 }
 
-const std::deque<bear::Event> bear::window::SFML_Window::getRegisteredEvents() const
+const std::deque<bear::Event>& bear::window::SFML_Window::getRegisteredEvents() const
 {
 	return m_Events;
 }
