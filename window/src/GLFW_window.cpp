@@ -7,7 +7,10 @@
 bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
 	: m_Width(a_Width), m_Height(a_Height)
 {
-	// Create GLFW window (assuming init has already been called)
+	// Init GLFW API
+	glfwInit();
+
+	// GLFWwindow creation
 	m_Window = glfwCreateWindow(a_Width, a_Height, a_Caption.c_str(), nullptr, nullptr);
 	glfwMakeContextCurrent(m_Window);
 
@@ -15,7 +18,13 @@ bear::window::GLFW_Window::GLFW_Window(unsigned int a_Width, unsigned int a_Heig
 	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 	glfwSetWindowSizeCallback(m_Window, window_resize_callback);
 	
-	glfwSetWindowUserPointer(m_Window, this); // @ We might now want to do this?
+	glfwSetWindowUserPointer(m_Window, this); 
+}
+
+bear::window::GLFW_Window::~GLFW_Window()
+{
+	// Handles GLFW pointers and allocations
+	glfwTerminate();
 }
 
 bool bear::window::GLFW_Window::isOpen()
@@ -66,23 +75,6 @@ const bool bear::window::GLFW_Window::isMouseDown(int a_Button)
 const bear::core::Vector2d bear::window::GLFW_Window::getMousePosition()
 {
 	return m_MousePosition;
-}
-
-/* Static */
-bool bear::window::GLFW_Window::init()
-{
-	if (!glfwInit()) {
-		/* @ Print some kind of error maybe? */
-		return false;
-	}
-	return true;
-}
-
-/* Static */
-bool bear::window::GLFW_Window::exit()
-{
-	glfwTerminate();
-	return true;
 }
 
 void bear::window::GLFW_Window::key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)

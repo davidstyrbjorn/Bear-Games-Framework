@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BearEngineFramework", "BearEngineFramework\BearEngineFramework.vcxproj", "{45DF7C82-93EE-415F-9FC0-4213E777BDE1}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "audio", "audio\audio.vcxproj", "{1DB03A0E-032C-4D49-8917-362A5DD21CD9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "window", "window\window.vcxproj", "{0E2AFA0D-D88A-453E-AA10-33478811C766}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ecs", "ecs\ecs.vcxproj", "{089CF001-BD03-4A88-8413-5022B743B5FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,14 @@ Global
 		{0E2AFA0D-D88A-453E-AA10-33478811C766}.Release|x86.ActiveCfg = Release|Win32
 		{0E2AFA0D-D88A-453E-AA10-33478811C766}.Release|x86.Build.0 = Release|Win32
 		{0E2AFA0D-D88A-453E-AA10-33478811C766}.Release|x86.Deploy.0 = Release|Win32
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Debug|x64.ActiveCfg = Debug|x64
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Debug|x64.Build.0 = Debug|x64
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Debug|x86.ActiveCfg = Debug|Win32
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Debug|x86.Build.0 = Debug|Win32
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Release|x64.ActiveCfg = Release|x64
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Release|x64.Build.0 = Release|x64
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Release|x86.ActiveCfg = Release|Win32
+		{089CF001-BD03-4A88-8413-5022B743B5FA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

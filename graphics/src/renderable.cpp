@@ -42,12 +42,6 @@ bear::graphics::Renderable::~Renderable()
 void bear::graphics::Renderable::draw(Shader & a_Shader)
 {
 	if (bear::graphics::Graphics::doDirtyRender()) {
-		bool shaderActivationFlag = false;
-		if (a_Shader.isActive() != true)
-		{
-			a_Shader.enable();
-			shaderActivationFlag = true;
-		}
 		// Do OpenGL stuff
 		a_Shader.setUniformMatrix4x4("model_matrix", core::Matrix4x4::Translation(core::Vector3f(m_Position.x, m_Position.y, 0)));
 
@@ -59,11 +53,6 @@ void bear::graphics::Renderable::draw(Shader & a_Shader)
 				glBindTexture(GL_TEXTURE_2D, m_TBO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-
-		// End
-		if (shaderActivationFlag) {
-			a_Shader.disable();
 		}
 	}
 }
@@ -98,6 +87,9 @@ void bear::graphics::Renderable::setupBuffers(std::string a_ImagePath)
 	4. Bind IBO to VAO
 	5. Unbind and be done
 	*/
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Data
 	std::vector<Vertex> vertexData;
@@ -140,7 +132,7 @@ void bear::graphics::Renderable::setupBuffers(std::string a_ImagePath)
 		glGenTextures(1, &m_TBO);
 		glBindTexture(GL_TEXTURE_2D, m_TBO);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, image.m_Format, image.m_ImageSize.x, image.m_ImageSize.y, 0, image.m_Format, GL_UNSIGNED_BYTE, image.m_ImageData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.m_ImageSize.x, image.m_ImageSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, image.m_ImageData);
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

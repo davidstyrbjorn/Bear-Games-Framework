@@ -14,6 +14,7 @@ namespace bear { namespace window {
 	class GLFW_Window : public WindowFramework {
 	public:
 		GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption = "GLFW Window");
+		~GLFW_Window();
 
 		bool isOpen() override;
 		void close() override;
@@ -25,9 +26,6 @@ namespace bear { namespace window {
 		const bool isKeyDown(int a_Key) override;
 		const bool isMouseDown(int a_Button) override;
 		const core::Vector2d getMousePosition() override;
-
-		static bool init();
-		static bool exit();
 
 		/* GLFW callbacks */
 		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

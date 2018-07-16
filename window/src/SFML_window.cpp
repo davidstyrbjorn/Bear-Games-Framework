@@ -11,6 +11,11 @@ bear::window::SFML_Window::SFML_Window(unsigned int a_Width, unsigned int a_Heig
 	m_Window = new sf::Window(sf::VideoMode(a_Width, a_Height), a_Caption);
 }
 
+bear::window::SFML_Window::~SFML_Window()
+{
+	delete m_Window;
+}
+
 bool bear::window::SFML_Window::isOpen()
 {
 	return m_Window->isOpen();
@@ -19,7 +24,6 @@ bool bear::window::SFML_Window::isOpen()
 void bear::window::SFML_Window::close()
 {
 	m_Window->close();
-	delete m_Window;
 }
 
 void bear::window::SFML_Window::clear(core::Color a_Color)
@@ -30,15 +34,19 @@ void bear::window::SFML_Window::clear(core::Color a_Color)
 	sf::Event sfml_event;
 	while (m_Window->pollEvent(sfml_event))
 	{
+		if (sfml_event.type == sf::Event::Closed) {
+			this->close();
+		}
+		else if (sfml_event.type == sf::Event::Resized) {
+			glViewport(0, 0, sfml_event.size.width, sfml_event.size.height);
+		}
+
 		bear::Event event;
 		event.type = sfmlToBearEventType(sfml_event);
 		event.key = sfml_event.key.code;
 		event.button = sfml_event.mouseButton.button;
+		event.size = core::Vector2f(sfml_event.size.width, sfml_event.size.height);
 		m_Events.push_back(event);
-
-		if (sfml_event.type == sf::Event::Closed) {
-			this->close();
-		}
 	}
 }
 
@@ -86,5 +94,8 @@ bear::EventType bear::window::SFML_Window::sfmlToBearEventType(sf::Event a_SFMLE
 	}
 	else if (a_SFMLEvent.type == sf::Event::MouseButtonReleased) {
 		return bear::EventType::MouseReleased;
+	}
+	else if (a_SFMLEvent.type == sf::Event::Resized) {
+		return bear::EventType::WindowReiszed;
 	}
 }

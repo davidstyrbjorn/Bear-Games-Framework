@@ -20,6 +20,7 @@ namespace bear { namespace window {
 
 	public:
 		SFML_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption);
+		~SFML_Window();
 
 		bool isOpen() override;
 		void close() override;
