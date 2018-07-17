@@ -11,7 +11,7 @@ namespace bear { namespace ecs {
 		RectangleComponent(core::Color a_Color);
 
 		void init() override { }
-		component_types getType() override { return component_types::RECTANGLE_COMPONENT; }
+		component_types getType() override { return component_types::RENDERABLE_COMPONENT; }
 	};
 
 } } 

@@ -42,7 +42,7 @@ namespace bear { namespace ecs {
 		/*
 		* Returns refernce to entity with a_ID currently living inside this world
 		*/
-		std::weak_ptr<Entity> getEntity(std::string a_ID);
+		std::shared_ptr<Entity> getEntity(std::string a_ID);
 	};
 
 } } 

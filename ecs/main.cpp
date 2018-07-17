@@ -5,15 +5,36 @@
 
 using namespace bear::ecs;
 
+World world;
+
+typedef std::shared_ptr<Entity> entityPtr;
+
+void fillWorld()
+{
+	world.create("David");
+	world.create("Fabbe");
+	world.create("Alex");
+}
+
+void modifyWorld()
+{
+	entityPtr david = world.getEntity("David");
+	david->setID("Modified David");
+	david->addComponent(component_types::RENDERABLE_COMPONENT);
+	  david->getComponent(component_types::RENDERABLE_COMPONENT)->getType() << "\n";
+
+	world.remove("Fabbe");
+}
+
 int main()
 {
-	World world;
-	world.create("Ass");
-	world.create("Flat");
-	world.create("Shake");
+	fillWorld();
+	modifyWorld();
 
-	auto entity = world.getEntity("Ass").lock();
-	entity->setID("yo");
+	/*
+	world.getEntity("Ass")->addComponent(component_type::RectangleComponent);
+
+	*/
 
 	return 0;
 }

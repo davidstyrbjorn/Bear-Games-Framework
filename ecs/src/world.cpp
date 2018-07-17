@@ -15,13 +15,23 @@ void bear::ecs::World::create(std::string a_ID)
 
 void bear::ecs::World::remove(std::string a_ID)
 {
+	std::shared_ptr<Entity> temp;
+
+	for (std::shared_ptr<ecs::Entity> entity : m_EntityList) {
+		if (entity->getID() == a_ID) {
+			temp = entity;
+		}
+	}
+
+	auto iter = std::find(m_EntityList.begin(), m_EntityList.end(), temp);
+	m_EntityList.erase(iter);
 }
 
 void bear::ecs::World::clear()
 {
 }
 
-std::weak_ptr<ecs::Entity> bear::ecs::World::getEntity(std::string a_ID)
+std::shared_ptr<ecs::Entity> bear::ecs::World::getEntity(std::string a_ID)
 {
 	for (std::shared_ptr<ecs::Entity> entity : m_EntityList) {
 		if (entity->getID() == a_ID) {
