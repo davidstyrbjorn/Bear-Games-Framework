@@ -1,6 +1,6 @@
 #pragma once
 
-#include"../include/ecs/rectangle_component.h"
+#include"../include/ecs/bear_components/rectangle_component.h"
 
 bear::ecs::RectangleComponent::RectangleComponent(core::Color a_Color)
 {

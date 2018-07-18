@@ -41,7 +41,7 @@ namespace bear { namespace ecs {
 		}
 
 		/*
-		Used for fetching components from the main component list
+		* Used for fetching components from the main component list
 		*/
 		template<typename _T>
 		_T* getComponent(component_types a_Type)
@@ -49,20 +49,26 @@ namespace bear { namespace ecs {
 			if (a_Type == component_types::TRANSFORM_COMPONENT) {
 				return static_cast<_T*>(m_ComponentList[component_types::RENDERABLE_COMPONENT].m_Component);
 			}
-			if (a_Type == component_types::RENDERABLE_COMPONENT && m_ComponentList[component_types::RENDERABLE_COMPONENT] ) {
+			if (a_Type == component_types::RENDERABLE_COMPONENT && m_ComponentList[component_types::RENDERABLE_COMPONENT].m_IsPossesed ) {
 				return static_cast<_T*>(m_ComponentList[component_types::RENDERABLE_COMPONENT].m_Component);
 			}
 
 			return nullptr;
 		}
+		/*
+		* Used for fetching components from the dynamic component list
+		*/
 		template<typename _T>
 		_T* getComponent()
 		{
 			static std::string typeName = typeid(_T).name();
 			if (m_DynamicComponentList.find(typeName) != m_DynamicComponentList.end()) {
-				return static_cast<_T>(m_DynamicComponentList.at(typeName));
+				return static_cast<_T*>(m_DynamicComponentList.at(typeName));
 			}
 		}
+		/*
+		* Used for getting the transform component
+		*/
 		inline TransformComponent* transform();
 
 		std::string getID();

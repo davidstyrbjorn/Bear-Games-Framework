@@ -1,15 +1,25 @@
 #include"include\ecs\entity.h"
 #include"include\ecs\world.h"
-#include"include\ecs\rectangle_component.h"
+#include"include\ecs\bear_components\rectangle_component.h"
+#include"include\ecs\bear_components\transform_component.h"
 
 #include<Windows.h>
 
 using namespace bear::ecs;
 using namespace bear::core;
 
-World world;
+class MyComponent : public IComponent {
+public:
+	int x = 0;
 
-typedef std::shared_ptr<Entity> entityPtr;
+public:
+	void init() override { }
+	void update() override { }
+	void terminate() override { }
+	bool reset() override { return true; }
+};
+
+World world;
 
 void fillWorld()
 {
@@ -20,11 +30,14 @@ void fillWorld()
 
 void modifyWorld()
 {
-	entityPtr david = world.getEntity("David");
+	auto david = world.getEntity("David");
 	david->setID("Modified David");
 	david->addComponent(component_types::RENDERABLE_COMPONENT);
 	david->getComponent<RectangleComponent>(component_types::RENDERABLE_COMPONENT)->setColor(Color::Blue());
-	std::cout << david->getComponent<RectangleComponent>(component_types::RENDERABLE_COMPONENT)->getColor().r << std::endl;
+	//david->transform()->m_Position = Vector2f(10, 20);
+
+	david->addComponent<MyComponent>();
+	david->getComponent<MyComponent>()->x += 5;
 
 	world.remove("Fabbe");
 }
