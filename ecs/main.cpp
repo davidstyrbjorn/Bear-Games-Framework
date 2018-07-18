@@ -1,9 +1,11 @@
 #include"include\ecs\entity.h"
 #include"include\ecs\world.h"
+#include"include\ecs\rectangle_component.h"
 
 #include<Windows.h>
 
 using namespace bear::ecs;
+using namespace bear::core;
 
 World world;
 
@@ -21,7 +23,8 @@ void modifyWorld()
 	entityPtr david = world.getEntity("David");
 	david->setID("Modified David");
 	david->addComponent(component_types::RENDERABLE_COMPONENT);
-	  david->getComponent(component_types::RENDERABLE_COMPONENT)->getType() << "\n";
+	david->getComponent<RectangleComponent>(component_types::RENDERABLE_COMPONENT)->setColor(Color::Blue());
+	std::cout << david->getComponent<RectangleComponent>(component_types::RENDERABLE_COMPONENT)->getColor().r << std::endl;
 
 	world.remove("Fabbe");
 }
@@ -36,5 +39,6 @@ int main()
 
 	*/
 
+	system("pause>null");
 	return 0;
 }

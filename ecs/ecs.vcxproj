@@ -128,10 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\ecs\bear_components\transform_component.h" />
     <ClInclude Include="include\ecs\component.h" />
     <ClInclude Include="include\ecs\ecs.h" />
     <ClInclude Include="include\ecs\entity.h" />
-    <ClInclude Include="include\ecs\rectangle_component.h" />
+    <ClInclude Include="include\ecs\bear_components\rectangle_component.h" />
     <ClInclude Include="include\ecs\renderable_base.h" />
     <ClInclude Include="include\ecs\world.h" />
   </ItemGroup>
@@ -139,6 +140,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\rectangle_component.cpp" />
+    <ClCompile Include="src\transform_component.cpp" />
     <ClCompile Include="src\world.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

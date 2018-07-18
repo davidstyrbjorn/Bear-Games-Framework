@@ -1,8 +1,8 @@
 #pragma once
 
-#include"component.h"
+#include"../component.h"
 
-#include"renderable_base.h"
+#include"../renderable_base.h"
 
 namespace bear { namespace ecs { 
 
@@ -11,7 +11,7 @@ namespace bear { namespace ecs {
 		RectangleComponent(core::Color a_Color);
 
 		void init() override { }
-		component_types getType() override { return component_types::RENDERABLE_COMPONENT; }
+		int getType() override { return 10; }
 	};
 
 } } 

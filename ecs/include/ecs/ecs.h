@@ -2,10 +2,11 @@
 
 namespace bear { namespace ecs { 
 
-#define COMPONENT_COUNT 1
+#define COMPONENT_COUNT 2
 
 enum component_types {
-	RENDERABLE_COMPONENT = 0,
+	TRANSFORM_COMPONENT = 0,
+	RENDERABLE_COMPONENT = 1
 };
 
 } } 
