@@ -3,12 +3,8 @@
 #define GLEW_STATIC
 #include"GL\glew.h"
 
-bool bear::graphics::Graphics::s_DirtyRender = false;
-
-bool bear::graphics::Graphics::init(bool a_V)
+bool bear::graphics::Graphics::init()
 {
-	bear::graphics::Graphics::s_DirtyRender = a_V;
-
 	glewExperimental = true;
 	GLenum result = glewInit();
 

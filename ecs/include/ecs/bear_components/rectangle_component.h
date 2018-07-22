@@ -2,16 +2,16 @@
 
 #include"../component.h"
 
-#include"../renderable_base.h"
+#include<core\color.h>
 
 namespace bear { namespace ecs { 
 
-	class RectangleComponent : public RenderableBase, public Component {
+	class RectangleComponent : public Component {
 	public:
-		RectangleComponent(core::Color a_Color);
+		RectangleComponent();
 
 		void init() override { }
-		int getType() override { return 10; }
+		int getType() override { return component_types::RECTANGLE_COMPONENT; }
 	};
 
 } } 

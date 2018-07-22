@@ -12,6 +12,11 @@ bear::graphics::Shader::Shader()
 
 }
 
+bear::graphics::Shader::~Shader()
+{
+	glDeleteProgram(m_Program);
+}
+
 void bear::graphics::Shader::compile(std::string a_VertexPath, std::string a_FragmentPath)
 {
 	// Get shader sources

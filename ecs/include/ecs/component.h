@@ -12,7 +12,6 @@ namespace bear { namespace ecs {
 		virtual void init() = 0;
 		virtual void update() = 0;
 		virtual void terminate() = 0;
-		virtual bool reset() = 0;
 	};
 
 	class Component : public IComponent {
@@ -20,8 +19,8 @@ namespace bear { namespace ecs {
 		virtual void init() override { }
 		virtual void update() override { }
 		virtual void terminate() override { }
-		virtual bool reset() override { return false; }
 		
+		virtual bool reset() { return false; }
 		virtual int getType() { return -1; }
 	};
 

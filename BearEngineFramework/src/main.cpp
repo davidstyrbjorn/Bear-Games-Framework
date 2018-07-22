@@ -1,6 +1,5 @@
 #include<iostream>
 
-#define BEAR_DIRTY_RENDER
 #include<graphics\graphics.h>
 
 #define BEAR_SFML_WINDOW
@@ -24,9 +23,7 @@ private:
 };
 
 graphics::Shader shader;
-graphics::Shader shader2;
 
-// BRB
 int main()
 {
 	void (Foo::*funcPtr)(int, int) = &Foo::bar;
@@ -38,22 +35,15 @@ int main()
 	// SFML
 	bear::window::SFML_Window window(860, 720, "SFML Window");
 	
-	if (!graphics::Graphics::init(true)) {
+	if (!graphics::Graphics::init()) {
 		printf("False returned from Graphics::init()\n");
 	}
 
-	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag.txt");
+	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt");
 	shader.enable();
-	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 860, 720, 0, -1, 1));
-	shader.setUniformInteger("textureSampler", 0);
+	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 860, 720, 0, -1, 1));	
 
-	shader2.compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt");
-	shader2.enable();
-	shader2.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 860, 720, 0, -1, 1));
-	
-	graphics::Renderable rect(graphics::renderable_type::Sprite, core::Vector2f(0, 0), "D:\\temp\\jesus2.jpg");
-	graphics::Renderable rect2(graphics::renderable_type::Sprite, core::Vector2f(100, 100), "D:\\temp\\sample.jpg");
-	graphics::Renderable rect3(graphics::renderable_type::Triangle, core::Vector2f(400, 500), core::Vector2f(240, 180), core::Color::Green());
+	graphics::Shape shape = graphics::Shape::CreateTriangle(core::Vector2f(0, 0), core::Vector2f(100, 100), core::Color::Red());
 
 	while (window.isOpen()) 
 	{
@@ -70,10 +60,7 @@ int main()
 		}
 	
 		shader.enable();
-		rect.draw(shader);
-		rect2.draw(shader);
-		shader2.enable();
-		rect3.draw(shader2);
+		shape.draw(shader);
 	
 		window.display();
 	}

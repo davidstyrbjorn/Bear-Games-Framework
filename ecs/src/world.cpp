@@ -8,6 +8,13 @@ bear::ecs::World::World()
 {
 }
 
+void bear::ecs::World::update()
+{
+	for (std::shared_ptr<ecs::Entity> entity : m_EntityList) {
+		entity->update();
+	}
+}
+
 void bear::ecs::World::create(std::string a_ID)
 {
 	m_EntityList.push_back(std::make_shared<ecs::Entity>(a_ID));

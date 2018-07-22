@@ -22,6 +22,7 @@ namespace bear { namespace graphics {
 
 	public:
 		Shader();
+		~Shader();
 
 		void compile(std::string a_VertexPath, std::string a_FragmentPath);
 		void enable();

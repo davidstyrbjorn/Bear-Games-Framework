@@ -3,6 +3,8 @@
 #include<string>
 #include<array>
 #include<map>
+#include<deque>
+#include<memory>
 
 #include"ecs.h"
 #include"component.h"
@@ -11,16 +13,11 @@ namespace bear { namespace ecs {
 
 	class TransformComponent;
 
-	struct entity_component_slot {
-		Component *m_Component;
-		bool m_IsPossesed;
-	};
-
 	class Entity {
 	private:
 		std::string m_ID;
-		std::array<entity_component_slot, COMPONENT_COUNT> m_ComponentList;
-		std::map<std::string, IComponent*> m_DynamicComponentList;
+		std::array<Component*, COMPONENT_COUNT> m_ComponentList;
+		std::deque<component_types> m_ComponentsToRemove;
 
 	public:
 		Entity(std::string a_ID);
@@ -28,48 +25,33 @@ namespace bear { namespace ecs {
 		
 		void update();
 
-		/*
-		1. Adds component of a_Type to the entity if it already exists return false else return true
-		2. Adds user-created component to the entity
-		*/
-		bool addComponent(component_types a_Type);
-		template<typename _T>
-		void addComponent()
-		{
-			std::string typeName = typeid(_T).name();
-			m_DynamicComponentList.insert(std::pair<std::string, IComponent*>(typeName, new _T));
-		}
+		/////////////////////////////
+		//  Bear Component
+		//    Methods
+		/////////////////////////////
 
-		/*
-		* Used for fetching components from the main component list
-		*/
+		// Adds component of a_Type to m_ComponentList
+		bool addComponent(component_types a_Type);
+
+		// Get component from m_ComponentList
+		// use component_types::RENDERABLE_COMPONENT to get renderable component NOT component_types::RECTANGLE/TRIANGLE_SPRITE_COMPONENT
 		template<typename _T>
 		_T* getComponent(component_types a_Type)
 		{
-			if (a_Type == component_types::TRANSFORM_COMPONENT) {
-				return static_cast<_T*>(m_ComponentList[component_types::RENDERABLE_COMPONENT].m_Component);
-			}
-			if (a_Type == component_types::RENDERABLE_COMPONENT && m_ComponentList[component_types::RENDERABLE_COMPONENT].m_IsPossesed ) {
-				return static_cast<_T*>(m_ComponentList[component_types::RENDERABLE_COMPONENT].m_Component);
-			}
+			return static_cast<_T*>(m_ComponentList[a_Type]);
+		}
 
-			return nullptr;
-		}
-		/*
-		* Used for fetching components from the dynamic component list
-		*/
-		template<typename _T>
-		_T* getComponent()
-		{
-			static std::string typeName = typeid(_T).name();
-			if (m_DynamicComponentList.find(typeName) != m_DynamicComponentList.end()) {
-				return static_cast<_T*>(m_DynamicComponentList.at(typeName));
-			}
-		}
-		/*
-		* Used for getting the transform component
-		*/
-		inline TransformComponent* transform();
+		// Remove component 
+		// If you wish to remove renderable component please pass in component_types::RENDERABLE_COMPONENT
+		void removeComponent(component_types a_Type);
+
+		// Get the transform component m_ComponentList[component_types::TRANSFORM_COMPONENT]
+		bear::ecs::TransformComponent* transform();
+
+		/////////////////////////////
+		//  Dynamic Component
+		//      Methods
+		/////////////////////////////
 
 		std::string getID();
 		void setID(std::string a_ID);

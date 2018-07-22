@@ -25,6 +25,11 @@ namespace bear { namespace ecs {
 		World();
 
 		/*
+		* Calls update on all entities living in the world
+		*/
+		void update();
+
+		/*
 		* Adds entity into world
 		*/
 		void create(std::string a_ID);
