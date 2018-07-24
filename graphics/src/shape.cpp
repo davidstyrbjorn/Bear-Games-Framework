@@ -1,14 +1,24 @@
 #include"../include/graphics/shape.h"
 
 #include"../include/graphics/graphics.h"
+
 #include<core\matrix4x4.h>
 #include<vector>
 
 #define GLEW_STATIC
-#include<GL\glew.h>
+#include"GL\glew.h"
+
+bear::graphics::Shape::Shape(renderable_type a_T, core::Vector2f a_P, core::Vector2f a_S, core::Color a_C, std::string a_IP) : Renderable(a_T)
+{
+	m_Transform.m_Position = a_P;
+	m_Transform.m_Size = a_S;
+	m_Color = a_C;
+	setupBuffers(a_IP);
+}
 
 bear::graphics::Shape::Shape(renderable_type a_Type) : Renderable(a_Type)
 {
+
 }
 
 bear::graphics::Shape::~Shape()
@@ -21,36 +31,23 @@ bear::graphics::Shape::~Shape()
 
 bear::graphics::Shape bear::graphics::Shape::CreateTriangle(core::Vector2f a_Position, core::Vector2f a_Size, core::Color a_Color)
 {
-	Shape shape(renderable_type::Triangle);
-	shape.m_Position = a_Position;
-	shape.m_Size = a_Size;
-	shape.m_Color = a_Color;
-	shape.setupBuffers("");
-	return shape;
+	return Shape(renderable_type::Triangle, a_Position, a_Size, a_Color, "");
 }
 
 bear::graphics::Shape bear::graphics::Shape::CreateRectangle(core::Vector2f a_Position, core::Vector2f a_Size, core::Color a_Color)
 {
-	Shape shape(renderable_type::Rectangle);
-	shape.m_Position = a_Position;
-	shape.m_Size = a_Size;
-	shape.m_Color = a_Color;
-	shape.setupBuffers("");
-	return shape;
+	return Shape(renderable_type::Rectangle, a_Position, a_Size, a_Color, "");
 }
 
 bear::graphics::Shape bear::graphics::Shape::CreateSprite(core::Vector2f a_Position, std::string a_ImagePath)
 {
-	Shape shape(renderable_type::Sprite);
-	shape.m_Position = a_Position;
-	shape.setupBuffers(a_ImagePath);
-	return shape;
+	return Shape(renderable_type::Sprite, a_Position, core::Vector2f(0,0), core::Color::White(), a_ImagePath);
 }
 
 void bear::graphics::Shape::draw(Shader & a_Shader)
 {
 	// Do OpenGL stuff
-	a_Shader.setUniformMatrix4x4("model_matrix", core::Matrix4x4::Translation(core::Vector3f(m_Position.x, m_Position.y, 0)));
+	a_Shader.setUniformMatrix4x4("model_matrix", core::Matrix4x4::Translation(core::Vector3f(m_Transform.m_Position.x, m_Transform.m_Position.y, 0)));
 
 	glBindVertexArray(m_VAO);
 	// Triangle
@@ -81,8 +78,8 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 	5. Unbind and be done
 	*/
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Data
 	std::vector<Vertex> vertexData;
@@ -90,17 +87,17 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 	if (m_Type == graphics::renderable_type::Triangle) {
 		// VBO data 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(m_Transform.m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2 };
 	}
 	else if (m_Type == graphics::renderable_type::Rectangle) {
 		// VBO data 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(m_Size.x, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(m_Transform.m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(m_Transform.m_Size.x, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2, 2, 3, 0 };
 	}
@@ -111,12 +108,12 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 		// VBO data 
 
 		Image image(a_ImagePath);
-		m_Size = core::Vector2f((int)(image.m_ImageSize.x), (int)(image.m_ImageSize.y));
+		m_Transform.m_Size = core::Vector2f((int)(image.m_ImageSize.x), (int)(image.m_ImageSize.y));
 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(0.0f, m_Size.y), m_Color, core::Vector2f(0.0f, 1.0f) });
-		vertexData.push_back({ core::Vector2f(m_Size), m_Color, core::Vector2f(1.0f, 1.0f) });
-		vertexData.push_back({ core::Vector2f(m_Size.x, 0.0f), m_Color, core::Vector2f(1.0f, 0.0f) });
+		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 1.0f) });
+		vertexData.push_back({ core::Vector2f(m_Transform.m_Size), m_Color, core::Vector2f(1.0f, 1.0f) });
+		vertexData.push_back({ core::Vector2f(m_Transform.m_Size.x, 0.0f), m_Color, core::Vector2f(1.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2, 2, 3, 0 };
 		// TBO Creation

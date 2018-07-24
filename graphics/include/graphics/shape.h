@@ -20,6 +20,9 @@ namespace bear { namespace graphics {
 		void setupBuffers(std::string a_ImagePath);
 
 	private:
+		Shape(renderable_type a_T, core::Vector2f a_P, core::Vector2f a_S, core::Color a_C, std::string a_IP);
+
+	private:
 		unsigned int m_VAO;
 		unsigned int m_VBO;
 		unsigned int m_IBO;

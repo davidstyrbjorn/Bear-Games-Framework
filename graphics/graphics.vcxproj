@@ -133,6 +133,7 @@
     <ClInclude Include="include\graphics\renderable.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\shape.h" />
+    <ClInclude Include="include\graphics\transform.h" />
     <ClInclude Include="include\graphics\types.h" />
     <ClInclude Include="include\graphics\vertex.h" />
   </ItemGroup>

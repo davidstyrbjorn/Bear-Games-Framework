@@ -21,10 +21,15 @@ namespace bear { namespace graphics {
 		const char* m_FragmentSource;
 
 	public:
+		static Shader DefaultUnlitShader;
+		static Shader DefaultTexturedShader;
+
+	public:
 		Shader();
+		Shader(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource);
 		~Shader();
 
-		void compile(std::string a_VertexPath, std::string a_FragmentPath);
+		void compile(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource);
 		void enable();
 		void disable();
 		const bool isActive() const;

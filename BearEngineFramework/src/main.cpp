@@ -38,12 +38,16 @@ int main()
 	if (!graphics::Graphics::init()) {
 		printf("False returned from Graphics::init()\n");
 	}
-
-	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt");
+	
+	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt", false);
 	shader.enable();
 	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 860, 720, 0, -1, 1));	
 
-	graphics::Shape shape = graphics::Shape::CreateTriangle(core::Vector2f(0, 0), core::Vector2f(100, 100), core::Color::Red());
+	graphics::Shader::DefaultUnlitShader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 860, 720, 0, -1, 1));
+	graphics::Shader::DefaultUnlitShader.enable();
+
+	graphics::Shape shape2 = graphics::Shape::CreateTriangle(core::Vector2f(25, 100), core::Vector2f(60, 75), core::Color::Blue());
+	graphics::Shape shape = graphics::Shape::CreateRectangle(core::Vector2f(300, 300), core::Vector2f(100, 100), core::Color::Green());
 
 	while (window.isOpen()) 
 	{
@@ -59,45 +63,52 @@ int main()
 			}
 		}
 	
-		shader.enable();
-		shape.draw(shader);
-	
+		//shader.enable();
+		graphics::Shader::DefaultUnlitShader.enable();
+		shape.draw(graphics::Shader::DefaultUnlitShader);
+		shape2.draw(graphics::Shader::DefaultUnlitShader);
+
 		window.display();
 	}
 
-	//bear::window::GLFW_Window::init();
-	//bear::window::GLFW_Window myWindow(720, 540, "Fuck");
-	//
-	//if (!graphics::Graphics::init(true)) {
-	//	printf("False returned from Graphics::init()\n");
-	//}
-	//
-	//shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag.txt");
-	//shader.enable();
-	//shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 540, 0, -1, 1));
-	//shader.setUniformInteger("textureSampler", 0);
-	//
-	//graphics::Renderable rect(graphics::renderable_type::Sprite, core::Vector2f(100, 100), "D:\\temp\\cat.png");
-	//
-	//while (myWindow.isOpen()) {
-	//	myWindow.clear(core::Color::Black());
-	//
-	//	for (bear::Event _event : myWindow.getRegisteredEvents()) {
-	//		if (_event.type == bear::EventType::WindowReiszed)
-	//		{
-	//			std::cout << _event.size << std::endl;
-	//			//shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, _event.size.x, _event.size.y, 0, -1, 1));
-	//		}
-	//	}
-	//	
-	//	rect.draw(shader);
-	//
-	//	myWindow.display();
-	//}
-	//
-	//bear::window::GLFW_Window::exit();
-	//
-	//graphics::Graphics::exit();
+	/*
+	bear::window::GLFW_Window myWindow(720, 540, "Fuck");
+	
+	if (!graphics::Graphics::init()) {
+		printf("False returned from Graphics::init()\n");
+	}
+	
+	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\unlit_frag.txt");
+	shader.enable();
+	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 540, 0, -1, 1));
+
+	//graphics::Shape shape = graphics::Shape::CreateTriangle(core::Vector2f(0, 0), core::Vector2f(100, 100), core::Color::Red());
+	graphics::Shape shape(graphics::renderable_type::Triangle);
+	shape.setPosition(core::Vector2f(0, 0));
+	shape.setSize(core::Vector2f(100, 100));
+	shape.setColor(core::Color::Red());
+	shape.setupBuffers("");
+
+	while (myWindow.isOpen()) {
+		myWindow.clear();
+		
+		for (bear::Event _event : myWindow.getRegisteredEvents()) {
+			if (_event.type == bear::EventType::WindowReiszed)
+			{
+				std::cout << _event.size << std::endl;
+				//shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, _event.size.x, _event.size.y, 0, -1, 1));
+			}
+		}
+			
+		shader.enable();
+		shape.draw(shader);
+
+		myWindow.display();
+	}
+		
+	graphics::Graphics::exit();
+
+	*/
 
 	return 0;
 }

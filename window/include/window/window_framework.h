@@ -15,7 +15,7 @@ namespace bear { namespace window {
 
 	class WindowFramework {
 	public:
-		~WindowFramework() { }
+		virtual ~WindowFramework() { }
 
 		// Shared methods for every window framework implementation (BearWindow)
 		virtual bool isOpen() { return false; }
