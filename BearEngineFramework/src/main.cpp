@@ -37,14 +37,13 @@ int main()
 		printf("False returned from Graphics::init()\n");
 	}
 	
-	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag.txt", false);
+	shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt", false);
 	shader.enable();
 	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 540, 0, -1, 1));
 	shader.setUniformInteger("textureSampler", 0);
 
-	graphics::Shape rect = graphics::Shape::CreateSprite(core::Vector2f(10, 50), "D:\\temp\\cat.png");
-	graphics::Shape sprite = graphics::Shape::CreateSprite(core::Vector2f(400, 300), "D:\\temp\\sample.jpg");
-	graphics::Shape triangle = graphics::Shape::CreateTriangle(core::Vector2f(0, 0), core::Vector2f(100, 100), core::Color::Red());
+	graphics::Shape triangle = graphics::Shape::CreateTriangle(core::Vector2f(100, 100), core::Vector2f(100, 100), core::Color::Red());
+	graphics::Shape rectangle = graphics::Shape::CreateRectangle(core::Vector2f(250, 400), core::Vector2f(250, 60), core::Color::Blue());
 
 	//graphics::Shape shape = graphics::Shape(graphics::renderable_type::Sprite);
 
@@ -52,10 +51,18 @@ int main()
 	{
 		myWindow.clear(core::Color::Black());
 			
+		if (myWindow.isKeyDown(Key::D))
+			triangle.transform().move(core::Vector2f(2, 0));
+		if (myWindow.isKeyDown(Key::A))
+			triangle.transform().move(core::Vector2f(-2, 0));
+		if (myWindow.isKeyDown(Key::S))
+			triangle.transform().move(core::Vector2f(0, 2));
+		if (myWindow.isKeyDown(Key::W))
+			triangle.transform().move(core::Vector2f(0, -2));
+
 		shader.enable();
-		//rect.draw(shader);
-		//sprite.draw(shader);
 		triangle.draw(shader);
+		rectangle.draw(shader);
 
 		myWindow.display();
 	}

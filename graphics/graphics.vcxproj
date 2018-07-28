@@ -131,6 +131,7 @@
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\image.h" />
     <ClInclude Include="include\graphics\renderable.h" />
+    <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\shape.h" />
     <ClInclude Include="include\graphics\transform.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="include\graphics\vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\batch_renderer.cpp" />
     <ClCompile Include="src\graphics.cpp" />
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\renderable.cpp" />
