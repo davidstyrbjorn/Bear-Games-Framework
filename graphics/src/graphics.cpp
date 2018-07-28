@@ -3,6 +3,8 @@
 #define GLEW_STATIC
 #include"GL\glew.h"
 
+bear::graphics::Shader* bear::graphics::Graphics::defaultUnlitShader = new bear::graphics::Shader();
+
 bool bear::graphics::Graphics::init()
 {
 	glewExperimental = true;
@@ -14,9 +16,9 @@ bool bear::graphics::Graphics::init()
 		}
 		return false;
 	}
-	else {
-		return true;
-	}
+
+	//defaultUnlitShader->compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt", false);
+
 	return true;
 }
 

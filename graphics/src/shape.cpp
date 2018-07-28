@@ -78,8 +78,8 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 	5. Unbind and be done
 	*/
 
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Data
 	std::vector<Vertex> vertexData;
@@ -88,7 +88,7 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 		// VBO data 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(m_Transform.m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ m_Transform.m_Size, m_Color, core::Vector2f(0.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2 };
 	}
@@ -96,7 +96,7 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 		// VBO data 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 0.0f) });
-		vertexData.push_back({ core::Vector2f(m_Transform.m_Size), m_Color, core::Vector2f(0.0f, 0.0f) });
+		vertexData.push_back({ m_Transform.m_Size, m_Color, core::Vector2f(0.0f, 0.0f) });
 		vertexData.push_back({ core::Vector2f(m_Transform.m_Size.x, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2, 2, 3, 0 };
@@ -112,17 +112,18 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 1.0f) });
-		vertexData.push_back({ core::Vector2f(m_Transform.m_Size), m_Color, core::Vector2f(1.0f, 1.0f) });
+		vertexData.push_back({ m_Transform.m_Size, m_Color, core::Vector2f(1.0f, 1.0f) });
 		vertexData.push_back({ core::Vector2f(m_Transform.m_Size.x, 0.0f), m_Color, core::Vector2f(1.0f, 0.0f) });
 		// IBO data
 		indexData = { 0, 1, 2, 2, 3, 0 };
+
 		// TBO Creation
 		glActiveTexture(GL_TEXTURE0);
 
 		glGenTextures(1, &m_TBO);
 		glBindTexture(GL_TEXTURE_2D, m_TBO);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.m_ImageSize.x, image.m_ImageSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, image.m_ImageData);
+		glTexImage2D(GL_TEXTURE_2D, 0, image.m_Format, image.m_ImageSize.x, image.m_ImageSize.y, 0, image.m_Format, GL_UNSIGNED_BYTE, image.m_ImageData);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -130,14 +131,14 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	// VAO
+	glGenVertexArrays(1, &m_VAO);
+	glBindVertexArray(m_VAO);
+
 	// VBO
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), &vertexData[0], GL_STATIC_DRAW);
-
-	// VAO
-	glGenVertexArrays(1, &m_VAO);
-	glBindVertexArray(m_VAO);
 
 	// VertexAttribPointer with our m_VBO bound
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);

@@ -11,18 +11,9 @@
 
 using namespace bear::graphics;
 
-// Init the static default shaders
-Shader Shader::DefaultUnlitShader(default_vertex_shader, unlit_default_fragment_shader, true);
-Shader Shader::DefaultTexturedShader(default_vertex_shader, textured_default_fragment_shader, true);
-
 bear::graphics::Shader::Shader()
 {
 
-}
-
-bear::graphics::Shader::Shader(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource)
-{
-	this->compile(a_VertexPath, a_FragmentPath, a_IsSource);
 }
 
 bear::graphics::Shader::~Shader()
@@ -30,19 +21,13 @@ bear::graphics::Shader::~Shader()
 	glDeleteProgram(m_Program);
 }
 
-void bear::graphics::Shader::compile(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource = false)
+void bear::graphics::Shader::compile(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource)
 {
 	// Get shader sources
-	if (a_IsSource) {
-		m_VertexSource = a_VertexPath.c_str();
-		m_FragmentSource = a_FragmentPath.c_str();
-	}
-	else {
-		std::string _vertexSource = core::get_file_content(a_VertexPath);
-		std::string _fragmentSource = core::get_file_content(a_FragmentPath);
-		m_VertexSource = _vertexSource.c_str();
-		m_FragmentSource = _fragmentSource.c_str();
-	}
+	std::string _vertexSource = core::get_file_content(a_VertexPath);
+	std::string _fragmentSource = core::get_file_content(a_FragmentPath);
+	m_VertexSource = _vertexSource.c_str();
+	m_FragmentSource = _fragmentSource.c_str();
 
 	/* Vertex */
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);

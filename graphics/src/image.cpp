@@ -19,7 +19,7 @@ bear::graphics::Image::Image(std::string a_ImagePath)
 	}
 
 	const char* x = a_ImagePath.c_str();
-	m_ImageData = stbi_load(x, &m_ImageSize.x, &m_ImageSize.y, nullptr, stbiFormat);
+	m_ImageData = stbi_load(x, &m_ImageSize.x, &m_ImageSize.y, nullptr, 0);
 }
 
 bear::graphics::Image::~Image()

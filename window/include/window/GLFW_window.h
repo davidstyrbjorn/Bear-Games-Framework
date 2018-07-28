@@ -11,10 +11,10 @@ namespace bear { namespace window {
 
 	/* Type: GLFW Window */
 	/* GLFW Implementation */
-	class GLFW_Window : public WindowFramework {
+	class Window : public WindowFramework {
 	public:
-		GLFW_Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption = "GLFW Window");
-		~GLFW_Window();
+		Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption = "GLFW Window");
+		~Window();
 
 		bool isOpen() override;
 		void close() override;
