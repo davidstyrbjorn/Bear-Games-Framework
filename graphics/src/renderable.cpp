@@ -14,3 +14,8 @@ bear::graphics::Transform & bear::graphics::Renderable::transform()
 {
 	return m_Transform;
 }
+
+const bear::graphics::renderable_type bear::graphics::Renderable::getType()
+{
+	return m_Type;
+}

@@ -7,7 +7,7 @@ namespace bear { namespace core {
 		float r, g, b, a;
 
 		Color() : r(0), g(0), b(0), a(1.0f) { }
-		Color(float a_r, float a_g, float a_b) : r(a_r), g(a_g), b(a_b), a(1.0f) { }
+		Color(float a_r, float a_g, float a_b, float a_a = 1.0f) : r(a_r), g(a_g), b(a_b), a(a_a) { }
 
 		static Color Black() { return Color(0, 0, 0); }
 		static Color White() { return Color(1, 1, 1); }

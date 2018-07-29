@@ -2,6 +2,7 @@
 
 #include<deque>
 #include"../vertex.h"
+#include"../types.h"
 
 namespace bear { namespace graphics {
 
@@ -28,31 +29,35 @@ namespace bear { namespace graphics {
 	struct texuted_buffers 
 	{
 		int VAO, VBO, TBO;
-		std::deque<Renderable&> m_TextureBatch;
+		//std::deque<Renderable&> m_TextureBatch;
 	};
 
 	class BatchRenderer {
 	private:
-		Shader *m_UnlitShader, *m_TextureShader;
+		Shader *m_UnlitShader;
 		unlit_buffers _unlit_buffers;
+
+		Shader *m_TextureShader;
 		texuted_buffers _textured_buffers;
+
+		unsigned int m_UnlitVertCount = 0;
 		
 	public:
 		BatchRenderer();
 		~BatchRenderer();
 	
 		/*
-		call init or the renderer won't work
+		* call init or the renderer won't work
 		*/
 		void init(unsigned int a_Width, unsigned int a_Height);
 
 		/*
-		Render routines, use submit between begin&flush
-		begin prepares the renderer for new data through submit
-		flush renders the submitted data
+		* Render routines, use submit between begin&flush
+		* begin prepares the renderer for new data through submit
+		* flush renders the submitted data
 		*/
 		void begin();
-		void submit(const Renderable& a_Renderable);
+		void submit(Renderable& a_Renderable);
 		void flush();
 
 		/*
@@ -62,8 +67,8 @@ namespace bear { namespace graphics {
 		Shader& getTextureShader();
 
 	private:
-		void submit_unlit(const Renderable& a_UnlitRenderable);
-		void submit_texture(const Renderable& a_TexturedRenderable);
+		void submit_unlit(Renderable& a_UnlitRenderable);
+		void submit_texture(Renderable& a_TexturedRenderable);
 	};
 
 } }

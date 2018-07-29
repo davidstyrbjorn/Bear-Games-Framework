@@ -16,6 +16,7 @@ namespace bear { namespace graphics {
 
 	public:
 		/* Constructor(s) */
+		Renderable() : m_Type(renderable_type::Triangle) { }
 		Renderable(renderable_type a_T) : m_Type(a_T) { }
 
 		/* Destructor */
@@ -25,6 +26,7 @@ namespace bear { namespace graphics {
 		void setColor(core::Color &a_C);
 		const core::Color getColor();
 		Transform& transform();
+		const renderable_type getType();
 	};
 
 }} 
