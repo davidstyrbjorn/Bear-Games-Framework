@@ -23,13 +23,18 @@ private:
 	int x = 0;
 };
 
-void shitInTriangles(graphics::Renderable _list[])
+void shitInShapes(graphics::Renderable _list[])
 {
-	for (int i = 0; i < 60; i++) {
+	for (int i = 0; i < 60; i++)
+	{
+		int n = rand() % 100;
+		graphics::renderable_type t = n < 50 ? graphics::renderable_type::Rectangle : graphics::renderable_type::Triangle;
+		_list[i].setType(t);
+
 		int x = rand() % 720;
 		int y = rand() % 540;
-		int w = rand() % 100;
-		int h = rand() % 100;
+		int w = (rand() % 100) + 25;
+		int h = (rand() % 100) + 25;
 
 		float r = rand() % 255;
 		float g = rand() % 255;
@@ -72,38 +77,55 @@ int main()
 	renderer.init(720, 540);
 
 	graphics::Renderable x(graphics::renderable_type::Rectangle);
+	x.transform().m_Position = core::Vector2f(100, 100);
 	x.transform().m_Size = core::Vector2f(150, 50);
-	x.setColor(core::Color(0.2, 0.6, 0.1));
+	x.setColor(core::Color::Blue());
 
-	graphics::Renderable x(graphics::renderable_type::Rectangle);
-	x.transform().m_Size = core::Vector2f(150, 50);
-	x.setColor(core::Color(0.2, 0.6, 0.1));
+	graphics::Renderable y(graphics::renderable_type::Rectangle);
+	y.transform().m_Size = core::Vector2f(75, 125);
+	y.setColor(core::Color::Red());
+
+	graphics::Renderable z(graphics::renderable_type::Triangle);
+	z.transform().m_Size = core::Vector2f(120, 100);
+	z.transform().m_Position = core::Vector2f(500, 400);
+	z.setColor(core::Color::Green());
+
+	graphics::Renderable w(graphics::renderable_type::Triangle);
+	w.transform().m_Position = core::Vector2f(650, 300);
+	w.transform().m_Size = core::Vector2f(60, 150);
+	w.setColor(core::Color::Red());
+
+	graphics::Renderable sprite("D:\\temp\\cat.png");
+	sprite.transform().m_Position = core::Vector2f(100, 100);
 
 	graphics::Renderable list[60];
-	shitInTriangles(list);
+	shitInShapes(list);
 
 	while (myWindow.isOpen()) 
 	{
-		myWindow.clear(core::Color::Black());
-		//if (myWindow.isKeyDown(Key::D))
-		//	triangle.transform().move(core::Vector2f(2, 0));
-		//if (myWindow.isKeyDown(Key::A))
-		//	triangle.transform().move(core::Vector2f(-2, 0));
-		//if (myWindow.isKeyDown(Key::S))
-		//	triangle.transform().move(core::Vector2f(0, 2));
-		//if (myWindow.isKeyDown(Key::W))
-		//	triangle.transform().move(core::Vector2f(0, -2));
-		//
+		myWindow.clear(core::Color(0.1f,0.1f,0.1f));
+		if (myWindow.isKeyDown(Key::D))
+			x.transform().move(core::Vector2f(2, 0));
+		if (myWindow.isKeyDown(Key::A))
+			x.transform().move(core::Vector2f(-2, 0));
+		if (myWindow.isKeyDown(Key::S))
+			x.transform().move(core::Vector2f(0, 2));
+		if (myWindow.isKeyDown(Key::W))
+			x.transform().move(core::Vector2f(0, -2));
+		
 		//shader.enable();
 		//triangle.draw(shader);
 		//rectangle.draw(shader);
 				
 		renderer.begin();
 
-		//for (int i = 0; i < 60; i++) {
-		//	renderer.submit(list[i]);
-		//}
-		renderer.submit(x);
+		for (int i = 0; i < 60; i++) {
+			renderer.submit(list[i]);
+		}
+		//renderer.submit(x);
+		//renderer.submit(y);
+		//renderer.submit(z);
+		//renderer.submit(w);
 
 		renderer.flush();
 

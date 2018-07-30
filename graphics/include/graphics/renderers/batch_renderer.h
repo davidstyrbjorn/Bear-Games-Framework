@@ -28,8 +28,8 @@ namespace bear { namespace graphics {
 
 	struct texuted_buffers 
 	{
-		int VAO, VBO, TBO;
-		//std::deque<Renderable&> m_TextureBatch;
+		unsigned int VAO, VBO, TBO, IBO;
+		std::deque<Renderable*> m_TextureBatch;
 	};
 
 	class BatchRenderer {
