@@ -28,7 +28,7 @@ namespace bear { namespace graphics {
 
 	struct texuted_buffers 
 	{
-		unsigned int VAO, VBO, TBO, IBO;
+		unsigned int VAO, VBO, IBO;
 		std::deque<Renderable*> m_TextureBatch;
 	};
 

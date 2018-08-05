@@ -3,6 +3,7 @@
 #include"../include/graphics/graphics.h"
 
 #include<core\matrix4x4.h>
+#include<core\color.h>
 #include<core\file_utility.h>
 #include<iostream>
 
@@ -74,6 +75,11 @@ void bear::graphics::Shader::disable()
 const bool bear::graphics::Shader::isActive() const
 {
 	return m_IsActive;
+}
+
+void bear::graphics::Shader::setUniformColor3f(const char * a_UniformName, core::Color & a_Color)
+{
+	glUniform3f(getUniformLocation(a_UniformName), a_Color.r, a_Color.g, a_Color.b);
 }
 
 void bear::graphics::Shader::setUniformMatrix4x4(const char * a_UniformName, core::Matrix4x4 & a_Matrix)

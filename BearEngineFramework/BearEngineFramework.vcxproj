@@ -85,8 +85,8 @@
       <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\window\include;D:\C++\BearEngineFramework\core\include;D:\C++\BearEngineFramework\graphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;window.lib;graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\window\builds\debug\;D:\C++\BearEngineFramework\graphics\builds\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;window.lib;graphics.lib;core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\window\builds\debug\;D:\C++\BearEngineFramework\graphics\builds\debug;D:\C++\BearEngineFramework\core\builds\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

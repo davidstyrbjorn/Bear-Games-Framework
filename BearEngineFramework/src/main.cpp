@@ -7,6 +7,7 @@
 
 #include<core\matrix4x4.h>
 #include<core\file_utility.h>
+#include<core\clock.h>
 
 #include<time.h>
 #include<functional>
@@ -57,7 +58,7 @@ int main()
 	(obj->*funcPtr)(100, 110);
 	(obj->*funcPtr)(200, 125);
 	
-	bear::window::Window myWindow(720, 540, "Fuck");
+	bear::window::Window myWindow(720, 540, "THIS IS A WINDOW");
 	
 	if (!graphics::Graphics::init()) {
 		printf("False returned from Graphics::init()\n");
@@ -96,13 +97,25 @@ int main()
 	w.setColor(core::Color::Red());
 
 	graphics::Renderable sprite("D:\\temp\\cat.png");
-	sprite.transform().m_Position = core::Vector2f(100, 100);
+
+	graphics::Renderable sprite2("D:\\temp\\sample.jpg");
+	sprite2.transform().m_Position = core::Vector2f(400, 300);
 
 	graphics::Renderable list[60];
 	shitInShapes(list);
 
+	core::Clock c;
+	c.start();
+	unsigned int fps = 0;
+
 	while (myWindow.isOpen()) 
 	{
+		if (c.getTicks() >= 1000) {
+			std::cout << fps << "\n";
+			c.reset();
+			fps = 0;
+		}
+
 		myWindow.clear(core::Color(0.1f,0.1f,0.1f));
 		if (myWindow.isKeyDown(Key::D))
 			x.transform().move(core::Vector2f(2, 0));
@@ -122,14 +135,19 @@ int main()
 		for (int i = 0; i < 60; i++) {
 			renderer.submit(list[i]);
 		}
-		//renderer.submit(x);
-		//renderer.submit(y);
-		//renderer.submit(z);
-		//renderer.submit(w);
+		renderer.submit(x);
+		renderer.submit(y);
+		renderer.submit(z);
+		renderer.submit(w);
+
+		renderer.submit(sprite);
+		renderer.submit(sprite2);
 
 		renderer.flush();
 
 		myWindow.display();
+
+		fps++;
 	}
 		
 	graphics::Graphics::exit();

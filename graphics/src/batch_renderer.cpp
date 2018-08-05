@@ -36,6 +36,7 @@ void bear::graphics::BatchRenderer::init(unsigned int a_Width, unsigned int a_He
 	m_TextureShader->compile("D:\\temp\\vert.txt", "D:\\temp\\frag_texture.txt", true);
 	m_TextureShader->enable();
 	m_TextureShader->setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, a_Width, a_Height, 0, -1, 1));
+	m_TextureShader->setUniformInteger("texture_sampler", 0);
 
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenVertexArrays(1, &_unlit_buffers.VAO);
@@ -53,15 +54,29 @@ void bear::graphics::BatchRenderer::init(unsigned int a_Width, unsigned int a_He
 	glEnableVertexAttribArray(2); // uv
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
 
+	// <===============================================	  ===================================================   ================================================>
+	// <===============================================	  ===================================================   ================================================>
+
 	glGenBuffers(1, &_textured_buffers.VBO);
+	glGenBuffers(1, &_textured_buffers.IBO);
 	glGenVertexArrays(1, &_textured_buffers.VAO);
 
 	glBindVertexArray(_textured_buffers.VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, _textured_buffers.VBO);
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), nullptr, GL_STATIC_DRAW);
-
 	glEnableVertexAttribArray(0); // position
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+	glEnableVertexAttribArray(1); // color		
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)sizeof(core::Vector2f));
+	glEnableVertexAttribArray(2); // uv							   
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
+
+	glActiveTexture(GL_TEXTURE0);
+
+	unsigned int indicies[] = { 0, 1, 2, 0, 2, 3 };
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _textured_buffers.IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 }
@@ -98,18 +113,15 @@ void bear::graphics::BatchRenderer::flush()
 	while (!_textured_buffers.m_TextureBatch.empty()) 
 	{
 		graphics::Renderable* renderable = _textured_buffers.m_TextureBatch.back();
-		graphics::Image* image = renderable->getImage();
 		core::Vector2f pos = renderable->transform().m_Position;
 		core::Vector2f size = renderable->transform().m_Size;
 		core::Color col = renderable->getColor();
 
 		// Bind
-		glBindTexture(GL_TEXTURE_2D, _textured_buffers.TBO);
+		glBindTexture(GL_TEXTURE_2D, renderable->getTextureID());
 		glBindBuffer(GL_ARRAY_BUFFER, _textured_buffers.VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _textured_buffers.IBO);
 
-		// Update texture data with provided image
-		glTexImage2D(_textured_buffers.TBO, 0, image->m_Format, image->m_ImageSize.x, image->m_ImageSize.y, 0, image->m_Format, GL_UNSIGNED_BYTE, image->m_ImageData);
 		// Update texture vertex buffer data with renderable data
 		Vertex vertData[] = {
 			{ pos, col, core::Vector2f(0, 0) },
@@ -120,7 +132,7 @@ void bear::graphics::BatchRenderer::flush()
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertData), vertData, GL_STATIC_DRAW);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
+																																						
 		_textured_buffers.m_TextureBatch.pop_back();
 	}
 

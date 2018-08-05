@@ -17,7 +17,9 @@ bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::s
 	glfwSetKeyCallback(m_Window, key_callback);
 	glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 	glfwSetWindowSizeCallback(m_Window, window_resize_callback);
-	
+
+	setVSync(false);
+
 	glfwSetWindowUserPointer(m_Window, this); 
 
 	glViewport(0, 0, a_Width, a_Height);
@@ -57,6 +59,18 @@ void bear::window::Window::display()
 void bear::window::Window::setFrameRateLimit(unsigned int a_Limit)
 {
 	printf("GLFW SET FRAME RATE NOT IMPLEMENTED");
+}
+
+void bear::window::Window::setVSync(bool a_Value)
+{
+	m_VSync = a_Value;
+	int x = a_Value == true ? 0 : -1;
+	glfwSwapInterval(a_Value);
+}
+
+bool bear::window::Window::getVSync()
+{
+	return m_VSync;
 }
 
 const std::deque<bear::Event>& bear::window::Window::getRegisteredEvents() const

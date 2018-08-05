@@ -22,6 +22,9 @@ namespace bear { namespace window {
 		void display() override;
 		void setFrameRateLimit(unsigned int a_Limit) override;
 
+		void setVSync(bool a_Value);
+		bool getVSync();
+
 		const std::deque<bear::Event>& getRegisteredEvents() const override;
 		const bool isKeyDown(int a_Key) override;
 		const bool isMouseDown(int a_Button) override;
@@ -37,6 +40,7 @@ namespace bear { namespace window {
 		unsigned int m_Width, m_Height;
 		std::deque<Event> m_Events;
 		core::Vector2d m_MousePosition;
+		bool m_VSync;
 	};
 
 } }

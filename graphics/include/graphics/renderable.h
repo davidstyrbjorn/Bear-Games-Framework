@@ -17,7 +17,7 @@ namespace bear { namespace graphics {
 		renderable_type m_Type;
 
 	private:
-		Image* m_Image;
+		unsigned int m_TBO = -1;
 
 	public:
 		/* Constructor(s) */
@@ -34,7 +34,10 @@ namespace bear { namespace graphics {
 		Transform& transform();
 		const renderable_type getType();
 		void setType(renderable_type a_Type);
-		Image* getImage();
+
+		int getTextureID();
+		void setTextureImage(const Image& a_Image);
+
 	};
 
 }} 

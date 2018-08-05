@@ -118,6 +118,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\core\clock.h" />
     <ClInclude Include="include\core\color.h" />
     <ClInclude Include="include\core\file_utility.h" />
     <ClInclude Include="include\core\matrix4x4.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="include\core\vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\clock.cpp" />
     <ClCompile Include="src\file_utility.cpp" />
     <ClCompile Include="src\matrix4x4.cpp" />
     <ClCompile Include="src\vector2.cpp" />
