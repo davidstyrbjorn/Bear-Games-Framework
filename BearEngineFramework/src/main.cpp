@@ -5,6 +5,8 @@
 
 #include<window/window.h>
 
+#include<sound\sound.h>
+
 #include<core\matrix4x4.h>
 #include<core\file_utility.h>
 #include<core\clock.h>
@@ -14,18 +16,9 @@
 
 using namespace bear;
 
-class Foo {
-public:
-	void bar(int a_Width, int a_Height) {
-		//std::cout << a_Width << ", " << a_Height << std::endl;
-	}
-
-private:
-	int x = 0;
-};
-
 void shitInShapes(graphics::Renderable _list[])
 {
+	srand(time(NULL));
 	for (int i = 0; i < 60; i++)
 	{
 		int n = rand() % 100;
@@ -52,27 +45,24 @@ graphics::Shader shader;
 
 int main()
 {
-	void (Foo::*funcPtr)(int, int) = &Foo::bar;
-	Foo *obj = nullptr;
-	(obj->*funcPtr)(100, 100);
-	(obj->*funcPtr)(100, 110);
-	(obj->*funcPtr)(200, 125);
-	
+	sound::SoundContext openal;
+	openal.init();
+
 	bear::window::Window myWindow(720, 540, "THIS IS A WINDOW");
 	
 	if (!graphics::Graphics::init()) {
 		printf("False returned from Graphics::init()\n");
 	}
 	
-	//shader.compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt", false);
-	//shader.enable();
-	//shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 540, 0, -1, 1));
-	//shader.setUniformInteger("textureSampler", 0);
-	//
-	//graphics::Shape triangle = graphics::Shape::CreateTriangle(core::Vector2f(100, 100), core::Vector2f(100, 100), core::Color::Red());
-	//graphics::Shape rectangle = graphics::Shape::CreateRectangle(core::Vector2f(250, 400), core::Vector2f(250, 60), core::Color::Blue());
+	shader.compile("D:\\temp\\text_vertex.txt", "D:\\temp\\text_fragment.txt", false);
+	shader.enable();
+	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 0, 540, -1, 1));
+	shader.setUniformInteger("texture", 0);
 
-	srand(time(NULL));
+	graphics::Font font("D:\\temp\\arial.ttf", 30);
+	graphics::TextLabel text("This is my finish accent", font, core::Vector2f(0,100), core::Color::Red());
+	graphics::TextLabel text2("Sample text", font, core::Vector2f(0, 0), core::Color::Blue());
+	graphics::TextLabel text3("Permanent vacation", font, core::Vector2f(100, 300), core::Color::Green());
 
 	graphics::BatchRenderer renderer;
 	renderer.init(720, 540);
@@ -108,6 +98,12 @@ int main()
 	c.start();
 	unsigned int fps = 0;
 
+	sound::SoundSource source("D:\\temp\\sound.wav");
+	source.play();
+
+	test sounding;
+	//sounding.play();
+
 	while (myWindow.isOpen()) 
 	{
 		if (c.getTicks() >= 1000) {
@@ -117,6 +113,7 @@ int main()
 		}
 
 		myWindow.clear(core::Color(0.1f,0.1f,0.1f));
+
 		if (myWindow.isKeyDown(Key::D))
 			x.transform().move(core::Vector2f(2, 0));
 		if (myWindow.isKeyDown(Key::A))
@@ -124,12 +121,13 @@ int main()
 		if (myWindow.isKeyDown(Key::S))
 			x.transform().move(core::Vector2f(0, 2));
 		if (myWindow.isKeyDown(Key::W))
-			x.transform().move(core::Vector2f(0, -2));
-		
-		//shader.enable();
-		//triangle.draw(shader);
-		//rectangle.draw(shader);
-				
+			x.transform().move(core::Vector2f(0, -2));			
+
+		for (Event event : myWindow.getRegisteredEvents()) {
+			if (event.type == EventType::KeyPressed)
+				source.play();
+		}
+
 		renderer.begin();
 
 		for (int i = 0; i < 60; i++) {
@@ -139,11 +137,14 @@ int main()
 		renderer.submit(y);
 		renderer.submit(z);
 		renderer.submit(w);
-
+		
 		renderer.submit(sprite);
 		renderer.submit(sprite2);
 
 		renderer.flush();
+		text.draw(shader);
+		text2.draw(shader);
+		text3.draw(shader);
 
 		myWindow.display();
 
@@ -151,6 +152,7 @@ int main()
 	}
 		
 	graphics::Graphics::exit();
+	openal.exit();
 
 	return 0;
 }

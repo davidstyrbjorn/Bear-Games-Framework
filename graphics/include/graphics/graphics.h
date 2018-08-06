@@ -8,6 +8,7 @@
 #include"renderable.h"
 #include"image.h"
 #include"shape.h"
+#include"text.h"
 
 namespace bear { namespace graphics {
 

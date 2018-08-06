@@ -14,6 +14,10 @@ bear::graphics::TextLabel::TextLabel(std::string a_Text, Font& a_Font, core::Vec
 
 	//const char* vertex = "#version 330 core \n layout(location = 0) in vec4 vertex; \n out vec2 TexCoords; \n uniform mat4 projection; \n void main() \n { \n gl_Position = projection * vec4(vertex.xy, 0, 1); \n TexCoords = vertex.zw; \n }";
 	//const char* fragment = "#version 330 core \n in vec2 TexCoords; \n uniform sampler2D texture; \n uniform vec3 textColor; \n out vec4 color; \n void main() \n { \n color = vec4(1,1,1,texture2D(texture, TexCoords).r) * vec4(textColor,1); \n }";
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// BUFFER SETUP
 	glGenVertexArrays(1, &m_Buffer.VAO);
 	glBindVertexArray(m_Buffer.VAO);

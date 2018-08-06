@@ -30,8 +30,8 @@ namespace bear { namespace graphics {
 			std::cout << "Could not load font at " << a_path << std::endl;
 
 			// The font path we got failed so use the default arial.ttf (! WINDOWS ONLY CODE @ !)
-			char *sysDrive = getenv("SystemDrive"); // C:, D:, E:, etc the drive letter of the system 
-			FT_New_Face(*m_Lib, (std::string(sysDrive) + "\\Windows\\Fonts\\arial.ttf").c_str(), 0, m_Face);
+			//char *sysDrive = getenv("SystemDrive"); // C:, D:, E:, etc the drive letter of the system 
+			//FT_New_Face(*m_Lib, (std::string(sysDrive) + "\\Windows\\Fonts\\arial.ttf").c_str(), 0, m_Face);
 		}
 
 		m_FontSize = a_size;
