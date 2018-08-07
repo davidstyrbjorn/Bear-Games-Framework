@@ -5,7 +5,6 @@
 #include<core\color.h>
 
 bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
-	: m_Width(a_Width), m_Height(a_Height)
 {
 	// Init GLFW API
 	glfwInit();
@@ -19,6 +18,7 @@ bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::s
 	glfwSetWindowSizeCallback(m_Window, window_resize_callback);
 
 	setVSync(false);
+	m_WindowSize = core::Vector2i(a_Width, a_Height);
 
 	glfwSetWindowUserPointer(m_Window, this); 
 
@@ -93,6 +93,11 @@ const bear::core::Vector2d bear::window::Window::getMousePosition()
 	return m_MousePosition;
 }
 
+const bear::core::Vector2i bear::window::Window::getWindowSize()
+{
+	return m_WindowSize;
+}
+
 void bear::window::Window::key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
 	// Take event and push back into event queue
@@ -128,6 +133,8 @@ void bear::window::Window::window_resize_callback(GLFWwindow * window, int width
 {
 	Window* temp = static_cast<Window*>(glfwGetWindowUserPointer(window));
 	glViewport(0, 0, width, height);
+
+	temp->m_WindowSize = core::Vector2i(width, height);
 
 	bear::Event event;
 	event.type = bear::EventType::WindowReiszed;

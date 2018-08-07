@@ -30,6 +30,8 @@ namespace bear { namespace window {
 		const bool isMouseDown(int a_Button) override;
 		const core::Vector2d getMousePosition() override;
 
+		const core::Vector2i getWindowSize();
+
 		/* GLFW callbacks */
 		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -37,7 +39,7 @@ namespace bear { namespace window {
 
 	private:
 		GLFWwindow *m_Window;
-		unsigned int m_Width, m_Height;
+		core::Vector2i m_WindowSize;
 		std::deque<Event> m_Events;
 		core::Vector2d m_MousePosition;
 		bool m_VSync;

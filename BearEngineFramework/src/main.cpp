@@ -50,7 +50,7 @@ int main()
 
 	bear::window::Window myWindow(720, 540, "THIS IS A WINDOW");
 	
-	if (!graphics::Graphics::init()) {
+	if (!graphics::Graphics::init(myWindow)) {
 		printf("False returned from Graphics::init()\n");
 	}
 	
@@ -66,6 +66,13 @@ int main()
 
 	graphics::BatchRenderer renderer;
 	renderer.init(720, 540);
+
+	//graphics::View view(720, 540); // This feels so redundant and hard to keep up
+
+	// IDEA:
+	// Inside the graphics module have a singleton class called ContextInformation/GraphicsInformation
+	// From the user side all we have to call is graphics::Graphics::init(myWindow);
+	// renderers etc can then use this myWindow to get useful information like cursor position and window size 
 
 	graphics::Renderable x(graphics::renderable_type::Rectangle);
 	x.transform().m_Position = core::Vector2f(100, 100);
@@ -98,11 +105,12 @@ int main()
 	c.start();
 	unsigned int fps = 0;
 
-	sound::SoundSource source("D:\\temp\\sound.wav");
-	source.play();
+	//sound::SoundSource source("D:\\temp\\sound.wav");
+	//source.play();
 
-	test sounding;
-	//sounding.play();
+	graphics::GraphicsInformation *gi = graphics::GraphicsInformation::instance();
+
+	sound::SoundSource sfx("D:\\temp\\sound.wav");
 
 	while (myWindow.isOpen()) 
 	{
@@ -120,13 +128,15 @@ int main()
 			x.transform().move(core::Vector2f(-2, 0));
 		if (myWindow.isKeyDown(Key::S))
 			x.transform().move(core::Vector2f(0, 2));
-		if (myWindow.isKeyDown(Key::W))
-			x.transform().move(core::Vector2f(0, -2));			
+		if (myWindow.isKeyDown(Key::W)) 
+			x.transform().move(core::Vector2f(0, -2));
 
 		for (Event event : myWindow.getRegisteredEvents()) {
 			if (event.type == EventType::KeyPressed)
-				source.play();
+				sfx.play_instantaneous();
 		}
+
+		std::cout << myWindow.getWindowSize() << std::endl;
 
 		renderer.begin();
 

@@ -50,6 +50,9 @@ namespace bear { namespace graphics {
 		// Change text label font pointer
 		void setFont(Font& a_Font);
 
+		// Change string literal
+		void setStringLiteral(const std::string& a_StringLiteral);
+
 	private:
 		std::string m_StringLiteral;
 		core::Vector2f m_Position;

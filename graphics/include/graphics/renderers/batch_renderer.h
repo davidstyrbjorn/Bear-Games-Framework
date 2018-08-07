@@ -4,6 +4,10 @@
 #include"../vertex.h"
 #include"../types.h"
 
+namespace bear { namespace core {
+	class Matrix4x4;
+} }
+
 namespace bear { namespace graphics {
 
 #define VERTEX_SIZE sizeof(Vertex)

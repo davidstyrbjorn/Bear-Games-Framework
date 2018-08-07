@@ -21,11 +21,40 @@ namespace bear { namespace sound {
 		// Loads buffer data into source
 		void loadSound(std::string a_FilePath);
 
-		// Virtual methods 
-		virtual void play();
-		virtual void stop();
-		virtual void reset();
-		virtual void pause();
+		// get the source state
+		int getState();
+
+		/*
+		* Does not care if the source is already playing
+		*/
+		void play_instantaneous();
+
+		/*
+		* Cares if the source if already playing
+		*/
+		void play();
+
+		/*
+		Stops the source use play to start again
+		*/
+		void stop();
+
+		/*
+		Stops the source and resets the track
+		*/
+		void reset();
+
+		/*
+		Stops the source and resets the track & plays it from the start
+		*/
+		void reset_and_play();
+
+		/*
+		Pause and resume track 
+		While paused other methods cannot be used on the track
+		*/
+		void pause();
+		void resume();
 	};
 
 } } 

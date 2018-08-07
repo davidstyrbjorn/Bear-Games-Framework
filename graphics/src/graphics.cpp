@@ -3,9 +3,10 @@
 #define GLEW_STATIC
 #include"GL\glew.h"
 
-bear::graphics::Shader* bear::graphics::Graphics::defaultUnlitShader = new bear::graphics::Shader();
+using namespace bear;
+using namespace bear::graphics;
 
-bool bear::graphics::Graphics::init()
+bool bear::graphics::Graphics::init(window::Window& a_Window)
 {
 	glewExperimental = true;
 	GLenum result = glewInit();
@@ -17,7 +18,7 @@ bool bear::graphics::Graphics::init()
 		return false;
 	}
 
-	//defaultUnlitShader->compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt", false);
+	GraphicsInformation::instance()->creteInstance(a_Window);
 
 	return true;
 }
@@ -25,4 +26,23 @@ bool bear::graphics::Graphics::init()
 bool bear::graphics::Graphics::exit()
 {
 	return true;
+}
+
+// GRAPHICS INFORMATION //  
+
+GraphicsInformation* GraphicsInformation::Instance = nullptr;
+
+GraphicsInformation::GraphicsInformation(window::Window& a_Window) : m_Window(a_Window)
+{
+
+}
+
+void bear::graphics::GraphicsInformation::creteInstance(window::Window& a_Window)
+{
+	Instance = new GraphicsInformation(a_Window);
+}
+
+GraphicsInformation * GraphicsInformation::instance()
+{
+	return Instance;
 }

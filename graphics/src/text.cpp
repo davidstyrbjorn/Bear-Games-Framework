@@ -88,3 +88,8 @@ void bear::graphics::TextLabel::setFont(Font & a_Font)
 {
 	m_Font = a_Font;
 }
+
+void bear::graphics::TextLabel::setStringLiteral(const std::string & a_StringLiteral)
+{
+	m_StringLiteral = a_StringLiteral;
+}

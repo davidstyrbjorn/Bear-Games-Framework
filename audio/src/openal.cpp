@@ -43,9 +43,24 @@ void bear::sound::SoundSource::loadSound(std::string a_FilePath)
 	alSourcei(m_SourceID, AL_BUFFER, m_SoundBuffer->getID());
 }
 
+int bear::sound::SoundSource::getState()
+{
+	int state;
+	alGetSourcei(m_SourceID, AL_SOURCE_STATE, &state);
+	return state;
+}
+
+void bear::sound::SoundSource::play_instantaneous()
+{
+	if(getState() != AL_PAUSED)
+		alSourcePlay(m_SourceID);
+}
+
 void bear::sound::SoundSource::play()
 {
-	printf("play called on source\n");
+	int s = getState();
+	if (s == AL_PLAYING || s == AL_PAUSED)
+		return;
 	alSourcePlay(m_SourceID);
 }
 
@@ -59,9 +74,21 @@ void bear::sound::SoundSource::reset()
 	alSourceRewind(m_SourceID);
 }
 
+void bear::sound::SoundSource::reset_and_play()
+{
+	alSourceRewind(m_SourceID);
+	if(getState() != AL_PAUSED)
+		alSourcePlay(m_SourceID);
+}
+
 void bear::sound::SoundSource::pause()
 {
 	alSourcePause(m_SourceID);
+}
+
+void bear::sound::SoundSource::resume()
+{
+	alSourcePlay(m_SourceID);
 }
 
 // OPENAL BUFFER //

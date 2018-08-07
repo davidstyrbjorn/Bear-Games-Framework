@@ -90,6 +90,7 @@ namespace bear { namespace core {
 
 		result.elements[1 + 1 * 4] = 2.0f / (top - bottom);
 
+		// reults.elements[2 + 2 * 4] = (-2.0f) / (far - near)
 		result.elements[2 + 2 * 4] = 2.0f / (near - far);
 		//             y     x
 		result.elements[0 + 3 * 4] = (left + right) / (left - right);
