@@ -23,9 +23,12 @@ namespace bear { namespace graphics {
 
 		// Sets position 
 		void setPosition(core::Vector2f a_Position);
+		void translate(core::Vector2f a_Translation);
 
 		// Matrix getter
 		core::Matrix4x4& getViewMatrix();
+		// Position getter
+		core::Vector2f getPosition();
 
 	private:
 		// Called when matrix needs to be updated

@@ -1,16 +1,24 @@
 #include "../include/graphics/graphics.h"
 
+#include<core\matrix4x4.h>
+
 #define GLEW_STATIC
 #include"GL\glew.h"
 
 using namespace bear;
 using namespace bear::graphics;
 
-bool bear::graphics::Graphics::init(window::Window& a_Window)
+Shader* Graphics::s_DefaultShader = new Shader();
+Shader* Graphics::s_DefaultShaderText = new Shader();
+
+unsigned int Graphics::m_ScreenWidth = 0;
+unsigned int Graphics::m_ScreenHeight = 0;
+
+bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 {
+	// Init GLEW
 	glewExperimental = true;
 	GLenum result = glewInit();
-
 	if (result != GLEW_OK) {
 		if (result == GLEW_ERROR_NO_GL_VERSION) {
 			printf("No GL context ( GLEW_ERROR_NO_GL_VERSION )\n");
@@ -18,7 +26,13 @@ bool bear::graphics::Graphics::init(window::Window& a_Window)
 		return false;
 	}
 
-	GraphicsInformation::instance()->creteInstance(a_Window);
+	// Setup the default shaders used by the renderers
+	s_DefaultShader->setSource(default_vertex_shader_source, default_fragment_shader_source);
+	s_DefaultShader->compile();
+	s_DefaultShaderText->setSource(text_vertex_shader_source, text_fragment_shader_source);
+	s_DefaultShaderText->compile();
+
+	window_resize_callback(a_Width, a_Height);
 
 	return true;
 }
@@ -28,21 +42,16 @@ bool bear::graphics::Graphics::exit()
 	return true;
 }
 
-// GRAPHICS INFORMATION //  
-
-GraphicsInformation* GraphicsInformation::Instance = nullptr;
-
-GraphicsInformation::GraphicsInformation(window::Window& a_Window) : m_Window(a_Window)
+void bear::graphics::Graphics::window_resize_callback(unsigned int a_Width, unsigned int a_Height)
 {
+	m_ScreenWidth = a_Width;
+	m_ScreenHeight = a_Height;
+	// Update shader matrix uniforms
+	core::Matrix4x4 ortho = core::Matrix4x4::Orthographic(0, m_ScreenWidth, m_ScreenHeight, 0, -1, 1);
+	s_DefaultShader->enable();
+	s_DefaultShader->setUniformMatrix4x4("projection_matrix", ortho);
+	s_DefaultShaderText->enable();
+	s_DefaultShaderText->setUniformMatrix4x4("projection_matrix", ortho);
 
-}
-
-void bear::graphics::GraphicsInformation::creteInstance(window::Window& a_Window)
-{
-	Instance = new GraphicsInformation(a_Window);
-}
-
-GraphicsInformation * GraphicsInformation::instance()
-{
-	return Instance;
+	glViewport(0, 0, a_Width, a_Height);
 }

@@ -4,6 +4,13 @@
 #include<GL\glew.h>
 
 #include"../include/graphics/shader.h"
+#include"../include/graphics/view.h"
+
+#include"../include/graphics/graphics.h"
+
+using namespace bear::graphics;
+
+View& TextLabel::defaultView = View();
 
 bear::graphics::TextLabel::TextLabel(std::string a_Text, Font& a_Font, core::Vector2f a_Position, core::Color a_Color)
 	: m_Font(a_Font)
@@ -42,10 +49,11 @@ bear::graphics::TextLabel::~TextLabel()
 	glDeleteBuffers(1, &m_Buffer.VBO);
 }
 
-void bear::graphics::TextLabel::draw(Shader & shader)
+void bear::graphics::TextLabel::draw(View& a_View)
 {
-	shader.enable();
-	shader.setUniformColor3f("textColor", core::Color(m_Color.r, m_Color.g, m_Color.b));
+	Graphics::s_DefaultShaderText->enable();
+	Graphics::s_DefaultShaderText->setUniformColor3f("text_color", core::Color(m_Color.r, m_Color.g, m_Color.b));
+	Graphics::s_DefaultShaderText->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
 
 	glBindVertexArray(m_Buffer.VAO);
 
@@ -56,19 +64,19 @@ void bear::graphics::TextLabel::draw(Shader & shader)
 		glyph_character ch = m_Font.m_Characters[*c];
 	
 		float xpos = (m_Position.x + ch.m_Bearings.x) + offsetX;
-		float ypos = m_Position.y - (ch.m_Size.y - ch.m_Bearings.y);
+		float ypos = m_Position.y + (ch.m_Size.y - ch.m_Bearings.y);
 		float width = ch.m_Size.x;
 		float height = ch.m_Size.y;
 
 		// Update VBO 
 		float vertices[6][4] = {
-			{ xpos,			ypos + height,   0.0, 0.0 },
+			{ xpos,			ypos - height,   0.0, 0.0 },
 			{ xpos,			ypos,			 0.0, 1.0 },
 			{ xpos + width, ypos,			 1.0, 1.0 },
 
-			{ xpos,			ypos + height,   0.0, 0.0 },
+			{ xpos,			ypos - height,   0.0, 0.0 },
 			{ xpos + width, ypos,			 1.0, 1.0 },
-			{ xpos + width, ypos + height,   1.0, 0.0 }
+			{ xpos + width, ypos - height,   1.0, 0.0 }
 		};
 		glBindTexture(GL_TEXTURE_2D, ch.m_TexID);
 

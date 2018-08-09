@@ -12,48 +12,41 @@
 #include"text.h"
 #include"view.h"
 
-namespace bear { namespace window {
-	class Window;
-} }
-
 namespace bear { namespace graphics {
 
 	class Graphics {
+		// Define some friendships between graphics classes
+		friend class BatchRenderer;
+		friend class TextLabel;
+	
+	private:
+		// @ Research: do i have to call delete on these? what's the lifetime of static pointer objects? when do they get deallocated
+		// Used by: BatchRenderer
+		static Shader* s_DefaultShader;
+		static Shader* s_DefaultShaderText;
+		static unsigned int m_ScreenWidth;
+		static unsigned int m_ScreenHeight;
+
 	public:
 		/* 
 		* Initalize GLEW OpenGL bindings 
+		* Arguments: window width and height used for shaders
 		*/
-		static bool init(window::Window& a_Window);
+		static bool init(unsigned int a_Width, unsigned int a_Height);
 
 		/* */
 		static bool exit();
+
+		/*
+		* Callback for when window size is changed
+		*/
+		static void window_resize_callback(unsigned int a_Width, unsigned int a_Height);
 	};
 
-	class GraphicsInformation {
-		friend class Graphics;
-
-	private:
-		// Singleton
-		GraphicsInformation(window::Window& a_Window);
-		static GraphicsInformation* Instance;
-		// Members
-		window::Window& m_Window;
-
-	private:
-		// Called by Graphics class 
-		static void creteInstance(window::Window& a_Window);
-
-	public:
-		static GraphicsInformation* instance();
-	};
-
-	//static std::string default_vertex_shader = "#version330 \nlayout(location=0) in vec2 in_pos; \nlayout(location=1) in vec4 in_color; \nlayout(location=2) in vec2 in_uv; \nuniform mat4 projection_matrix; \nuniform mat4 model_matrix = mat4(1.0); \nuniform mat4 view_matrix = mat4(1.0); \nout vec4 color; \nout vec2 uv; \n void main(){ \ngl_Position = projection_matrix * model_matrix * view_matrix * vec4(in_pos.x, in_pos.y, 0, 1.0); \ncolor = in_color; \nuv = in_uv; \n} ";                                                                                             
-	//static std::string unlit_default_fragment_shader = "#version 330 \nin vec4 color; \nin vec2 uv; \nuniform sampler2D textureSampler; \nvoid main(){ \ngl_FragColor = color; \n}";
-	//static std::string textured_default_fragment_shader = "#version 330 \nin vec4 color; \nin vec2 uv; \nuniform sampler2D textureSampler; \nvoid main(){ \ngl_FragColor = texture(textureSampler, uv); \n}";
-	static std::string default_vertex_shader = "D:\\temp\\vertex.txt";
-	static std::string unlit_default_fragment_shader = "D:\\temp\\frag_unlit.txt";
+	// Used by Graphics::s_DefaultShader
+	static std::string default_vertex_shader_source = "#version 330 \nlayout(location=0) in vec2 in_pos; \nlayout(location=1) in vec4 in_color; \nlayout(location=2) in vec2 in_uv; \nuniform mat4 projection_matrix; \nuniform mat4 model_matrix = mat4(1.0); \nuniform mat4 view_matrix = mat4(1.0); \nout vec4 color; \nout vec2 uv; \n void main(){ \ngl_Position = projection_matrix * model_matrix * view_matrix * vec4(in_pos.x, in_pos.y, 0, 1.0); \ncolor = in_color; \nuv = in_uv; \n} ";                                                                                             
+	static std::string default_fragment_shader_source = "#version 330 \nin vec4 color; \nin vec2 uv; \nuniform sampler2D texture_sampler; \nuniform int texture_mode; \nvoid main(){ \nif(texture_mode == 0) { gl_FragColor = color; } \nelse { gl_FragColor = texture(texture_sampler, uv); } \n}";
+	// Used by Graphics::s_DefaultShaderText
+	static std::string text_vertex_shader_source = "#version 330 core \n layout(location = 0) in vec4 vertex; \n out vec2 TexCoords; \n uniform mat4 projection_matrix; \n uniform mat4 view_matrix = mat4(1.0f); \n void main() \n{ \n gl_Position = projection_matrix * view_matrix * vec4(vertex.xy, 0, 1); \n TexCoords = vertex.zw; \n }";
+	static std::string text_fragment_shader_source = "#version 330 core \n in vec2 TexCoords; \n uniform sampler2D texture; \n uniform vec3 text_color; \n out vec4 color; \n void main() \n { \n color = vec4(1,1,1,texture2D(texture, TexCoords).r) * vec4(text_color,1); \n }";
 } }
-
-
-// Default shaders
-

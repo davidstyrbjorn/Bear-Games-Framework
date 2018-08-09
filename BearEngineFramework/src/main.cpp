@@ -50,19 +50,14 @@ int main()
 
 	bear::window::Window myWindow(720, 540, "THIS IS A WINDOW");
 	
-	if (!graphics::Graphics::init(myWindow)) {
+	if (!graphics::Graphics::init(720, 540)) {
 		printf("False returned from Graphics::init()\n");
 	}
-	
-	shader.compile("D:\\temp\\text_vertex.txt", "D:\\temp\\text_fragment.txt", false);
-	shader.enable();
-	shader.setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 720, 0, 540, -1, 1));
-	shader.setUniformInteger("texture", 0);
 
 	graphics::Font font("D:\\temp\\arial.ttf", 30);
-	graphics::TextLabel text("This is my finish accent", font, core::Vector2f(0,100), core::Color::Red());
-	graphics::TextLabel text2("Sample text", font, core::Vector2f(0, 0), core::Color::Blue());
-	graphics::TextLabel text3("Permanent vacation", font, core::Vector2f(100, 300), core::Color::Green());
+	graphics::TextLabel text("ThiS Is SoMe FucKEd T_EX@TWA", font, core::Vector2f(0,100), core::Color::Red());
+	graphics::TextLabel text2("Sample text", font, core::Vector2f(0, 540), core::Color::Blue());
+	graphics::TextLabel text3("Permanent vacation", font, core::Vector2f(0, 300), core::Color::Green());
 
 	graphics::BatchRenderer renderer;
 	renderer.init(720, 540);
@@ -94,6 +89,7 @@ int main()
 	w.setColor(core::Color::Red());
 
 	graphics::Renderable sprite("D:\\temp\\cat.png");
+	sprite.transform().m_Position = core::Vector2f(0, 0);
 
 	graphics::Renderable sprite2("D:\\temp\\sample.jpg");
 	sprite2.transform().m_Position = core::Vector2f(400, 300);
@@ -105,12 +101,10 @@ int main()
 	c.start();
 	unsigned int fps = 0;
 
-	//sound::SoundSource source("D:\\temp\\sound.wav");
-	//source.play();
-
-	graphics::GraphicsInformation *gi = graphics::GraphicsInformation::instance();
-
 	sound::SoundSource sfx("D:\\temp\\sound.wav");
+
+	graphics::View view;
+	core::Vector2f viewPos;
 
 	while (myWindow.isOpen()) 
 	{
@@ -122,24 +116,25 @@ int main()
 
 		myWindow.clear(core::Color(0.1f,0.1f,0.1f));
 
+		// Camera movement
 		if (myWindow.isKeyDown(Key::D))
-			x.transform().move(core::Vector2f(2, 0));
+			viewPos += core::Vector2f(-2, 0);
 		if (myWindow.isKeyDown(Key::A))
-			x.transform().move(core::Vector2f(-2, 0));
+			viewPos += core::Vector2f(2, 0);
 		if (myWindow.isKeyDown(Key::S))
-			x.transform().move(core::Vector2f(0, 2));
-		if (myWindow.isKeyDown(Key::W)) 
-			x.transform().move(core::Vector2f(0, -2));
+			viewPos += core::Vector2f(0, -2);
+		if (myWindow.isKeyDown(Key::W))
+			viewPos += core::Vector2f(0, 2);
+
+		view.setPosition(viewPos);
 
 		for (Event event : myWindow.getRegisteredEvents()) {
-			if (event.type == EventType::KeyPressed)
-				sfx.play_instantaneous();
+			if (event.type == EventType::WindowReiszed) {
+				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
+			}
 		}
 
-		std::cout << myWindow.getWindowSize() << std::endl;
-
 		renderer.begin();
-
 		for (int i = 0; i < 60; i++) {
 			renderer.submit(list[i]);
 		}
@@ -147,14 +142,13 @@ int main()
 		renderer.submit(y);
 		renderer.submit(z);
 		renderer.submit(w);
-		
 		renderer.submit(sprite);
 		renderer.submit(sprite2);
+		renderer.flush(view);
 
-		renderer.flush();
-		text.draw(shader);
-		text2.draw(shader);
-		text3.draw(shader);
+		text.draw();
+		text2.draw(view);
+		text3.draw();
 
 		myWindow.display();
 

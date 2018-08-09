@@ -15,17 +15,19 @@ namespace bear { namespace graphics {
 	class Shader {
 	private:
 		unsigned int m_Program;
-		// Cache maping for the uniform locations
+		// Caching the uniform locations for faster lookup
 		std::map<const char*, int> m_UniformMap;
 		bool m_IsActive;
-		const char* m_VertexSource;
-		const char* m_FragmentSource;
+		std::string m_VertexSource;
+		std::string m_FragmentSource;
 
 	public:
 		Shader();
 		~Shader();
 
-		void compile(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource);
+		void setSource(const std::string& a_VertexSource, const std::string& a_FragmentSource);
+		void setSourceFromFile(std::string a_VertexPath, std::string a_FragmentPath);
+		void compile();
 		void enable();
 		void disable();
 		const bool isActive() const;

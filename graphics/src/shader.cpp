@@ -6,6 +6,7 @@
 #include<core\color.h>
 #include<core\file_utility.h>
 #include<iostream>
+#include<fstream>
 
 #define GLEW_STATIC
 #include<GL\glew.h>
@@ -22,17 +23,40 @@ bear::graphics::Shader::~Shader()
 	glDeleteProgram(m_Program);
 }
 
-void bear::graphics::Shader::compile(std::string a_VertexPath, std::string a_FragmentPath, bool a_IsSource)
+void bear::graphics::Shader::setSource(const std::string& a_VertexSource, const std::string& a_FragmentSource)
 {
-	// Get shader sources
-	std::string _vertexSource = core::get_file_content(a_VertexPath);
-	std::string _fragmentSource = core::get_file_content(a_FragmentPath);
-	m_VertexSource = _vertexSource.c_str();
-	m_FragmentSource = _fragmentSource.c_str();
+	m_VertexSource = a_VertexSource;
+	m_FragmentSource = a_FragmentSource;
+}
+
+void bear::graphics::Shader::setSourceFromFile(std::string a_VertexPath, std::string a_FragmentPath)
+{
+	std::ifstream vertexFile(a_VertexPath);
+	std::ifstream fragmentFile(a_FragmentPath);
+	if (!vertexFile.is_open() || !fragmentFile.is_open()) {
+		std::cout << "Could not load shader files at given paths:\n" << a_VertexPath << "\n" << a_FragmentPath;
+	}
+
+	std::string line;
+	while (std::getline(vertexFile, line)) {
+		m_VertexSource += line + "\n";
+	}
+
+	line.clear();
+
+	while (std::getline(fragmentFile, line)) {
+		m_FragmentSource += line + "\n";
+	}
+}
+
+void bear::graphics::Shader::compile()
+{
+	const char* vertexSource = m_VertexSource.c_str();
+	const char* fragmentSource = m_FragmentSource.c_str();
 
 	/* Vertex */
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &m_VertexSource, 0);
+	glShaderSource(vertexShader, 1, &vertexSource, 0);
 	glCompileShader(vertexShader);
 	std::string vertexCompileLog = "";
 	if (!didCompile(vertexShader, vertexCompileLog)) {
@@ -41,7 +65,7 @@ void bear::graphics::Shader::compile(std::string a_VertexPath, std::string a_Fra
 
 	/* Fragment */
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &m_FragmentSource, 0);
+	glShaderSource(fragmentShader, 1, &fragmentSource, 0);
 	glCompileShader(fragmentShader);
 	std::string fragmentCompileLog = "";
 	if (!didCompile(fragmentShader, fragmentCompileLog)) {

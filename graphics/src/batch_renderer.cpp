@@ -5,6 +5,7 @@
 
 #include"../include/graphics/shader.h"
 #include"../include/graphics/renderable.h"
+#include"../include/graphics/view.h"
 #include"../include/graphics/graphics.h"
 #include<core\matrix4x4.h>
 
@@ -13,6 +14,8 @@
 #include<stdlib.h>
 
 using namespace bear::graphics;
+
+View& BatchRenderer::defaultView = View();
 
 bear::graphics::BatchRenderer::BatchRenderer()
 {
@@ -26,17 +29,8 @@ bear::graphics::BatchRenderer::~BatchRenderer()
 
 void bear::graphics::BatchRenderer::init(unsigned int a_Width, unsigned int a_Height)
 {
-	// Initalize objects and buffers
-	m_UnlitShader = new Shader();
-	m_UnlitShader->compile("D:\\temp\\vert.txt", "D:\\temp\\frag_unlit.txt", true);
-	m_UnlitShader->enable();
-	m_UnlitShader->setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, a_Width, a_Height, 0, -1, 1));
-
-	m_TextureShader = new Shader();
-	m_TextureShader->compile("D:\\temp\\vert.txt", "D:\\temp\\frag_texture.txt", true);
-	m_TextureShader->enable();
-	m_TextureShader->setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, a_Width, a_Height, 0, -1, 1));
-	m_TextureShader->setUniformInteger("texture_sampler", 0);
+	Graphics::s_DefaultShader->enable();
+	Graphics::s_DefaultShader->setUniformInteger("texture_sampler", 0);
 
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenVertexArrays(1, &_unlit_buffers.VAO);
@@ -99,16 +93,19 @@ void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
 	}
 }
 
-void bear::graphics::BatchRenderer::flush()
+void bear::graphics::BatchRenderer::flush(View& a_View)
 {
 	// Unlit flush
-	m_UnlitShader->enable();
+	Graphics::s_DefaultShader->enable();
+	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
+	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 0);
+
 	glBindVertexArray(_unlit_buffers.VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
 	glDrawArrays(GL_TRIANGLES, 0, m_UnlitVertCount);
 
 	// Texture flush
-	m_TextureShader->enable();
+	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 1);
 	glBindVertexArray(_textured_buffers.VAO);
 	while (!_textured_buffers.m_TextureBatch.empty()) 
 	{
@@ -136,18 +133,9 @@ void bear::graphics::BatchRenderer::flush()
 		_textured_buffers.m_TextureBatch.pop_back();
 	}
 
+	Graphics::s_DefaultShader->disable();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
-}
-
-Shader & bear::graphics::BatchRenderer::getUnlitShader()
-{
-	return *m_UnlitShader;
-}
-
-Shader & bear::graphics::BatchRenderer::getTextureShader()
-{
-	return *m_TextureShader;
 }
 
 void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)

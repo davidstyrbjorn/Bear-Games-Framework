@@ -13,6 +13,7 @@ typedef struct FT_LibraryRec_  *FT_Library;
 namespace bear { namespace graphics { 
 
 	class Shader;
+	class View;
 
 	struct _text_buffer_objects {
 		unsigned int VAO, VBO;
@@ -44,8 +45,9 @@ namespace bear { namespace graphics {
 		// Destructor 
 		~TextLabel();
 
+		// @ Weird behaviour because of the projection matrix being inverted compared to the renderers, fix post ludum dare
 		// Draw this text label
-		void draw(Shader &shader);
+		void draw(View& a_View = defaultView);
 
 		// Change text label font pointer
 		void setFont(Font& a_Font);
@@ -59,6 +61,7 @@ namespace bear { namespace graphics {
 		core::Color m_Color;
 		_text_buffer_objects m_Buffer;
 		Font &m_Font;
+		static View &defaultView;
 	};
 
 } }

@@ -24,6 +24,7 @@ namespace bear { namespace graphics {
 
 	class Shader;
 	class Renderable;
+	class View;
 
 	struct unlit_buffers 
 	{
@@ -38,13 +39,11 @@ namespace bear { namespace graphics {
 
 	class BatchRenderer {
 	private:
-		Shader *m_UnlitShader;
 		unlit_buffers _unlit_buffers;
-
-		Shader *m_TextureShader;
 		texuted_buffers _textured_buffers;
-
 		unsigned int m_UnlitVertCount = 0;
+		// Used by default if none is submitted by the caller
+		static View& defaultView;
 		
 	public:
 		BatchRenderer();
@@ -62,13 +61,7 @@ namespace bear { namespace graphics {
 		*/
 		void begin();
 		void submit(Renderable& a_Renderable);
-		void flush();
-
-		/*
-		shader getters
-		*/
-		Shader& getUnlitShader();
-		Shader& getTextureShader();
+		void flush(View& a_View = defaultView);
 
 	private:
 		void submit_unlit(Renderable& a_UnlitRenderable);

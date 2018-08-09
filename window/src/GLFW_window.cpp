@@ -132,8 +132,6 @@ void bear::window::Window::mouse_button_callback(GLFWwindow * window, int button
 void bear::window::Window::window_resize_callback(GLFWwindow * window, int width, int height)
 {
 	Window* temp = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	glViewport(0, 0, width, height);
-
 	temp->m_WindowSize = core::Vector2i(width, height);
 
 	bear::Event event;
