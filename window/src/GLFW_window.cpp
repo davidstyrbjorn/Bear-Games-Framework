@@ -23,6 +23,9 @@ bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::s
 	glfwSetWindowUserPointer(m_Window, this); 
 
 	glViewport(0, 0, a_Width, a_Height);
+
+	m_DeltaTime = 1.0f;
+	m_DeltaClock.start();
 }
 
 bear::window::Window::~Window()
@@ -43,8 +46,10 @@ void bear::window::Window::close()
 
 void bear::window::Window::clear(core::Color a_Color)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	m_DeltaClock.reset();
+
 	glClearColor(a_Color.r, a_Color.g, a_Color.b, a_Color.a);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void bear::window::Window::display()
@@ -54,6 +59,8 @@ void bear::window::Window::display()
 
 	glfwPollEvents();
 	glfwGetCursorPos(m_Window, &m_MousePosition.x, &m_MousePosition.y);
+
+	m_DeltaTime = m_DeltaClock.getTicks();
 }
 
 void bear::window::Window::setFrameRateLimit(unsigned int a_Limit)
@@ -96,6 +103,11 @@ const bear::core::Vector2d bear::window::Window::getMousePosition()
 const bear::core::Vector2i bear::window::Window::getWindowSize()
 {
 	return m_WindowSize;
+}
+
+const float bear::window::Window::getDeltaTime()
+{
+	return m_DeltaTime;
 }
 
 void bear::window::Window::key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)

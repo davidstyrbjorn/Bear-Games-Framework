@@ -118,13 +118,13 @@ int main()
 
 		// Camera movement
 		if (myWindow.isKeyDown(Key::D))
-			viewPos += core::Vector2f(-2, 0);
+			viewPos += core::Vector2f(-0.5f, 0);
 		if (myWindow.isKeyDown(Key::A))
-			viewPos += core::Vector2f(2, 0);
+			viewPos += core::Vector2f(0.5f, 0);
 		if (myWindow.isKeyDown(Key::S))
-			viewPos += core::Vector2f(0, -2);
+			viewPos += core::Vector2f(0, -0.5f);
 		if (myWindow.isKeyDown(Key::W))
-			viewPos += core::Vector2f(0, 2);
+			viewPos += core::Vector2f(0, 0.5f);
 
 		view.setPosition(viewPos);
 

@@ -5,6 +5,8 @@
 #include<deque>
 #include<string>
 
+#include<core\clock.h>
+
 struct GLFWwindow; // GLFW struct
 
 namespace bear { namespace window {
@@ -31,6 +33,7 @@ namespace bear { namespace window {
 		const core::Vector2d getMousePosition() override;
 
 		const core::Vector2i getWindowSize();
+		const float getDeltaTime();
 
 		/* GLFW callbacks */
 		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -38,6 +41,8 @@ namespace bear { namespace window {
 		static void window_resize_callback(GLFWwindow* window, int width, int height);
 
 	private:
+		core::Clock m_DeltaClock;
+		float m_DeltaTime = 1;
 		GLFWwindow *m_Window;
 		core::Vector2i m_WindowSize;
 		std::deque<Event> m_Events;

@@ -26,6 +26,9 @@ namespace bear { namespace core {
 		Vector2<T> operator*(const Vector2<T> right) {
 			return Vector2<T>(this->x * right.x, this->y * right.y);
 		}
+		Vector2<T> operator*(const T right) {
+			return Vector2<T>(this->x * right, this->y * right);
+		}
 		Vector2<T>& operator+=(const Vector2<T>& right) {
 			this->x += right.x;
 			this->y += right.y;
