@@ -20,19 +20,20 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{45DF7C82-93EE-415F-9FC0-4213E777BDE1}</ProjectGuid>
-    <RootNamespace>BearEngineFramework</RootNamespace>
+    <ProjectGuid>{8EBB60AB-883F-4231-88E9-3F5256447AF7}</ProjectGuid>
+    <RootNamespace>bear_framework</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>bear_games_framework</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,24 +71,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\BearEngineFramework\builds\debug\</OutDir>
-    <IntDir>$(SolutionDir)\BearEngineFramework\intermediate\debug\</IntDir>
+    <OutDir>$(ProjectDir)\builds\debug\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\BearEngineFramework\builds\release\</OutDir>
-    <IntDir>$(SolutionDir)\BearEngineFramework\intermediate\release\</IntDir>
+    <OutDir>$(ProjectDir)\builds\release\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\bear_framework\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\third_party\glfw\include;D:\C++\BearEngineFramework\third_party\freetype\include;D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\third_party\openal\include;D:\C++\BearEngineFramework\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>opengl32.lib;bear_games_framework.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\bear_framework\builds\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\freetype\lib;D:\C++\BearEngineFramework\third_party\glew\lib\Win32;D:\C++\BearEngineFramework\third_party\openal\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype281.lib;glew32s.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -103,14 +102,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\bear_framework\include;D:\C++\BearEngineFramework\third_party\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\third_party\glfw\include;D:\C++\BearEngineFramework\third_party\freetype\include;D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\third_party\openal\include;D:\C++\BearEngineFramework\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\bear_framework\builds\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;bear_games_framework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\freetype\lib;D:\C++\BearEngineFramework\third_party\glew\lib\Win32;D:\C++\BearEngineFramework\third_party\openal\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype281.lib;glew32s.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -126,7 +127,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
+    <ClInclude Include="include\core\bounding_box.h" />
+    <ClInclude Include="include\core\clock.h" />
+    <ClInclude Include="include\core\color.h" />
+    <ClInclude Include="include\core\file_utility.h" />
+    <ClInclude Include="include\core\matrix4x4.h" />
+    <ClInclude Include="include\core\vector2.h" />
+    <ClInclude Include="include\core\vector3.h" />
+    <ClInclude Include="include\graphics\graphics.h" />
+    <ClInclude Include="include\graphics\image.h" />
+    <ClInclude Include="include\graphics\renderable.h" />
+    <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
+    <ClInclude Include="include\graphics\shader.h" />
+    <ClInclude Include="include\graphics\shape.h" />
+    <ClInclude Include="include\graphics\text.h" />
+    <ClInclude Include="include\graphics\transform.h" />
+    <ClInclude Include="include\graphics\types.h" />
+    <ClInclude Include="include\graphics\vertex.h" />
+    <ClInclude Include="include\graphics\view.h" />
+    <ClInclude Include="include\sound\decoders\wav_decoder.h" />
+    <ClInclude Include="include\sound\openal_buffer.h" />
+    <ClInclude Include="include\sound\openal_source.h" />
+    <ClInclude Include="include\sound\sound.h" />
+    <ClInclude Include="include\sound\sound_context.h" />
+    <ClInclude Include="include\window\event.h" />
+    <ClInclude Include="include\window\GLFW_event.h" />
+    <ClInclude Include="include\window\GLFW_window.h" />
+    <ClInclude Include="include\window\window.h" />
+    <ClInclude Include="include\window\window_framework.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\batch_renderer.cpp" />
+    <ClCompile Include="src\clock.cpp" />
+    <ClCompile Include="src\file_utility.cpp" />
+    <ClCompile Include="src\font.cpp" />
+    <ClCompile Include="src\graphics.cpp" />
+    <ClCompile Include="src\image.cpp" />
+    <ClCompile Include="src\matrix4x4.cpp" />
+    <ClCompile Include="src\openal.cpp" />
+    <ClCompile Include="src\renderable.cpp" />
+    <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\shape.cpp" />
+    <ClCompile Include="src\sound.cpp" />
+    <ClCompile Include="src\sound_context.cpp" />
+    <ClCompile Include="src\text.cpp" />
+    <ClCompile Include="src\vector2.cpp" />
+    <ClCompile Include="src\vector3.cpp" />
+    <ClCompile Include="src\GLFW_window.cpp" />
+    <ClCompile Include="src\view.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
