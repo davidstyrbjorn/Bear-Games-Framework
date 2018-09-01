@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8EBB60AB-883F-4231-88E9-3F5256447AF7}</ProjectGuid>
     <RootNamespace>bear_framework</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>bear_games_framework</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -81,10 +81,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\third_party\glfw\include;D:\C++\BearEngineFramework\third_party\freetype\include;D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\third_party\openal\include;D:\C++\BearEngineFramework\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\third_party\glfw\include;$(SolutionDir)\third_party\freetype\include;$(SolutionDir)\third_party\glew\include;$(SolutionDir)\third_party\openal\include;$(SolutionDir)\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>
+      </LanguageStandard>
     </ClCompile>
     <Lib>
-      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\freetype\lib;D:\C++\BearEngineFramework\third_party\glew\lib\Win32;D:\C++\BearEngineFramework\third_party\openal\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;$(SolutionDir)\third_party\freetype\lib;$(SolutionDir)\third_party\glew\lib\Win32;$(SolutionDir)\third_party\openal\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype281.lib;glew32s.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -102,14 +104,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++\BearEngineFramework\third_party\glfw\include;D:\C++\BearEngineFramework\third_party\freetype\include;D:\C++\BearEngineFramework\third_party\glew\include;D:\C++\BearEngineFramework\third_party\openal\include;D:\C++\BearEngineFramework\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\third_party\glfw\include;$(SolutionDir)\third_party\freetype\include;$(SolutionDir)\third_party\glew\include;$(SolutionDir)\third_party\openal\include;$(SolutionDir)\third_party\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>
+      </LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>D:\C++\BearEngineFramework\third_party\glfw\lib-vc2015;D:\C++\BearEngineFramework\third_party\freetype\lib;D:\C++\BearEngineFramework\third_party\glew\lib\Win32;D:\C++\BearEngineFramework\third_party\openal\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\third_party\glfw\lib-vc2015;$(SolutionDir)\third_party\freetype\lib;$(SolutionDir)\third_party\glew\lib\Win32;$(SolutionDir)\third_party\openal\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype281.lib;glew32s.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -175,6 +179,9 @@
     <ClCompile Include="src\vector3.cpp" />
     <ClCompile Include="src\GLFW_window.cpp" />
     <ClCompile Include="src\view.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\core\vector2.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

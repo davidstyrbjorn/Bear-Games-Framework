@@ -8,11 +8,13 @@
 
 using namespace bear;
 
-#define WIDTH 600
-#define HEIGHT 400
+constexpr auto WIDTH = 400;
+constexpr auto HEIGHT = 400;
 
 int main()
 {
+	sound::SoundContext::init();
+
 	bear::window::Window myWindow(WIDTH, HEIGHT, "THIS IS A WINDOW");
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))

@@ -8,10 +8,11 @@
 #include"../include/graphics/view.h"
 #include"../include/graphics/graphics.h"
 #include"../include/core/matrix4x4.h"
+#include"../include/graphics/vertex.h"
 
 #include<vector>
-#include<assert.h>
-#include<stdlib.h>
+#include<iostream>
+#include<cstdio>
 
 using namespace bear::graphics;
 
@@ -150,9 +151,8 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 
 void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 {
-	size_t _offset = m_UnlitVertCount * sizeof(Vertex);
+	unsigned int _offset = m_UnlitVertCount * sizeof(Vertex);
 	// Overshot buffer size, this is bad and stuff won't get rendered
-	assert(_offset < UNLIT_BUFFER_SIZE);
 
 	core::Vector2f pos = a_UnlitRenderable.transform().m_Position;
 	core::Vector2f size = a_UnlitRenderable.transform().m_Size;
@@ -161,19 +161,19 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 
 	std::vector<Vertex> vertList;
 	if (a_UnlitRenderable.getType() == renderable_type::Triangle) {
-		vertList.push_back({ pos, col,  uv });
-		vertList.push_back({ core::Vector2f(pos.x, pos.y + size.y), col, uv });
-		vertList.push_back({ pos + size, col, uv });
+		vertList.push_back(Vertex{ pos, col,  uv });
+		vertList.push_back(Vertex{ core::Vector2f(pos.x, pos.y + size.y), col, uv });
+		vertList.push_back(Vertex{ pos + size, col, uv });
 	}
 	else {
 		// No indices so we're doing 2 triangles
-		vertList.push_back({ pos, col,  uv });
-		vertList.push_back({ core::Vector2f(pos.x, pos.y + size.y), col, uv });
-		vertList.push_back({ pos + size, col, uv });
+		vertList.push_back(Vertex(pos, col,  uv ));
+		vertList.push_back(Vertex{ core::Vector2f(pos.x, pos.y + size.y), col, uv });
+		vertList.push_back(Vertex{ pos + size, col, uv });
 
-		vertList.push_back({ pos, col, uv });
-		vertList.push_back({ core::Vector2f(pos.x + size.x, pos.y), col, uv });
-		vertList.push_back({ pos + size, col, uv });
+		vertList.push_back(Vertex{ pos, col, uv });
+		vertList.push_back(Vertex{ core::Vector2f(pos.x + size.x, pos.y), col, uv });
+		vertList.push_back(Vertex{ pos + size, col, uv });
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);

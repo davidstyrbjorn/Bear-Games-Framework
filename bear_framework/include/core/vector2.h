@@ -13,9 +13,10 @@ namespace bear { namespace core {
 		Vector2(T a_x, T a_y) : x(a_x), y(a_y) { }
 		Vector2() : x(0), y(0) { }
 
-		T magnitude() {
-			return std::sqrt(std::pow<T, int>(x, 2) + std::pow<T, int>(y, 2));
-		}
+		//T magnitude() {
+		//	return std::sqrt(std::pow<T, int>(x, 2) + std::pow<T, int>(y, 2));
+		//}
+		T magnitude();
 		Vector2<T> normalize() {
 			return Vector2<T>(x / this->magnitude(), y / this->magnitude());
 		}
@@ -68,3 +69,5 @@ namespace bear { namespace core {
 	typedef Vector2<double> Vector2d;
 }
 }
+
+#include"vector2.inl"
