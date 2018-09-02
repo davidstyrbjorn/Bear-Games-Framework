@@ -6,6 +6,8 @@
 #include<core\vector2.h>
 #include<graphics\graphics.h>
 
+#include<graphics\renderers\particle_renderer.h>
+
 using namespace bear;
 
 constexpr auto WIDTH = 400;
@@ -28,6 +30,9 @@ int main()
 
 	graphics::Shape shape = graphics::Shape::CreateRectangle(core::Vector2f(50, 50), core::Vector2f(110, 50), core::Color::Red());
 	graphics::Shape shape2 = graphics::Shape::CreateRectangle(core::Vector2f(100, 120), core::Vector2f(50, 50), core::Color::Blue());
+
+	graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
+	pr->init();
 
 	while (myWindow.isOpen()) 
 	{

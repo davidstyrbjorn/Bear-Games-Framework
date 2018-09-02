@@ -11,6 +11,7 @@
 #include"shape.h"
 #include"text.h"
 #include"view.h"
+#include"particle.h"
 
 namespace bear { namespace graphics {
 
@@ -18,11 +19,13 @@ namespace bear { namespace graphics {
 		// Define some friendships between graphics classes
 		friend class BatchRenderer;
 		friend class TextLabel;
+		friend class ParticleRenderer;
 	
 	private:
 		// Used by: BatchRenderer
 		static Shader* s_DefaultShader;
 		static Shader* s_DefaultShaderText;
+		static Shader* s_DefaultParticleShader;
 		static unsigned int m_ScreenWidth;
 		static unsigned int m_ScreenHeight;
 
@@ -48,4 +51,5 @@ namespace bear { namespace graphics {
 	// Used by Graphics::s_DefaultShaderText
 	static std::string text_vertex_shader_source = "#version 330 core \n layout(location = 0) in vec4 vertex; \n out vec2 TexCoords; \n uniform mat4 projection_matrix; \n uniform mat4 view_matrix = mat4(1.0f); \n void main() \n{ \n gl_Position = projection_matrix * view_matrix * vec4(vertex.xy, 0, 1); \n TexCoords = vertex.zw; \n }";
 	static std::string text_fragment_shader_source = "#version 330 core \n in vec2 TexCoords; \n uniform sampler2D texture; \n uniform vec3 text_color; \n out vec4 color; \n void main() \n { \n color = vec4(1,1,1,texture2D(texture, TexCoords).r) * vec4(text_color,1); \n }";
+	
 } }
