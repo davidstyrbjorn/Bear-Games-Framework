@@ -100,7 +100,7 @@ void bear::graphics::ParticleRenderer::flush()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _unlit_buffers.IBO);
 	// Draw call
 	glDrawElements(GL_TRIANGLES, m_ParticleCount * 6, GL_UNSIGNED_INT, nullptr);
-	// Unbind
+	// Unbind			
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

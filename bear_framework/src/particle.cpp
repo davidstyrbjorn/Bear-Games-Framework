@@ -17,6 +17,7 @@ void ParticlePool::addParticles(int num, core::Vector2f& position, core::Color& 
 {
 	for (int i = 0; i < num; i++) {
 		particle_list.push_back(Particle(position, color, velocity, life_time));
+		particle_list.back().birth_time = pool_timer;
 	}
 }
 
@@ -24,6 +25,7 @@ void ParticlePool::addParticles(int num, ParticleConfig& config, int life_time)
 {
 	for (int i = 0; i < num; i++) {
 		particle_list.push_back(Particle(config.position, config.color, config.velocity, life_time));
+		particle_list.back().birth_time = pool_timer;
 	}
 }
 

@@ -34,6 +34,9 @@ int main()
 	graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
 	pr->init();
 
+	graphics::ParticlePool pool;
+	pool.addParticles(10, core::Vector2f(100, 100), core::Color::Red(), core::Vector2f(0, 0), 2500);
+
 	while (myWindow.isOpen()) 
 	{
 		float dt = myWindow.getDeltaTime(); // Get the delta time for the last frame
@@ -43,6 +46,8 @@ int main()
 				core::BoundingBoxF b2(shape2.transform().m_Position, shape2.transform().m_Size);
 				if (b1.intersects(b2))
 					std::cout << "Collision good sir\n";
+				// Add some particles
+				pool.addParticles(2, core::Vector2f(rand() % WIDTH, 100), core::Color::Blue(), core::Vector2f(0, 0), 2500);
 			}
 		}	
 
@@ -56,9 +61,14 @@ int main()
 			shape.transform().move(core::Vector2f(-.1, 0)*dt);
 
 		myWindow.clear(core::Color(0.1f,0.1f,0.1f)); // Here is where the window is cleared and we can now render to the fresh window
+		
+		pool.process(dt);
+		pr->begin();
+		pr->submit(pool);
+		pr->flush();
 
-		shape.draw(shader);
-		shape2.draw(shader);
+		//shape.draw(shader);
+		//shape2.draw(shader);
 
 		myWindow.display(); // Swaps the back and front buffers 
 	}
