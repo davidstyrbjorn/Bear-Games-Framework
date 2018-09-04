@@ -6,7 +6,7 @@
 #include<core\vector2.h>
 #include<graphics\graphics.h>
 
-#include<graphics\renderers\particle_renderer.h>
+#include<graphics/renderers/particle_renderer.h>
 
 using namespace bear;
 

@@ -10,6 +10,8 @@
 
 namespace bear { namespace graphics {
 
+	class Shader;
+
 	struct unlit_buffers
 	{
 		unsigned int VAO, VBO, IBO;
@@ -19,6 +21,7 @@ namespace bear { namespace graphics {
 	private:
 		unlit_buffers _unlit_buffers;
 		unsigned int m_ParticleCount = 0;
+		Shader* m_Shader;
 
 	public:
 		ParticleRenderer() { }

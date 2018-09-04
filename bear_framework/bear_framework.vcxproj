@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8EBB60AB-883F-4231-88E9-3F5256447AF7}</ProjectGuid>
     <RootNamespace>bear_framework</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>bear_games_framework</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -140,8 +140,10 @@
     <ClInclude Include="include\core\vector3.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\image.h" />
+    <ClInclude Include="include\graphics\particle.h" />
     <ClInclude Include="include\graphics\renderable.h" />
     <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
+    <ClInclude Include="include\graphics\renderers\particle_renderer.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\shape.h" />
     <ClInclude Include="include\graphics\text.h" />
@@ -169,6 +171,8 @@
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\matrix4x4.cpp" />
     <ClCompile Include="src\openal.cpp" />
+    <ClCompile Include="src\particle.cpp" />
+    <ClCompile Include="src\particle_renderer.cpp" />
     <ClCompile Include="src\renderable.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shape.cpp" />
@@ -179,9 +183,6 @@
     <ClCompile Include="src\vector3.cpp" />
     <ClCompile Include="src\GLFW_window.cpp" />
     <ClCompile Include="src\view.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\core\vector2.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,8 +17,8 @@ namespace bear { namespace graphics {
 		int birth_time;
 
 		// Constructor
-		//Particle() { }
-		//Particle(core::Vector2f& _position, core::Color& _color, core::Vector2f& velocity, int _life_time);
+		Particle() { }
+		Particle(core::Vector2f& _position, core::Color& _color, core::Vector2f& velocity, int _life_time);
 	};
 
 	struct ParticleConfig {

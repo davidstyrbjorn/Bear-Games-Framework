@@ -4,12 +4,15 @@
 #include<GL\glew.h>
 
 #include"../include/graphics/graphics.h"
+#include"../include/graphics/shader.h"
 
 using namespace bear;
 using namespace bear::graphics;
 
 void ParticleRenderer::init()
 {
+	// Create shader
+
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenBuffers(1, &_unlit_buffers.IBO);

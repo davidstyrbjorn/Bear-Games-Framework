@@ -11,7 +11,7 @@
 #include"shape.h"
 #include"text.h"
 #include"view.h"
-#include"particle.h"
+//#include"particle.h"
 
 namespace bear { namespace graphics {
 

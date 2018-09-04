@@ -6,7 +6,7 @@
 namespace bear {
 	namespace core {
 		class Matrix4x4;
-		class Color;
+		struct Color;
 	}
 }
 
