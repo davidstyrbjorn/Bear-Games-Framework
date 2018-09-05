@@ -71,15 +71,14 @@ void bear::graphics::ParticleRenderer::submit(ParticlePool& a_ParticlePool)
 
 	// Go through each particle in the particle pool and add it to the buffer
 	static core::Vector2f ts = core::Vector2f(-1, -1);
-	constexpr float particle_size = 10.0f; // @ this shouldn't be a constant expression value
 	for (Particle& p : a_ParticlePool.particle_list) {
 		// Using the particle information
 		Vertex vert_data[] = 
 		{
 			{ p.position, p.color, ts },
-			{ p.position + core::Vector2f(0, particle_size), p.color, ts },
-			{ p.position + core::Vector2f(particle_size, particle_size), p.color, ts },
-			{ p.position + core::Vector2f(particle_size, 0), p.color, ts } 
+			{ p.position + core::Vector2f(0, p.size), p.color, ts },
+			{ p.position + core::Vector2f(p.size, p.size), p.color, ts },
+			{ p.position + core::Vector2f(p.size, 0), p.color, ts } 
 		};
 		// Send to the particle buffer
 		glBindVertexArray(_unlit_buffers.VAO);

@@ -46,7 +46,15 @@ int main()
 				//core::BoundingBoxF b2(shape2.transform().m_Position, shape2.transform().m_Size);
 				//if (b1.intersects(b2))
 				//	std::cout << "Collision good sir\n";
-				// Add some particles
+				
+				/* Testing the random methods */
+				std::cout << "Random INT between min:10 and max:100 => ";
+				std::cout << bear::core::randomIntegerInterval(10, 100) << std::endl;
+				std::cout << "Random FLOAT between 0 and 1 => ";
+				std::cout << bear::core::randomFloatZeroToOne() << std::endl;
+				std::cout << "Random FLOAT between 99 and 110 => ";
+				std::cout << bear::core::randomFloatInterval(99, 110) << std::endl;
+				std::cout << "======================" << std::endl;
 			}
 		}	
 
@@ -60,9 +68,13 @@ int main()
 			shape.transform().move(core::Vector2f(-.1, 0)*dt);
 		if (myWindow.isKeyDown(Key::X))
 		{
-			float x = core::randomInterval(-1, 1);
-			float y = core::randomInterval(-1, 1);
-			pool.addParticles(2, shape.transform().m_Position, core::Color::Blue(), core::Vector2f(x, y), 2500);
+			graphics::ParticleConfig config;
+			config.makeColorRandom();
+			config.makeVelocityRandom(0, 1, 0, 1);
+			config.size = 3;
+			config.position = core::Vector2f(100, 100);
+			
+			pool.addParticles(1, config, 2500);
 		}
 			
 

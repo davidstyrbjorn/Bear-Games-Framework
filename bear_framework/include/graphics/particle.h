@@ -11,6 +11,7 @@ namespace bear { namespace graphics {
 
 	struct Particle {
 		core::Vector2f position;
+		int size;
 		core::Color color;
 		int life_time;
 		core::Vector2f velocity;
@@ -18,16 +19,20 @@ namespace bear { namespace graphics {
 
 		// Constructor
 		Particle() { }
-		Particle(core::Vector2f& _position, core::Color& _color, core::Vector2f& velocity, int _life_time);
+		Particle(core::Vector2f& _position, int _size, core::Color& _color, core::Vector2f& velocity, int _life_time);
 	};
 
 	struct ParticleConfig {
 		core::Vector2f position;
+		int size;
 		core::Color color;
 		core::Vector2f velocity;
 
-		void makePositionRandom(float min_x, float max_x, float min_y, float max_y);
+		/* Makes particle size a random integer between min/max */
+		void makeSizeRandom(int min, int max);
+		/* Makes the particle color a random RGB color value */
 		void makeColorRandom();
+		/* Makes velocity a random vector with set min/max values */
 		void makeVelocityRandom(float min_x, float max_x, float min_y, float max_y);
 	};
 
@@ -35,7 +40,7 @@ namespace bear { namespace graphics {
 		std::vector<Particle> particle_list;
 		long int pool_timer = 0; // A timer incremented based on delta time
 
-		void addParticles(int num, core::Vector2f& position, core::Color& color, core::Vector2f& velocity, int life_time);
+		void addParticles(int num, core::Vector2f& position, int size, core::Color& color, core::Vector2f& velocity, int life_time);
 		void addParticles(int num, ParticleConfig& config, int life_time);
 		void process(float delta_time);
 	};

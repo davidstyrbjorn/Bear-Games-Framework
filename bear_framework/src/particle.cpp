@@ -1,22 +1,23 @@
 #include"../include/graphics/particle.h"
 
-#include<random>
+#include"../include/core/random.h"
 
 using namespace bear;
 using namespace bear::graphics;
 
-Particle::Particle(core::Vector2f& _position, core::Color& _color, core::Vector2f& _velocity, int _life_time)
+Particle::Particle(core::Vector2f& _position, int _size, core::Color& _color, core::Vector2f& _velocity, int _life_time)
 {
 	position = _position;
+	size = _size;
 	color = _color;
 	velocity = _velocity;
 	life_time = _life_time;
 }
 
-void ParticlePool::addParticles(int num, core::Vector2f& position, core::Color& color, core::Vector2f& velocity, int life_time)
+void ParticlePool::addParticles(int num, core::Vector2f& position, int size, core::Color& color, core::Vector2f& velocity, int life_time)
 {
 	for (int i = 0; i < num; i++) {
-		particle_list.push_back(Particle(position, color, velocity, life_time));
+		particle_list.push_back(Particle(position, size, color, velocity, life_time));
 		particle_list.back().birth_time = pool_timer;
 	}
 }
@@ -24,7 +25,7 @@ void ParticlePool::addParticles(int num, core::Vector2f& position, core::Color& 
 void ParticlePool::addParticles(int num, ParticleConfig& config, int life_time)
 {
 	for (int i = 0; i < num; i++) {
-		particle_list.push_back(Particle(config.position, config.color, config.velocity, life_time));
+		particle_list.push_back(Particle(config.position, config.size, config.color, config.velocity, life_time));
 		particle_list.back().birth_time = pool_timer;
 	}
 }
@@ -50,17 +51,21 @@ void ParticlePool::process(float delta_time)
 	}
 }
 
-void bear::graphics::ParticleConfig::makePositionRandom(float min_x, float max_x, float min_y, float max_y)
+/*
+Functions used from core/random.h
+*/
+
+void bear::graphics::ParticleConfig::makeSizeRandom(int min, int max)
 {
-	// @ TODO
+	size = core::randomIntegerInterval(min, max);
 }
 
 void bear::graphics::ParticleConfig::makeColorRandom()
 {
-	// @ TODO
+	color = core::Color(core::randomFloatInterval(0.f, 1.f), core::randomFloatInterval(0.f, 1.f), core::randomFloatInterval(0.f,1.f), 1.f);
 }
 
 void bear::graphics::ParticleConfig::makeVelocityRandom(float min_x, float max_x, float min_y, float max_y)
 {
-	// @ TODO
+	velocity = core::Vector2f(core::randomFloatInterval(min_x, max_x), core::randomFloatInterval(min_y, max_y));
 }
