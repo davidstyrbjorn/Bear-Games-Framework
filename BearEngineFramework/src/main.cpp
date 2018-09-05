@@ -8,6 +8,8 @@
 
 #include<graphics/renderers/particle_renderer.h>
 
+#include<core/random.h>
+
 using namespace bear;
 
 constexpr auto WIDTH = 400;
@@ -33,21 +35,18 @@ int main()
 
 	graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
 	pr->init();
-
 	graphics::ParticlePool pool;
-	pool.addParticles(10, core::Vector2f(100, 100), core::Color::Red(), core::Vector2f(0, 0), 2500);
 
 	while (myWindow.isOpen()) 
 	{
 		float dt = myWindow.getDeltaTime(); // Get the delta time for the last frame
 		for (Event event : myWindow.getRegisteredEvents()) { // Process the events here
 			if (event.type == EventType::KeyPressed && event.key == Key::X) {
-				core::BoundingBoxF b1(shape.transform().m_Position, shape.transform().m_Size);
-				core::BoundingBoxF b2(shape2.transform().m_Position, shape2.transform().m_Size);
-				if (b1.intersects(b2))
-					std::cout << "Collision good sir\n";
+				//core::BoundingBoxF b1(shape.transform().m_Position, shape.transform().m_Size);
+				//core::BoundingBoxF b2(shape2.transform().m_Position, shape2.transform().m_Size);
+				//if (b1.intersects(b2))
+				//	std::cout << "Collision good sir\n";
 				// Add some particles
-				pool.addParticles(2, core::Vector2f(rand() % WIDTH, 100), core::Color::Blue(), core::Vector2f(0, 0), 2500);
 			}
 		}	
 
@@ -59,6 +58,13 @@ int main()
 			shape.transform().move(core::Vector2f(.1, 0)*dt);
 		if (myWindow.isKeyDown(Key::A))
 			shape.transform().move(core::Vector2f(-.1, 0)*dt);
+		if (myWindow.isKeyDown(Key::X))
+		{
+			float x = core::randomInterval(-1, 1);
+			float y = core::randomInterval(-1, 1);
+			pool.addParticles(2, shape.transform().m_Position, core::Color::Blue(), core::Vector2f(x, y), 2500);
+		}
+			
 
 		myWindow.clear(core::Color(0.1f,0.1f,0.1f)); // Here is where the window is cleared and we can now render to the fresh window
 		
@@ -68,7 +74,6 @@ int main()
 		pr->flush();
 
 		//shape.draw(shader);
-		//shape2.draw(shader);
 
 		myWindow.display(); // Swaps the back and front buffers 
 	}

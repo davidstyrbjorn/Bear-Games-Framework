@@ -40,7 +40,12 @@ void ParticlePool::process(float delta_time)
 		// The particle is dead
 		if (pool_timer >= particle.birth_time + particle.life_time) {
 			particle_list.erase(particle_list.begin() + i);
-			std::cout << "Erased particle\n";
+		}
+		else {
+			/*
+			@ PARTICLE: This I want to move away from the cpu side possible, allow the shader(GPU) to do this computation
+			*/
+			particle.position += particle.velocity*delta_time;
 		}
 	}
 }

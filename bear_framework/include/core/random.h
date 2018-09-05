@@ -10,4 +10,10 @@ namespace bear { namespace core {
 		return x;
 	}
 
+	static float randomInterval(float min, float max) {
+		float x = randomZeroToOne();
+		float range = max - min;
+		return (range*x) + min;
+	}
+
 } }
