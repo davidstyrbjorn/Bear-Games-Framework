@@ -36,6 +36,7 @@ bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 	s_DefaultShaderText->setSource(text_vertex_shader_source, text_fragment_shader_source);
 	s_DefaultShaderText->compile();
 	s_DefaultParticleShader->setSourceFromFile("C:\\temp\\particle_vertex.txt", "C:\\temp\\particle_frag.txt");
+	s_DefaultParticleShader->setGeometrySourcePath("C:\\temp\\particle_geometry.txt");
 	s_DefaultParticleShader->compile();
 
 	window_resize_callback(a_Width, a_Height);

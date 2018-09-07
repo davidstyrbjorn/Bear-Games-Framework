@@ -30,6 +30,29 @@ void bear::graphics::Shader::setSource(const std::string& a_VertexSource, const 
 	m_FragmentSource = a_FragmentSource;
 }
 
+void bear::graphics::Shader::setGeometrySourcePath(std::string a_GeometryPath)
+{
+	std::ifstream geometryFile(a_GeometryPath);
+	if (!geometryFile.is_open()) {
+		std::cout << "Could not load geometry-shader file at given path: " << a_GeometryPath << "\n";
+	}
+	else {
+		m_GeometryFlag = true; // We've got a geometry shader file loaded!
+	}
+
+	std::string line;
+	// Get content from file
+	while (std::getline(geometryFile, line)) {
+		m_GeometrySource += line + "\n";
+	}
+}
+
+void bear::graphics::Shader::setGeometrySource(const std::string& a_GeometrySource) 
+{
+	m_GeometrySource = a_GeometrySource;
+	m_GeometryFlag = true; // We've got a geometry shader source to compile!
+}
+
 void bear::graphics::Shader::setSourceFromFile(std::string a_VertexPath, std::string a_FragmentPath)
 {
 	std::ifstream vertexFile(a_VertexPath);
@@ -39,15 +62,19 @@ void bear::graphics::Shader::setSourceFromFile(std::string a_VertexPath, std::st
 	}
 
 	std::string line;
+	// Get vertex file content
 	while (std::getline(vertexFile, line)) {
 		m_VertexSource += line + "\n";
 	}
 
-	line.clear();
+	line.clear();	 
 
+	// Get fragment file content
 	while (std::getline(fragmentFile, line)) {
 		m_FragmentSource += line + "\n";
 	}
+
+	line.clear();
 }
 
 void bear::graphics::Shader::compile()
@@ -73,15 +100,38 @@ void bear::graphics::Shader::compile()
 		std::cout << "FRAGMENT SHADER COMPILE ERROR\n" << fragmentCompileLog << "\n";
 	}
 
+	/* Geometry */
+	// Check if we're supplying a geometry shader to the program
+	GLuint geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+	if (m_GeometryFlag) {
+		const char* geometrySource = m_GeometrySource.c_str();
+		geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geometryShader, 1, &geometrySource, 0);
+		glCompileShader(geometryShader);
+		std::string geometryCompileLog = "";
+		//if (!didCompile(geometryShader, geometryCompileLog)) {
+		//	std::cout << "GEOMETRY SHADER COMPILE ERROR\n" << geometryCompileLog << "\n";
+		//}
+	}
+	
 	/* Shader Program */
 	m_Program = glCreateProgram();
 	/* Linking process */
 	glAttachShader(m_Program, vertexShader);
+	if (m_GeometryFlag)
+		glAttachShader(m_Program, geometryShader);
 	glAttachShader(m_Program, fragmentShader);
+
 	glLinkProgram(m_Program);
+
 	glDetachShader(m_Program, vertexShader);
+	if (m_GeometryFlag)
+		glDetachShader(m_Program, geometryShader);
 	glDetachShader(m_Program, fragmentShader);
+
 	glDeleteShader(vertexShader);
+	if (m_GeometryFlag)
+		glDeleteShader(geometryShader);
 	glDeleteShader(fragmentShader);
 }
 

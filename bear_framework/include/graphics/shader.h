@@ -20,6 +20,8 @@ namespace bear { namespace graphics {
 		bool m_IsActive;
 		std::string m_VertexSource;
 		std::string m_FragmentSource;
+		bool m_GeometryFlag = false;
+		std::string m_GeometrySource;
 
 	public:
 		Shader();
@@ -27,9 +29,12 @@ namespace bear { namespace graphics {
 
 		void setSource(const std::string& a_VertexSource, const std::string& a_FragmentSource);
 		void setSourceFromFile(std::string a_VertexPath, std::string a_FragmentPath);
+		void setGeometrySourcePath(std::string a_GeometryPath);
+		void setGeometrySource(const std::string &a_GeometrySource);
 		void compile();
 		void enable();
 		void disable();
+
 		const bool isActive() const;
 
 		void setUniformColor3f(const char* a_UniformName, core::Color& a_Color);

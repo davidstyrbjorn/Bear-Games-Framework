@@ -167,13 +167,13 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 	}
 	else {
 		// No indices so we're doing 2 triangles
-		vertList.push_back(Vertex(pos, col,  uv ));
-		vertList.push_back(Vertex{ core::Vector2f(pos.x, pos.y + size.y), col, uv });
-		vertList.push_back(Vertex{ pos + size, col, uv });
+		vertList.push_back({ pos, col,  uv });
+		vertList.push_back({ core::Vector2f(pos.x, pos.y + size.y), col, uv });
+		vertList.push_back({ pos + size, col, uv });
 
-		vertList.push_back(Vertex{ pos, col, uv });
-		vertList.push_back(Vertex{ core::Vector2f(pos.x + size.x, pos.y), col, uv });
-		vertList.push_back(Vertex{ pos + size, col, uv });
+		vertList.push_back({ pos, col, uv });
+		vertList.push_back({ core::Vector2f(pos.x + size.x, pos.y), col, uv });
+		vertList.push_back({ pos + size, col, uv });
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);

@@ -48,13 +48,13 @@ int main()
 				//	std::cout << "Collision good sir\n";
 				
 				/* Testing the random methods */
-				std::cout << "Random INT between min:10 and max:100 => ";
-				std::cout << bear::core::randomIntegerInterval(10, 100) << std::endl;
-				std::cout << "Random FLOAT between 0 and 1 => ";
-				std::cout << bear::core::randomFloatZeroToOne() << std::endl;
-				std::cout << "Random FLOAT between 99 and 110 => ";
-				std::cout << bear::core::randomFloatInterval(99, 110) << std::endl;
-				std::cout << "======================" << std::endl;
+				//std::cout << "Random INT between min:10 and max:100 => ";
+				//std::cout << bear::core::randomIntegerInterval(10, 100) << std::endl;
+				//std::cout << "Random FLOAT between 0 and 1 => ";
+				//std::cout << bear::core::randomFloatZeroToOne() << std::endl;
+				//std::cout << "Random FLOAT between 99 and 110 => ";
+				//std::cout << bear::core::randomFloatInterval(99, 110) << std::endl;
+				//std::cout << "======================" << std::endl;
 			}
 		}	
 
@@ -70,7 +70,7 @@ int main()
 		{
 			graphics::ParticleConfig config;
 			config.makeColorRandom();
-			config.makeVelocityRandom(0, 1, 0, 1);
+			config.makeVelocityRandom(-1, 1, -1, 1);
 			config.size = 3;
 			config.position = core::Vector2f(100, 100);
 			
