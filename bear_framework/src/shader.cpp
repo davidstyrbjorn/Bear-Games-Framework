@@ -108,8 +108,10 @@ void bear::graphics::Shader::compile()
 		geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 		glShaderSource(geometryShader, 1, &geometrySource, 0);
 		glCompileShader(geometryShader);
+		std::cout << "MAKING A GEOMETRY SHADER!\n";
 		std::string geometryCompileLog = "";
 		//if (!didCompile(geometryShader, geometryCompileLog)) {
+
 		//	std::cout << "GEOMETRY SHADER COMPILE ERROR\n" << geometryCompileLog << "\n";
 		//}
 	}

@@ -11,7 +11,6 @@ using namespace bear::graphics;
 
 void ParticleRenderer::init()
 {
-
 	/*
 	0. Renderer stores data which is sent to the shader during the main render pass
 	1. Send primitive points to the vertex shader, set position, then send to geomtry shader
@@ -19,8 +18,6 @@ void ParticleRenderer::init()
 	3. In the fragment shader we colorize and render
 	
 	*/
-
-	
 
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
@@ -38,23 +35,6 @@ void ParticleRenderer::init()
 	glEnableVertexAttribArray(1); // color
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f)));
-	
-	// Index buffer
-	// Generate the index data structure
-	//glGenBuffers(1, &_unlit_buffers.IBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _unlit_buffers.IBO);
-	//int offset = 0;
-	//GLuint indices[INDICES_COUNT];
-	//for (int i = 0; i < INDICES_COUNT; i = i + 6) {
-	//	indices[i] = offset;			// 0 
-	//	indices[i + 1] = offset + 1;	// 1
-	//	indices[i + 2] = offset + 2;	// 2
-	//	indices[i + 3] = offset + 2;	// 2
-	//	indices[i + 4] = offset + 3;	// 3
-	//	indices[i + 5] = offset;		// 0
-	//	offset += 4;
-	//}
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
 void bear::graphics::ParticleRenderer::begin()
@@ -71,23 +51,7 @@ void bear::graphics::ParticleRenderer::submit(ParticlePool& a_ParticlePool)
 	// Go through each particle in the particle pool and add it to the buffer
 	static core::Vector2f ts = core::Vector2f(-1, -1);
 	for (Particle& p : a_ParticlePool.particle_list) {
-		// Using the particle information
-		//Vertex vert_data[] = 
-		//{
-		//	{ p.position, p.color, ts },
-		//	{ p.position + core::Vector2f(0, p.size), p.color, ts },
-		//	{ p.position + core::Vector2f(p.size, p.size), p.color, ts },
-		//	{ p.position + core::Vector2f(p.size, 0), p.color, ts } 
-		//};
-		//// Send to the particle buffer
-		//glBindVertexArray(_unlit_buffers.VAO);
-		//glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
-		//unsigned int _buffer_offset = (sizeof(Vertex) * 4) * m_ParticleCount; // Calculate the current-allocated data size of the buffer
-		//glBufferSubData(GL_ARRAY_BUFFER, _buffer_offset, sizeof(vert_data), vert_data); // Where we actually insert the vert_data
-		//
-		//m_ParticleCount++;
-
-		// ASSUME: we're sending only points to the render pass, the geometry shader takes care of expanding into 4 vertices
+		// we're sending only points to the vertex buffer, the geometry shader takes care of expanding into quad primitive
 		Vertex vert_point[] = { p.position, p.color, ts };
 		glBindVertexArray(_unlit_buffers.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
@@ -109,17 +73,4 @@ void bear::graphics::ParticleRenderer::flush()
 	// Unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	//Graphics::s_DefaultParticleShader->enable();
-	//// Bind
-	//glBindVertexArray(_unlit_buffers.VAO);
-	//glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _unlit_buffers.IBO);
-	//// Draw call
-	//glDrawElements(GL_TRIANGLES, m_ParticleCount * 6, GL_UNSIGNED_INT, nullptr);
-	//// Unbind			
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//glBindVertexArray(0);
-	//Graphics::s_DefaultParticleShader->disable();
 }
