@@ -41,20 +41,8 @@ int main()
 	{
 		float dt = myWindow.getDeltaTime(); // Get the delta time for the last frame
 		for (Event event : myWindow.getRegisteredEvents()) { // Process the events here
-			if (event.type == EventType::KeyPressed && event.key == Key::X) {
-				//core::BoundingBoxF b1(shape.transform().m_Position, shape.transform().m_Size);
-				//core::BoundingBoxF b2(shape2.transform().m_Position, shape2.transform().m_Size);
-				//if (b1.intersects(b2))
-				//	std::cout << "Collision good sir\n";
-				
-				/* Testing the random methods */
-				//std::cout << "Random INT between min:10 and max:100 => ";
-				//std::cout << bear::core::randomIntegerInterval(10, 100) << std::endl;
-				//std::cout << "Random FLOAT between 0 and 1 => ";
-				//std::cout << bear::core::randomFloatZeroToOne() << std::endl;
-				//std::cout << "Random FLOAT between 99 and 110 => ";
-				//std::cout << bear::core::randomFloatInterval(99, 110) << std::endl;
-				//std::cout << "======================" << std::endl;
+			if (event.type == EventType::WindowReiszed) {
+				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
 			}
 		}	
 

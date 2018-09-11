@@ -16,24 +16,7 @@ void ParticleRenderer::init()
 	1. Send primitive points to the vertex shader, set position, then send to geomtry shader
 	2. In geomtry shader create quad and transform into screenspace
 	3. In the fragment shader we colorize and render
-	
 	*/
-
-	m_Shader = new Shader();
-	m_Shader->setSourceFromFile("D:\\temp\\particle_vertex.txt", "D:\\temp\\particle_frag.txt");
-	m_Shader->setGeometrySourcePath("D:\\temp\\particle_geometry.txt");
-	m_Shader->compile();
-	m_Shader->enable();
-	m_Shader->setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 510, 720, 0, -1, 1));
-
-	std::cout << "VERTEX SHADER: \n";
-	std::cout << m_Shader->m_VertexSource << std::endl << std::endl;
-
-	std::cout << "GEOMETRY SHADER: \n";
-	std::cout << m_Shader->m_GeometrySource << std::endl << std::endl;
-
-	std::cout << "FRAGMENT SHADER: \n";
-	std::cout << m_Shader->m_FragmentSource << std::endl << std::endl;
 
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
@@ -81,9 +64,7 @@ void bear::graphics::ParticleRenderer::flush()
 {
 	// Draw point primitive
 	// Bind
-	//Graphics::s_DefaultParticleShader->enable();
-	m_Shader->enable();
-
+	Graphics::s_DefaultParticleShader->enable();
 	glBindVertexArray(_unlit_buffers.VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
 	// Draw

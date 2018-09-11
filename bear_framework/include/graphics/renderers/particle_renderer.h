@@ -21,10 +21,10 @@ namespace bear { namespace graphics {
 	private:
 		unlit_buffers _unlit_buffers;
 		unsigned int m_ParticleCount = 0;
-		Shader* m_Shader;
 
 	public:
 		ParticleRenderer() { }
+		// @ Constructor and delete shit!
 
 		/*
 		Init the particle buffer
