@@ -12,8 +12,8 @@
 
 using namespace bear;
 
-constexpr auto WIDTH = 400;
-constexpr auto HEIGHT = 400;
+constexpr auto WIDTH = 720;
+constexpr auto HEIGHT = 510;
 
 int main()
 {
@@ -70,9 +70,9 @@ int main()
 		{
 			graphics::ParticleConfig config;
 			config.makeColorRandom();
-			config.makeVelocityRandom(-1, 1, -1, 1);
+			config.makeVelocityRandom(-0.5, 0.5, -0.5, 0.5);
 			config.size = 3;
-			config.position = core::Vector2f(100, 100);
+			config.position = core::Vector2f(WIDTH/2, HEIGHT/2);
 			
 			pool.addParticles(1, config, 2500);
 		}

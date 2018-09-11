@@ -13,7 +13,7 @@ namespace bear {
 namespace bear { namespace graphics {
 
 	class Shader {
-	private:
+	public:
 		unsigned int m_Program;
 		// Caching the uniform locations for faster lookup
 		std::map<const char*, int> m_UniformMap;

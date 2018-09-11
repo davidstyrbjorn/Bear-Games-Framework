@@ -19,6 +19,22 @@ void ParticleRenderer::init()
 	
 	*/
 
+	m_Shader = new Shader();
+	m_Shader->setSourceFromFile("C:\\temp\\particle_vertex.txt", "C:\\temp\\particle_frag.txt");
+	m_Shader->setGeometrySourcePath("C:\\temp\\particle_geometry.txt");
+	m_Shader->compile();
+	m_Shader->enable();
+	m_Shader->setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 510, 720, 0, -1, 1));
+
+	std::cout << "VERTEX SHADER: \n";
+	std::cout << m_Shader->m_VertexSource << std::endl << std::endl;
+
+	std::cout << "GEOMETRY SHADER: \n";
+	std::cout << m_Shader->m_GeometrySource << std::endl << std::endl;
+
+	std::cout << "FRAGMENT SHADER: \n";
+	std::cout << m_Shader->m_FragmentSource << std::endl << std::endl;
+
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenBuffers(1, &_unlit_buffers.IBO);
@@ -65,7 +81,9 @@ void bear::graphics::ParticleRenderer::flush()
 {
 	// Draw point primitive
 	// Bind
-	Graphics::s_DefaultParticleShader->enable();
+	//Graphics::s_DefaultParticleShader->enable();
+	m_Shader->enable();
+
 	glBindVertexArray(_unlit_buffers.VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
 	// Draw

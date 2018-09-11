@@ -25,7 +25,7 @@ namespace bear { namespace graphics {
 		// Used by: BatchRenderer
 		static Shader* s_DefaultShader;
 		static Shader* s_DefaultShaderText;
-		static Shader* s_DefaultParticleShader;
+		//static Shader* s_DefaultParticleShader;
 		static unsigned int m_ScreenWidth;
 		static unsigned int m_ScreenHeight;
 
