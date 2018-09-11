@@ -20,8 +20,8 @@ void ParticleRenderer::init()
 	*/
 
 	m_Shader = new Shader();
-	m_Shader->setSourceFromFile("C:\\temp\\particle_vertex.txt", "C:\\temp\\particle_frag.txt");
-	m_Shader->setGeometrySourcePath("C:\\temp\\particle_geometry.txt");
+	m_Shader->setSourceFromFile("D:\\temp\\particle_vertex.txt", "D:\\temp\\particle_frag.txt");
+	m_Shader->setGeometrySourcePath("D:\\temp\\particle_geometry.txt");
 	m_Shader->compile();
 	m_Shader->enable();
 	m_Shader->setUniformMatrix4x4("projection_matrix", core::Matrix4x4::Orthographic(0, 510, 720, 0, -1, 1));
