@@ -47,6 +47,9 @@ void ParticlePool::process(float delta_time)
 			@ PARTICLE: This I want to move away from the cpu side possible, allow the shader(GPU) to do this computation
 			*/
 			particle.position += particle.velocity*delta_time;
+			float test = pool_timer / (float)(particle.birth_time + particle.life_time);
+			particle.color.a = 1 - test;
+
 		}
 	}
 }
