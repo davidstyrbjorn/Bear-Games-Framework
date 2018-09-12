@@ -9,6 +9,13 @@
 
 namespace bear { namespace graphics {
 
+	// Used when rendering a particle primitive
+	struct ParticleVertex {
+		core::Vector2f position;
+		core::Color color;
+		float size;
+	};
+
 	struct Particle {
 		core::Vector2f position;
 		int size;

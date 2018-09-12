@@ -46,12 +46,12 @@ int main()
 			}
 			if (event.type == EventType::KeyPressed) {
 				if (event.key == Key::X) {
-					for (int i = 0; i < 500; i++)
+					for (int i = 0; i < 500; i++)	
 					{
 						graphics::ParticleConfig config;
 						config.makeColorRandom();
 						config.makeVelocityRandom(-0.3, 0.3, -0.3, 0.3);
-						config.size = 3;
+						config.size = 10;
 						config.position = core::Vector2f(WIDTH / 2, HEIGHT / 2);
 
 						pool.addParticles(1, config, core::randomIntegerInterval(250, 2000));

@@ -48,7 +48,7 @@ void ParticlePool::process(float delta_time)
 			*/
 			particle.position += particle.velocity*delta_time;
 			float test = pool_timer / (float)(particle.birth_time + particle.life_time);
-			particle.color.a = 1 - test;
+			//particle.color.a = 1 - test;
 
 		}
 	}

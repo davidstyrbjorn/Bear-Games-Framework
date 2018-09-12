@@ -32,8 +32,10 @@ void ParticleRenderer::init()
 	// Enable the attributes in shader -> layout(location = 0)
 	glEnableVertexAttribArray(0); // position
 	glEnableVertexAttribArray(1); // color
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f)));
+	glEnableVertexAttribArray(2); // size
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (GLvoid*)0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (GLvoid*)(sizeof(core::Vector2f)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
 }
 
 void bear::graphics::ParticleRenderer::begin()
@@ -51,10 +53,10 @@ void bear::graphics::ParticleRenderer::submit(ParticlePool& a_ParticlePool)
 	static core::Vector2f ts = core::Vector2f(-1, -1);
 	for (Particle& p : a_ParticlePool.particle_list) {
 		// we're sending only points to the vertex buffer, the geometry shader takes care of expanding into quad primitive
-		Vertex vert_point[] = { p.position, p.color, ts };
+		ParticleVertex vert_point[] = { p.position, p.color, static_cast<float>(p.size) };
 		glBindVertexArray(_unlit_buffers.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
-		unsigned int _offset = sizeof(Vertex) * m_ParticleCount; // Current allocated buffer size
+		unsigned int _offset = sizeof(ParticleVertex) * m_ParticleCount; // Current allocated buffer size
 		glBufferSubData(GL_ARRAY_BUFFER, _offset, sizeof(vert_point), vert_point);
 		m_ParticleCount++;
 	}

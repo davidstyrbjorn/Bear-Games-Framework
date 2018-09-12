@@ -10,8 +10,6 @@
 
 namespace bear { namespace graphics {
 
-	class Shader;
-
 	struct unlit_buffers
 	{
 		unsigned int VAO, VBO, IBO;
