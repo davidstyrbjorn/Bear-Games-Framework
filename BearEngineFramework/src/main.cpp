@@ -51,7 +51,7 @@ int main()
 						graphics::ParticleConfig config;
 						config.makeColorRandom();
 						config.makeVelocityRandom(-0.3, 0.3, -0.3, 0.3);
-						config.size = 10;
+						config.size = 5;
 						config.position = core::Vector2f(WIDTH / 2, HEIGHT / 2);
 
 						pool.addParticles(1, config, core::randomIntegerInterval(250, 2000));
