@@ -14,19 +14,22 @@ namespace bear { namespace graphics {
 		core::Vector2f position;
 		core::Color color;
 		float size;
+		core::Vector2f velocity;
+		float aliveTime;
+		float deathTime;
 	};
 
 	struct Particle {
 		core::Vector2f position;
 		int size;
 		core::Color color;
-		int life_time;
 		core::Vector2f velocity;
-		int birth_time;
+		float aliveTime = 0;
+		float deathTime;
 
 		// Constructor
 		Particle() { }
-		Particle(core::Vector2f& _position, int _size, core::Color& _color, core::Vector2f& velocity, int _life_time);
+		Particle(core::Vector2f& _position, int _size, core::Color& _color, core::Vector2f& _velocity, float _life_time);
 	};
 
 	struct ParticleConfig {
@@ -45,9 +48,7 @@ namespace bear { namespace graphics {
 
 	struct ParticlePool {
 		std::vector<Particle> particle_list;
-		long int pool_timer = 0; // A timer incremented based on delta time
 
-		void addParticles(int num, core::Vector2f& position, int size, core::Color& color, core::Vector2f& velocity, int life_time);
 		void addParticles(int num, ParticleConfig& config, int life_time);
 		void process(float delta_time);
 	};

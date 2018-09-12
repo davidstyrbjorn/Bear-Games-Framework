@@ -1,0 +1,10 @@
+#version 330 
+
+in Fragment{
+	vec4 color;
+} fragment;
+
+void main()
+{
+    gl_FragColor = fragment.color;
+}

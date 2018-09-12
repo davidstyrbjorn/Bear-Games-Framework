@@ -11,16 +11,16 @@
 
 namespace bear { namespace sound { 
 
-	bool isBigEndian()
+	bool WAV_isBigEndian()
 	{
 		int a = 1;
 		return !((char*)&a)[0];
 	}
 
-	int convertToInt(char* buffer, int len)
+	int WAV_convertToInt(char* buffer, int len)
 	{
 		int a = 0;
-		if (!isBigEndian())
+		if (!WAV_isBigEndian())
 			for (int i = 0; i<len; i++)
 				((char*)&a)[i] = buffer[i];
 		else
@@ -53,19 +53,19 @@ namespace bear { namespace sound {
 		in.read(buffer, 4);     // Chunk size: 16, 18 or 40
 		in.read(buffer, 2);     // Format code: 1
 		in.read(buffer, 2);
-		chan = convertToInt(buffer, 2);
+		chan = WAV_convertToInt(buffer, 2);
 
 		in.read(buffer, 4);		// Sampling rate
-		samplerate = convertToInt(buffer, 4);
+		samplerate = WAV_convertToInt(buffer, 4);
 
 		in.read(buffer, 4);		// Data Rate (byte/sec)
 		in.read(buffer, 2);		// Data block size (bytes)
 		in.read(buffer, 2);		// Bits per sample
-		bps = convertToInt(buffer, 2);
+		bps = WAV_convertToInt(buffer, 2);
 
 		in.read(buffer, 4);     // Subchunk2ID -> "data"
 		in.read(buffer, 4);		// Subchunk2Size -> NumSamples * NumChannels * BitsPerSample/8
-		size = convertToInt(buffer, 4);
+		size = WAV_convertToInt(buffer, 4);
 
 		char* data = new char[size];
 		in.read(data, size);	// Reading the actual waveform data 

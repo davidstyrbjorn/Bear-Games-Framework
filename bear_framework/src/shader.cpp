@@ -3,6 +3,7 @@
 #include"../include/graphics/graphics.h"
 
 #include"../include/core/matrix4x4.h"
+#include"../include/core/vector2.h"
 #include"../include/core/color.h"
 #include"../include/core/file_utility.h"
 
@@ -15,10 +16,7 @@
 using namespace bear::graphics;
 
 bear::graphics::Shader::Shader()
-
 {
-
-
 }
 
 bear::graphics::Shader::~Shader()
@@ -153,6 +151,11 @@ void bear::graphics::Shader::disable()
 const bool bear::graphics::Shader::isActive() const
 {
 	return m_IsActive;
+}
+
+void bear::graphics::Shader::setUniformVector2f(const char * a_UniformName, core::Vector2<float>& a_Vector)
+{
+	glUniform2f(getUniformLocation(a_UniformName), a_Vector.x, a_Vector.y);
 }
 
 void bear::graphics::Shader::setUniformColor3f(const char * a_UniformName, core::Color & a_Color)

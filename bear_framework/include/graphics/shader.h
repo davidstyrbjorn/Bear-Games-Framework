@@ -7,6 +7,8 @@ namespace bear {
 	namespace core {
 		class Matrix4x4;
 		struct Color;
+		template<typename T>
+		class Vector2;
 	}
 }
 
@@ -37,6 +39,7 @@ namespace bear { namespace graphics {
 
 		const bool isActive() const;
 
+		void setUniformVector2f(const char* a_UniformName, core::Vector2<float>& a_Vector);
 		void setUniformColor3f(const char* a_UniformName, core::Color& a_Color);
 		void setUniformMatrix4x4(const char* a_UniformName, core::Matrix4x4& a_Matrix);
 		void setUniformInteger(const char* a_UniformName, int a_Integer);

@@ -18,6 +18,8 @@ void ParticleRenderer::init()
 	3. In the fragment shader we colorize and render
 	*/
 
+	Graphics::s_DefaultParticleShader->setUniformVector2f("acceleration", core::Vector2f(0, 0.001));
+
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenBuffers(1, &_unlit_buffers.IBO);
@@ -28,14 +30,28 @@ void ParticleRenderer::init()
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
 	glBufferData(GL_ARRAY_BUFFER, PARTICLE_BUFFER_SIZE, nullptr, GL_DYNAMIC_DRAW);
 	
-	// Buffer layout with the current bound vertex array buffer
-	// Enable the attributes in shader -> layout(location = 0)
-	glEnableVertexAttribArray(0); // position
-	glEnableVertexAttribArray(1); // color
-	glEnableVertexAttribArray(2); // size
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (GLvoid*)0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (GLvoid*)(sizeof(core::Vector2f)));
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
+	// Buffer layout
+	// Enable the attributes in shader -> layout(location = n)
+	glEnableVertexAttribArray(0); // position  (vec2)
+	glEnableVertexAttribArray(1); // color     (vec4)
+	glEnableVertexAttribArray(2); // size      (float)
+	glEnableVertexAttribArray(3); // velocity  (vec2)
+	glEnableVertexAttribArray(4); // lifeTime  (float)
+	glEnableVertexAttribArray(5); // deathTime (float)
+	// Specify the layout attributes
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), 
+		(GLvoid*)0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), 
+		(GLvoid*)(sizeof(core::Vector2f)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), 
+		(GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex),
+		(GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color) + sizeof(float)));
+	glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex),
+		(GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color) + sizeof(float) + sizeof(core::Vector2f)));
+	glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex),
+		(GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color) + sizeof(float) + sizeof(core::Vector2f) + sizeof(float)));
+
 }
 
 void bear::graphics::ParticleRenderer::begin()
@@ -53,7 +69,7 @@ void bear::graphics::ParticleRenderer::submit(ParticlePool& a_ParticlePool)
 	static core::Vector2f ts = core::Vector2f(-1, -1);
 	for (Particle& p : a_ParticlePool.particle_list) {
 		// we're sending only points to the vertex buffer, the geometry shader takes care of expanding into quad primitive
-		ParticleVertex vert_point[] = { p.position, p.color, static_cast<float>(p.size) };
+		ParticleVertex vert_point[] = { p.position, p.color, static_cast<float>(p.size), p.velocity, p.aliveTime, p.deathTime };
 		glBindVertexArray(_unlit_buffers.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
 		unsigned int _offset = sizeof(ParticleVertex) * m_ParticleCount; // Current allocated buffer size
