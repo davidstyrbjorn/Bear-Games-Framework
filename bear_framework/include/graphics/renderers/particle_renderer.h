@@ -10,19 +10,19 @@
 
 namespace bear { namespace graphics {
 
-	struct unlit_buffers
+	struct particle_buffers
 	{
-		unsigned int VAO, VBO, IBO;
+		unsigned int VAO, VBO;
 	};
 
 	class ParticleRenderer {
 	private:
-		unlit_buffers _unlit_buffers;
+		particle_buffers _unlit_buffers;
 		unsigned int m_ParticleCount = 0;
 
 	public:
 		ParticleRenderer() { }
-		// @ Constructor and delete shit!
+		~ParticleRenderer();
 
 		/*
 		Init the particle buffer
@@ -33,6 +33,8 @@ namespace bear { namespace graphics {
 		void begin();
 		void submit(ParticlePool& a_ParticlePool);
 		void flush();
+
+		void setGravityAcceleration(core::Vector2f& a_Vector);
 	};
 
 } }

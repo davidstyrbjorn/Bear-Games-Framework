@@ -9,20 +9,24 @@
 using namespace bear;
 using namespace bear::graphics;
 
+ParticleRenderer::~ParticleRenderer()
+{
+	// Delete shit
+	glDeleteBuffers(1, &_unlit_buffers.VBO);
+	glDeleteVertexArrays(1, &_unlit_buffers.VAO);
+}
+
 void ParticleRenderer::init()
 {
 	/*
-	0. Renderer stores data which is sent to the shader during the main render pass
-	1. Send primitive points to the vertex shader, set position, then send to geomtry shader
-	2. In geomtry shader create quad and transform into screenspace
-	3. In the fragment shader we colorize and render
+	0. Renderer uploads only particle data to the next stage/shader stage
+	1. Vertex shader passes the data to the geometry shader
+	2. In geomtry shader we create quad out of the data and transform positions, send data to frag shader
+	3. In the fragment shader we colorize then we're done
 	*/
-
-	Graphics::s_DefaultParticleShader->setUniformVector2f("acceleration", core::Vector2f(0, 0.001));
 
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
-	glGenBuffers(1, &_unlit_buffers.IBO);
 	glGenVertexArrays(1, &_unlit_buffers.VAO);
 
 	glBindVertexArray(_unlit_buffers.VAO);
@@ -90,4 +94,10 @@ void bear::graphics::ParticleRenderer::flush()
 	// Unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+}
+
+void bear::graphics::ParticleRenderer::setGravityAcceleration(core::Vector2f & a_Vector)
+{
+	std::cout << a_Vector << std::endl;
+	Graphics::s_DefaultParticleShader->setUniformVector2f("acceleration", a_Vector);
 }
