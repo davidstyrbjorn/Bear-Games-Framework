@@ -13,6 +13,7 @@ namespace bear { namespace graphics {
 	struct particle_buffers
 	{
 		unsigned int VAO, VBO;
+		unsigned int TBO;
 	};
 
 	class ParticleRenderer {

@@ -1,6 +1,8 @@
 #pragma once
 
 #include<random>
+#include<math.h>
+#include"vector2.h"
 
 namespace bear { namespace core {
 
@@ -27,4 +29,17 @@ namespace bear { namespace core {
 		return (range*x) + min;
 	}
 
+#define PI 3.14159265
+
+	static Vector2f randomPointInsideUnitCircle() {
+		float randomAngle = randomFloatInterval(0, 2 * PI);
+		return Vector2f(cos(randomAngle), sin(randomAngle));
+	}
+
+	static Vector2f randomPointInsideCircle(float radius) {
+		float randomRadius = randomFloatInterval(1, radius);
+		Vector2f point = randomPointInsideUnitCircle();
+		point = point * randomRadius;
+		return point;
+	}
 } }

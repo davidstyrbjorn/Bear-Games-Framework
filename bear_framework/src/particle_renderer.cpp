@@ -25,6 +25,17 @@ void ParticleRenderer::init()
 	3. In the fragment shader we colorize then we're done
 	*/
 
+	Image test_image("shaders\\fire.png");
+	// Create an opengl image
+	glGenTextures(1, &_unlit_buffers.TBO);
+	glBindTexture(GL_TEXTURE_2D, _unlit_buffers.TBO);
+	glTexImage2D(GL_TEXTURE_2D, 0, test_image.m_Format, test_image.m_ImageSize.x, test_image.m_ImageSize.y, 0, test_image.m_Format, GL_UNSIGNED_BYTE, test_image.m_ImageData);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	Graphics::s_DefaultParticleShader->setUniformVector2f("gravity", core::Vector2f(0.0003, -0.0002));
+
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenVertexArrays(1, &_unlit_buffers.VAO);
@@ -42,6 +53,7 @@ void ParticleRenderer::init()
 	glEnableVertexAttribArray(3); // velocity  (vec2)
 	glEnableVertexAttribArray(4); // lifeTime  (float)
 	glEnableVertexAttribArray(5); // deathTime (float)
+	glEnableVertexAttribArray(6); // uv        (vec2)
 	// Specify the layout attributes
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex), 
 		(GLvoid*)0);
@@ -55,7 +67,6 @@ void ParticleRenderer::init()
 		(GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color) + sizeof(float) + sizeof(core::Vector2f)));
 	glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleVertex),
 		(GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color) + sizeof(float) + sizeof(core::Vector2f) + sizeof(float)));
-
 }
 
 void bear::graphics::ParticleRenderer::begin()
@@ -68,7 +79,6 @@ void bear::graphics::ParticleRenderer::begin()
 
 void bear::graphics::ParticleRenderer::submit(ParticlePool& a_ParticlePool)
 {
-
 	// Go through each particle in the particle pool and add it to the buffer
 	static core::Vector2f ts = core::Vector2f(-1, -1);
 	for (Particle& p : a_ParticlePool.particle_list) {
@@ -87,6 +97,7 @@ void bear::graphics::ParticleRenderer::flush()
 	// Draw point primitive
 	// Bind
 	Graphics::s_DefaultParticleShader->enable();
+	glBindTexture(GL_TEXTURE_2D, _unlit_buffers.TBO);
 	glBindVertexArray(_unlit_buffers.VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
 	// Draw
@@ -98,6 +109,6 @@ void bear::graphics::ParticleRenderer::flush()
 
 void bear::graphics::ParticleRenderer::setGravityAcceleration(core::Vector2f & a_Vector)
 {
-	std::cout << a_Vector << std::endl;
-	Graphics::s_DefaultParticleShader->setUniformVector2f("acceleration", a_Vector);
+	// @ WHY THE FUCK IS THIS NOT WORKING
+	Graphics::s_DefaultParticleShader->setUniformVector2f("gravity", a_Vector);
 }

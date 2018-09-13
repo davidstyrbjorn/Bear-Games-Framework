@@ -19,6 +19,7 @@ constexpr auto HEIGHT = 510;
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "THIS IS A WINDOW");
+	myWindow.setVSync(true);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -31,10 +32,8 @@ int main()
 	graphics::BatchRenderer _renderer;
 	_renderer.init();
 	
-	graphics::Renderable rect(graphics::renderable_type::Rectangle);
-	rect.transform().m_Size = core::Vector2f(100, 50);
-	rect.setColor(core::Color::Red());
-	rect.transform().m_Position = core::Vector2f(100, 100);
+	//graphics::Renderable torch("C:\\Users\\David\\Desktop\\Images\\1890_art1.jpg");
+	//torch.transform().m_Size = core::Vector2f(4812/10, 2417/10);
 	
 	while (myWindow.isOpen()) 
 	{
@@ -46,7 +45,7 @@ int main()
 			if (event.type == EventType::KeyPressed) {
 				switch (event.key) {
 				case Key::D:
-					pr->setGravityAcceleration(core::Vector2f(0.001, 0));
+					pr->setGravityAcceleration(core::Vector2f(1, 0));
 					break;
 				case Key::A:
 					pr->setGravityAcceleration(core::Vector2f(-0.001, 0));
@@ -64,17 +63,18 @@ int main()
 		//if (myWindow.isKeyDown(Key::X))
 		{
 			graphics::ParticleConfig config;
+			config.color = core::Color::White();
 			config.makeColorRandom();
-			config.makeVelocityRandom(-0.3, 0.3, -0.3, 0.3);
-			//config.position.x = core::randomIntegerInterval(0, WIDTH);
-			config.size = core::randomIntegerInterval(1, 5);
-			config.position = core::Vector2f(WIDTH / 2, HEIGHT / 2);
+			config.makeVelocityRandom(0, 0.3, 0, 0);
+			config.size = core::randomIntegerInterval(5, 25);
+			//config.position = core::Vector2f(WIDTH / 2, HEIGHT / 2);
+			config.position = core::Vector2f(0,(HEIGHT/2)) + core::randomPointInsideCircle(60);
 
 			pool.addParticles(1, config, core::randomIntegerInterval(250, 2000));
 		}
 			
 		// RENDERING BEGINS HERE
-		myWindow.clear(core::Color(0.05f,0.05f,0.05f)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.09f,0.09f,0.12f)); // Here is where the window is cleared and we can now render to the fresh window
 		
 		// Particles
 		pool.process(dt);
@@ -84,7 +84,7 @@ int main()
 
 		// The normal renderer
 		_renderer.begin();
-		_renderer.submit(rect);
+		//_renderer.submit(torch);
 		_renderer.flush();
 
 		myWindow.display(); 

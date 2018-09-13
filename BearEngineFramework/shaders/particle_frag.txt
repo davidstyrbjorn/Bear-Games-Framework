@@ -2,9 +2,13 @@
 
 in Fragment{
 	vec4 color;
+	vec2 uv;
 } fragment;
+
+uniform sampler2D texture_sampler;
 
 void main()
 {
-    gl_FragColor = fragment.color;
+   gl_FragColor = fragment.color;
+   //gl_FragColor = vec4(1,1,1,texture2D(texture_sampler, fragment.uv).r) * vec4(fragment.color);
 }
