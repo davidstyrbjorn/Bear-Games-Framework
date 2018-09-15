@@ -25,14 +25,15 @@ int main()
 		std::cout << "Graphics failed to init send help\n";
 
 	graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
-	//pr->setGravityAcceleration(core::Vector2f(0, -0.001));
 	pr->init();
+	pr->setUseTexture(true);
 	graphics::ParticlePool pool;
 
 	graphics::BatchRenderer _renderer;
 	_renderer.init();
 	
-	//graphics::Renderable torch("C:\\Users\\David\\Desktop\\Images\\1890_art1.jpg");
+	graphics::Renderable torch("shaders\\torch.png");
+	torch.transform().m_Position = core::Vector2f(0, 150);
 	//torch.transform().m_Size = core::Vector2f(4812/10, 2417/10);
 	
 	while (myWindow.isOpen()) 
@@ -45,7 +46,7 @@ int main()
 			if (event.type == EventType::KeyPressed) {
 				switch (event.key) {
 				case Key::D:
-					pr->setGravityAcceleration(core::Vector2f(1, 0));
+					pr->setGravityAcceleration(core::Vector2f(0.001, 0));
 					break;
 				case Key::A:
 					pr->setGravityAcceleration(core::Vector2f(-0.001, 0));
@@ -54,8 +55,18 @@ int main()
 					pr->setGravityAcceleration(core::Vector2f(0, 0.001));
 					break;
 				case Key::W:
-					pr->setGravityAcceleration(core::Vector2f(0, -0.001));
+					pr->setGravityAcceleration(core::Vector2f(0, -0.00025));
 					break;
+				}
+				if (event.key == Key::X) {
+					pr->setUseTexture(true);
+				}
+				else if (event.key == Key::Z) {
+					pr->setUseTexture(false);
+				}
+				else if (event.key == Key::C) {
+					graphics::Image image("shaders\\particle.png");
+					pr->setActiveTexture(image);
 				}
 			}
 		}	
@@ -65,10 +76,9 @@ int main()
 			graphics::ParticleConfig config;
 			config.color = core::Color::White();
 			config.makeColorRandom();
-			config.makeVelocityRandom(0, 0.3, 0, 0);
 			config.size = core::randomIntegerInterval(5, 25);
-			//config.position = core::Vector2f(WIDTH / 2, HEIGHT / 2);
-			config.position = core::Vector2f(0,(HEIGHT/2)) + core::randomPointInsideCircle(60);
+			config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(25);
+			config.velocity = core::Vector2f(0, -0.1f);
 
 			pool.addParticles(1, config, core::randomIntegerInterval(250, 2000));
 		}
@@ -76,17 +86,17 @@ int main()
 		// RENDERING BEGINS HERE
 		myWindow.clear(core::Color(0.09f,0.09f,0.12f)); // Here is where the window is cleared and we can now render to the fresh window
 		
-		// Particles
-		pool.process(dt);
-		pr->begin();
-		pr->submit(pool);
-		pr->flush();
-
 		// The normal renderer
 		_renderer.begin();
 		//_renderer.submit(torch);
 		_renderer.flush();
 
+		// Particles
+		pool.process(dt);
+		pr->begin();
+		pr->submit(pool);
+		pr->flush();
+		
 		myWindow.display(); 
 	}
 

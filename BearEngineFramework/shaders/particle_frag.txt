@@ -6,9 +6,14 @@ in Fragment{
 } fragment;
 
 uniform sampler2D texture_sampler;
+uniform int texture_mode = 0;
 
 void main()
 {
-   gl_FragColor = fragment.color;
-   //gl_FragColor = vec4(1,1,1,texture2D(texture_sampler, fragment.uv).r) * vec4(fragment.color);
+    if(texture_mode == 0) {
+        gl_FragColor = fragment.color;
+    }
+    else {
+        gl_FragColor = texture2D(texture_sampler, fragment.uv) * vec4(1,1,1,fragment.color.a);
+   }
 }

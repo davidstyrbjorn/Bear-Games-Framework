@@ -10,6 +10,8 @@
 
 namespace bear { namespace graphics {
 
+	struct Image;
+
 	struct particle_buffers
 	{
 		unsigned int VAO, VBO;
@@ -25,9 +27,7 @@ namespace bear { namespace graphics {
 		ParticleRenderer() { }
 		~ParticleRenderer();
 
-		/*
-		Init the particle buffer
-		*/
+		// Init required stuff for particle buffer
 		void init();
 
 		// Render routines
@@ -35,7 +35,10 @@ namespace bear { namespace graphics {
 		void submit(ParticlePool& a_ParticlePool);
 		void flush();
 
+		// Config methods
 		void setGravityAcceleration(core::Vector2f& a_Vector);
+		void setUseTexture(bool a_UseTexture);
+		void setActiveTexture(const Image& a_Image);
 	};
 
 } }

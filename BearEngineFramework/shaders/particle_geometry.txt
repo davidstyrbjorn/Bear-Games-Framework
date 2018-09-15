@@ -19,6 +19,8 @@ out Fragment{
 
 void main()
 {
+    mat4 pvMatrix = projection_matrix * view_matrix;
+
     float size = gs_in[0].size;
     vec2 pos = gs_in[0].position;
 	vec2 pos2 = pos + vec2(0, size);
@@ -27,22 +29,22 @@ void main()
 
     fragment.color = gs_in[0].color;
 	fragment.uv = vec2(0, 0);
-    gl_Position = projection_matrix * view_matrix * vec4(pos, 0, 1.0);
+    gl_Position = pvMatrix * vec4(pos, 0, 1.0);
     EmitVertex();
 
 	fragment.color = gs_in[0].color;
 	fragment.uv = vec2(0, 1);
-    gl_Position = projection_matrix * view_matrix * vec4(pos2, 0, 1.0);
+    gl_Position = pvMatrix * vec4(pos2, 0, 1.0);
     EmitVertex();
 
 	fragment.color = gs_in[0].color;
 	fragment.uv = vec2(1, 0);
-    gl_Position = projection_matrix * view_matrix * vec4(pos3, 0, 1.0);
+    gl_Position = pvMatrix * vec4(pos3, 0, 1.0);
     EmitVertex();
 
 	fragment.color = gs_in[0].color;
 	fragment.uv = vec2(1, 1);
-    gl_Position = projection_matrix * view_matrix * vec4(pos4, 0, 1.0);
+    gl_Position = pvMatrix * vec4(pos4, 0, 1.0);
     EmitVertex();
 
     EndPrimitive();

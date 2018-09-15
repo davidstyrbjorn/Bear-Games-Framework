@@ -34,8 +34,6 @@ void ParticleRenderer::init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	Graphics::s_DefaultParticleShader->setUniformVector2f("gravity", core::Vector2f(0.0003, -0.0002));
-
 	// Generate the particle buffers
 	glGenBuffers(1, &_unlit_buffers.VBO);
 	glGenVertexArrays(1, &_unlit_buffers.VAO);
@@ -105,10 +103,27 @@ void bear::graphics::ParticleRenderer::flush()
 	// Unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	Graphics::s_DefaultParticleShader->disable();
 }
 
 void bear::graphics::ParticleRenderer::setGravityAcceleration(core::Vector2f & a_Vector)
 {
-	// @ WHY THE FUCK IS THIS NOT WORKING
+	Graphics::s_DefaultParticleShader->enable();
 	Graphics::s_DefaultParticleShader->setUniformVector2f("gravity", a_Vector);
+	Graphics::s_DefaultParticleShader->disable();
+}
+
+void bear::graphics::ParticleRenderer::setUseTexture(bool a_UseTexture)
+{
+	Graphics::s_DefaultParticleShader->enable();
+	Graphics::s_DefaultParticleShader->setUniformInteger("texture_mode", a_UseTexture);
+	Graphics::s_DefaultParticleShader->disable();
+}
+
+void bear::graphics::ParticleRenderer::setActiveTexture(const Image & a_Image)
+{
+	glBindTexture(GL_TEXTURE_2D, _unlit_buffers.TBO);
+	glTexImage2D(GL_TEXTURE_2D, 0, a_Image.m_Format, a_Image.m_ImageSize.x, a_Image.m_ImageSize.y, 0, a_Image.m_Format, GL_UNSIGNED_BYTE, a_Image.m_ImageData);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
