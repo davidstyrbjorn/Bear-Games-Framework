@@ -26,15 +26,25 @@ int main()
 
 	graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
 	pr->init();
-	pr->setUseTexture(true);
 	graphics::ParticlePool pool;
 
 	graphics::BatchRenderer _renderer;
 	_renderer.init();
 	
-	graphics::Renderable torch("shaders\\torch.png");
-	torch.transform().m_Position = core::Vector2f(0, 150);
-	//torch.transform().m_Size = core::Vector2f(4812/10, 2417/10);
+	core::Vector2f v1(10, 10);
+	core::Vector2f v2(100, 105);
+	core::Vector2f directionVector;
+	float speed = 1.0f;
+	
+	graphics::Renderable torch(graphics::renderable_type::Rectangle);
+	torch.transform().m_Position = v1;
+	torch.transform().m_Size = core::Vector2f(30, 30);
+	torch.setColor(core::Color::Red());
+
+	graphics::Renderable torch2(graphics::renderable_type::Rectangle);
+	torch2.transform().m_Position = v2;
+	torch2.transform().m_Size = core::Vector2f(30, 30);
+	torch2.setColor(core::Color::Blue());
 	
 	while (myWindow.isOpen()) 
 	{
@@ -44,51 +54,49 @@ int main()
 				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
 			}
 			if (event.type == EventType::KeyPressed) {
-				switch (event.key) {
-				case Key::D:
-					pr->setGravityAcceleration(core::Vector2f(0.001, 0));
-					break;
-				case Key::A:
-					pr->setGravityAcceleration(core::Vector2f(-0.001, 0));
-					break;
-				case Key::S:
-					pr->setGravityAcceleration(core::Vector2f(0, 0.001));
-					break;
-				case Key::W:
-					pr->setGravityAcceleration(core::Vector2f(0, -0.00025));
-					break;
-				}
-				if (event.key == Key::X) {
-					pr->setUseTexture(true);
-				}
-				else if (event.key == Key::Z) {
-					pr->setUseTexture(false);
-				}
-				else if (event.key == Key::C) {
-					graphics::Image image("shaders\\particle.png");
-					pr->setActiveTexture(image);
-				}
+				if(event.key )
 			}
 		}	
+
+		if (myWindow.isKeyDown(Key::D)) {
+			v2.x += .1 * dt;
+		}
+		if (myWindow.isKeyDown(Key::A)) {
+			v2.x -= .1 * dt;
+		}
+		if (myWindow.isKeyDown(Key::S)) {
+			v2.y += .1 * dt;
+		}
+		if (myWindow.isKeyDown(Key::W)) {
+			v2.y -= .1 * dt;
+		}
 
 		//if (myWindow.isKeyDown(Key::X))
 		{
 			graphics::ParticleConfig config;
 			config.color = core::Color::White();
 			config.makeColorRandom();
-			config.size = core::randomIntegerInterval(5, 25);
-			config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(25);
-			config.velocity = core::Vector2f(0, -0.1f);
+			config.size = core::randomIntegerInterval(5, 50);
+			config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(200);
+			//config.velocity = core::Vector2f(0, -0.1f);
 
-			pool.addParticles(1, config, core::randomIntegerInterval(250, 2000));
+			pool.addParticles(1, config, core::randomIntegerInterval(1000, 3000));
 		}
+
+		// Vector test thingy
+		directionVector = v2 - v1;
+		v1 += directionVector.normalize() * speed;
+		//std::cout << v1 << std::endl;
+		torch.transform().m_Position = v1;
+		torch2.transform().m_Position = v2;
 			
 		// RENDERING BEGINS HERE
 		myWindow.clear(core::Color(0.09f,0.09f,0.12f)); // Here is where the window is cleared and we can now render to the fresh window
 		
 		// The normal renderer
 		_renderer.begin();
-		//_renderer.submit(torch);
+		_renderer.submit(torch);
+		_renderer.submit(torch2);
 		_renderer.flush();
 
 		// Particles

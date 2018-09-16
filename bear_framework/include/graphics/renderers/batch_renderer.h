@@ -4,6 +4,7 @@
 
 #include"../vertex.h"
 #include"../types.h"
+#include"unlit_batch.h"
 
 namespace bear { namespace core {
 	class Matrix4x4;
@@ -27,11 +28,6 @@ namespace bear { namespace graphics {
 	class Renderable;
 	class View;
 
-	struct unlit_buffers 
-	{
-		unsigned int VAO, VBO;
-	};
-
 	struct texuted_buffers 
 	{
 		unsigned int VAO, VBO, IBO;
@@ -40,7 +36,7 @@ namespace bear { namespace graphics {
 
 	class BatchRenderer {
 	private:
-		unlit_buffers _unlit_buffers;
+		UnlitBatcher *m_UnlitBatch;
 		texuted_buffers _textured_buffers;
 		unsigned int m_UnlitVertCount = 0;
 		// Used by default if none is submitted by the caller

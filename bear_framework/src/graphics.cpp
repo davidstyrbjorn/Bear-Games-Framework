@@ -41,10 +41,6 @@ bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 	s_DefaultParticleShader->setGeometrySourcePath("shaders\\particle_geometry.txt");
 	s_DefaultParticleShader->compile();
 
-	std::cout << s_DefaultParticleShader->m_VertexSource << std::endl;
-	std::cout << s_DefaultParticleShader->m_GeometrySource << std::endl;
-	std::cout << s_DefaultParticleShader->m_FragmentSource << std::endl;
-
 	window_resize_callback(a_Width, a_Height);
 
 	return true;

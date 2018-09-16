@@ -29,8 +29,7 @@ bear::graphics::BatchRenderer::~BatchRenderer()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glDeleteVertexArrays(1, &_unlit_buffers.VAO);
-	glDeleteBuffers(1, &_unlit_buffers.VBO);
+	delete m_UnlitBatch;
 
 	glDeleteVertexArrays(1, &_textured_buffers.VAO);
 	glDeleteBuffers(1, &_textured_buffers.VBO);
@@ -39,27 +38,16 @@ bear::graphics::BatchRenderer::~BatchRenderer()
 
 void bear::graphics::BatchRenderer::init()
 {
+	VertexAttribute temp[] = {
+		{ default_shader_pos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0 },
+		{ default_shader_col_location, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f)) },
+		{ default_shader_uv_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f) + sizeof(core::Color)) }
+	};
+	
+	m_UnlitBatch = new UnlitBatcher(UNLIT_BUFFER_SIZE, temp, 3);
+
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformInteger("texture_sampler", 0);
-
-	glGenBuffers(1, &_unlit_buffers.VBO);
-	glGenVertexArrays(1, &_unlit_buffers.VAO);
-
-	// Setup the vertex attrib layouts
-	glBindVertexArray(_unlit_buffers.VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
-	glBufferData(GL_ARRAY_BUFFER, UNLIT_BUFFER_SIZE, nullptr, GL_DYNAMIC_DRAW);
-
-	glEnableVertexAttribArray(0); // position
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-	glEnableVertexAttribArray(1); // color 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)sizeof(core::Vector2f));
-	glEnableVertexAttribArray(2); // uv
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
-
-	// <===============================================	  ===================================================   ================================================>
-	// <===============================================	  ===================================================   ================================================>
 
 	glGenBuffers(1, &_textured_buffers.VBO);
 	glGenBuffers(1, &_textured_buffers.IBO);
@@ -89,8 +77,7 @@ void bear::graphics::BatchRenderer::begin()
 {
 	m_UnlitVertCount = 0; 
 
-	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
-	glBufferData(GL_ARRAY_BUFFER, UNLIT_BUFFER_SIZE, nullptr, GL_DYNAMIC_DRAW); // reset buffer data
+	m_UnlitBatch->clearBatch();
 }
 
 void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
@@ -110,8 +97,7 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
 	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 0);
 
-	glBindVertexArray(_unlit_buffers.VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
+	m_UnlitBatch->bindBatch();
 	glDrawArrays(GL_TRIANGLES, 0, m_UnlitVertCount);
 
 	// Texture flush
@@ -151,9 +137,6 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 
 void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 {
-	unsigned int _offset = m_UnlitVertCount * sizeof(Vertex);
-	// Overshot buffer size, this is bad and stuff won't get rendered
-
 	core::Vector2f pos = a_UnlitRenderable.transform().m_Position;
 	core::Vector2f size = a_UnlitRenderable.transform().m_Size;
 	core::Color col = a_UnlitRenderable.getColor();
@@ -176,8 +159,7 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 		vertList.push_back({ pos + size, col, uv });
 	}
 
-	glBindBuffer(GL_ARRAY_BUFFER, _unlit_buffers.VBO);
-	glBufferSubData(GL_ARRAY_BUFFER, _offset, sizeof(Vertex)*vertList.size(), &vertList[0]);
+	m_UnlitBatch->updateBatch(&vertList[0], sizeof(Vertex)*vertList.size());
 
 	if (a_UnlitRenderable.getType() == renderable_type::Rectangle) {
 		m_UnlitVertCount += 6;

@@ -150,6 +150,7 @@
     <ClInclude Include="include\graphics\text.h" />
     <ClInclude Include="include\graphics\transform.h" />
     <ClInclude Include="include\graphics\types.h" />
+    <ClInclude Include="include\graphics\renderers\unlit_batch.h" />
     <ClInclude Include="include\graphics\vertex.h" />
     <ClInclude Include="include\graphics\view.h" />
     <ClInclude Include="include\sound\decoders\wav_decoder.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\sound.cpp" />
     <ClCompile Include="src\sound_context.cpp" />
     <ClCompile Include="src\text.cpp" />
+    <ClCompile Include="src\unlit_batch.cpp" />
     <ClCompile Include="src\vector2.cpp" />
     <ClCompile Include="src\vector3.cpp" />
     <ClCompile Include="src\GLFW_window.cpp" />

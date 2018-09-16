@@ -2,6 +2,7 @@
 
 #include"../particle.h"
 #include"../vertex.h"
+#include"unlit_batch.h"
 
 #define PARTICLE_SIZE sizeof(bear::graphics::Vertex)*4
 #define MAX_PARTICLES 5000
@@ -12,15 +13,10 @@ namespace bear { namespace graphics {
 
 	struct Image;
 
-	struct particle_buffers
-	{
-		unsigned int VAO, VBO;
-		unsigned int TBO;
-	};
-
 	class ParticleRenderer {
 	private:
-		particle_buffers _unlit_buffers;
+		UnlitBatcher* m_Batch;
+		unsigned int m_TBO;
 		unsigned int m_ParticleCount = 0;
 
 	public:
