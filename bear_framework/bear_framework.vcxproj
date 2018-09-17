@@ -148,11 +148,13 @@
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\shape.h" />
     <ClInclude Include="include\graphics\text.h" />
+    <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\graphics\transform.h" />
     <ClInclude Include="include\graphics\types.h" />
     <ClInclude Include="include\graphics\renderers\unlit_batch.h" />
     <ClInclude Include="include\graphics\vertex.h" />
     <ClInclude Include="include\graphics\view.h" />
+    <ClInclude Include="include\memory\resource_manager.h" />
     <ClInclude Include="include\sound\decoders\wav_decoder.h" />
     <ClInclude Include="include\sound\openal_buffer.h" />
     <ClInclude Include="include\sound\openal_source.h" />
@@ -181,6 +183,7 @@
     <ClCompile Include="src\sound.cpp" />
     <ClCompile Include="src\sound_context.cpp" />
     <ClCompile Include="src\text.cpp" />
+    <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\unlit_batch.cpp" />
     <ClCompile Include="src\vector2.cpp" />
     <ClCompile Include="src\vector3.cpp" />

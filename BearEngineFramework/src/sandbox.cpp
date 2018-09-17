@@ -45,6 +45,9 @@ int main()
 	torch2.transform().m_Position = v2;
 	torch2.transform().m_Size = core::Vector2f(30, 30);
 	torch2.setColor(core::Color::Blue());
+
+	graphics::Renderable dide("shaders\\dide.png");
+	dide.transform().m_Position = core::Vector2f(100, 100);
 	
 	while (myWindow.isOpen()) 
 	{
@@ -54,7 +57,7 @@ int main()
 				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
 			}
 			if (event.type == EventType::KeyPressed) {
-				if(event.key )
+				//if(event.key )
 			}
 		}	
 
@@ -84,6 +87,7 @@ int main()
 		}
 
 		// Vector test thingy
+		dide.transform().m_Position = v2;
 		directionVector = v2 - v1;
 		v1 += directionVector.normalize() * speed;
 		//std::cout << v1 << std::endl;
@@ -97,6 +101,7 @@ int main()
 		_renderer.begin();
 		_renderer.submit(torch);
 		_renderer.submit(torch2);
+		_renderer.submit(dide);
 		_renderer.flush();
 
 		// Particles

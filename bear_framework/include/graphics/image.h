@@ -14,7 +14,8 @@ namespace bear { namespace graphics {
 		void* m_ImageData;
 		image_format m_Format;
 
-		Image(std::string a_ImagePath);
+		Image(void* a_ImageData, core::Vector2i a_ImageSize, image_format a_Format);
+		Image(std::string a_ImagePath, image_format a_Format);
 		~Image();
 	};
 

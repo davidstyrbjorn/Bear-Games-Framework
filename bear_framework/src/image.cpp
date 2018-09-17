@@ -5,17 +5,22 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-bear::graphics::Image::Image(std::string a_ImagePath)
+bear::graphics::Image::Image(void * a_ImageData, core::Vector2i a_ImageSize, image_format a_Format)
+{
+	m_ImageData = a_ImageData;
+	m_ImageSize = a_ImageSize;
+	m_Format = a_Format;
+}
+
+bear::graphics::Image::Image(std::string a_ImagePath, image_format a_Format)
 {
 	// Load image using stb
 	int stbiFormat = 0;
-	if (core::get_file_suffix(a_ImagePath) == ".png") {
+	if (a_Format == image_format::RGBA) {
 		stbiFormat = STBI_rgb_alpha;
-		m_Format = image_format::RGBA;
 	}
 	else {
 		stbiFormat = STBI_rgb;
-		m_Format = image_format::RGB;
 	}
 
 	const char* x = a_ImagePath.c_str();
