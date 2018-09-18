@@ -12,11 +12,13 @@ namespace bear { namespace graphics {
 	public:
 		Texture(Image& a_Image);
 		Texture(void *a_Data, core::Vector2i a_Size, image_format a_Format);
+		Texture();
 		~Texture();
 
 		void setData(Image& a_Image);
 		void bind();
 		void unbind();
+		int getTextureID();
 	};
 
 } } 

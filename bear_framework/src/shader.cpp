@@ -173,6 +173,11 @@ void bear::graphics::Shader::setUniformInteger(const char * a_UniformName, int a
 	glUniform1i(getUniformLocation(a_UniformName), a_Integer);
 }
 
+void bear::graphics::Shader::setUniformIntegerArray(const char * a_UniformName, unsigned int a_Count, int * a_Integers)
+{
+	glUniform1iv(getUniformLocation(a_UniformName), a_Count, a_Integers);
+}
+
 bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a_ErrMsg)
 {
 	GLint _didCompile;

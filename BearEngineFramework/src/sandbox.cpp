@@ -46,7 +46,8 @@ int main()
 	torch2.transform().m_Size = core::Vector2f(30, 30);
 	torch2.setColor(core::Color::Blue());
 
-	graphics::Renderable dide("shaders\\dide.png");
+	graphics::Image testImage("shaders\\dide.png", graphics::image_format::RGBA);
+	graphics::Renderable dide(testImage);
 	dide.transform().m_Position = core::Vector2f(100, 100);
 	
 	while (myWindow.isOpen()) 

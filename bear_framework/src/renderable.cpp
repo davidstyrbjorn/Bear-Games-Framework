@@ -1,32 +1,21 @@
 #include"../include/graphics/renderable.h"
 
 #include"../include/graphics/image.h"
+#include"../include/graphics/texture.h"
 
 #define GLEW_STATIC
 #include<GL\glew.h>
 
-bear::graphics::Renderable::Renderable(std::string a_ImagePath) :
+bear::graphics::Renderable::Renderable(Image& a_Image) :
 	m_Type(bear::graphics::renderable_type::Sprite)
 {
-	glGenTextures(1, &m_TBO);
-	glBindTexture(GL_TEXTURE_2D, m_TBO);
-
-	Image image(a_ImagePath);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, image.m_Format, image.m_ImageSize.x, image.m_ImageSize.y, 0, image.m_Format, GL_UNSIGNED_BYTE, image.m_ImageData);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	m_Transform.m_Size = core::Vector2f(image.m_ImageSize.x, image.m_ImageSize.y);
+	m_Texture = new Texture(a_Image);
+	m_Transform.m_Size = core::Vector2f(a_Image.m_ImageSize.x, a_Image.m_ImageSize.y);
 }
 
 bear::graphics::Renderable::~Renderable()
 {
-	if (glIsTexture(m_TBO)) {
-		glDeleteTextures(1, &m_TBO);
-	}
+
 }
 
 void bear::graphics::Renderable::setColor(core::Color & a_C)
@@ -56,7 +45,7 @@ void bear::graphics::Renderable::setType(renderable_type a_Type)
 
 int bear::graphics::Renderable::getTextureID()
 {
-	return m_TBO;
+	return m_Texture->getTextureID();
 }
 
 void bear::graphics::Renderable::setTextureImage(const Image & a_Image)

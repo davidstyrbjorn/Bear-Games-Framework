@@ -8,6 +8,7 @@
 namespace bear { namespace graphics { 
 
 	struct Image;
+	class Texture;
 
 	class Renderable {
 	protected:
@@ -17,13 +18,13 @@ namespace bear { namespace graphics {
 		renderable_type m_Type;
 
 	private:
-		unsigned int m_TBO = -1;
+		Texture* m_Texture;
 
 	public:
 		/* Constructor(s) */
 		Renderable() : m_Type(renderable_type::Triangle) { } // default constructor 
 		Renderable(renderable_type a_T) : m_Type(a_T) { } 
-		Renderable(std::string a_ImagePath); // Sprite constructor 
+		Renderable(Image& a_Image); // Sprite constructor 
 
 		/* Destructor */
 		virtual ~Renderable();

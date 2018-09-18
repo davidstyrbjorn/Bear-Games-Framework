@@ -107,7 +107,7 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 	else if (m_Type == graphics::renderable_type::Sprite) {
 		// VBO data 
 
-		Image image(a_ImagePath);
+		Image image(a_ImagePath, image_format::RGB); // @ LEWD FORMAT
 		m_Transform.m_Size = core::Vector2f((int)(image.m_ImageSize.x), (int)(image.m_ImageSize.y));
 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
