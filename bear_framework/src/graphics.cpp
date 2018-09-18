@@ -33,6 +33,9 @@ bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 	// Setup the default shaders used by the renderers
 	s_DefaultShader->setSource(default_vertex_shader_source, default_fragment_shader_source);
 	s_DefaultShader->compile();
+	s_DefaultShader->enable();
+	int x[] = { 0, 1, 2, 4 };
+	s_DefaultShader->setUniformIntegerArray("sampler_list", 4, x);
 	
 	s_DefaultShaderText->setSource(text_vertex_shader_source, text_fragment_shader_source);
 	s_DefaultShaderText->compile();

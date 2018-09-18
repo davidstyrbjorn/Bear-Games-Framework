@@ -25,7 +25,7 @@ UnlitBatcher::UnlitBatcher(size_t a_BatchSize, VertexAttribute* a_VertexAttribut
 
 	glBufferData(GL_ARRAY_BUFFER, c_BatchSize, nullptr, GL_DYNAMIC_DRAW); // Allocate the neccesary space
 
-	for (int i = 0; i < a_AttributeCount; i++) {
+	for (unsigned int i = 0; i < a_AttributeCount; i++) {
 		glEnableVertexAttribArray(a_VertexAttributes[i].index);
 		glVertexAttribPointer(a_VertexAttributes[i].index, a_VertexAttributes[i].count, a_VertexAttributes[i].type, a_VertexAttributes[i].normalize, a_VertexAttributes[i].stride, a_VertexAttributes[i].starting_offset);
 	}

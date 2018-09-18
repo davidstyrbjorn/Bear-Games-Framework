@@ -108,7 +108,7 @@ void bear::graphics::Shape::setupBuffers(std::string a_ImagePath)
 		// VBO data 
 
 		Image image(a_ImagePath, image_format::RGB); // @ LEWD FORMAT
-		m_Transform.m_Size = core::Vector2f((int)(image.m_ImageSize.x), (int)(image.m_ImageSize.y));
+		m_Transform.m_Size = core::Vector2f((image.m_ImageSize.x), (image.m_ImageSize.y));
 
 		vertexData.push_back({ core::Vector2f(0.0f, 0.0f), m_Color, core::Vector2f(0.0f, 0.0f) });
 		vertexData.push_back({ core::Vector2f(0.0f, m_Transform.m_Size.y), m_Color, core::Vector2f(0.0f, 1.0f) });

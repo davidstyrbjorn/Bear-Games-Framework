@@ -8,7 +8,7 @@ namespace bear {
 		class Matrix4x4;
 		struct Color;
 		template<typename T>
-		class Vector2;
+		struct Vector2;
 	}
 }
 

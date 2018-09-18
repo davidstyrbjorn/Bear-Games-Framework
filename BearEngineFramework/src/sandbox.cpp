@@ -49,6 +49,10 @@ int main()
 	graphics::Image testImage("shaders\\dide.png", graphics::image_format::RGBA);
 	graphics::Renderable dide(testImage);
 	dide.transform().m_Position = core::Vector2f(100, 100);
+
+	graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
+	graphics::Renderable cat(testImage2);
+	cat.transform().m_Size * 0.2f;
 	
 	while (myWindow.isOpen()) 
 	{
@@ -100,16 +104,17 @@ int main()
 		
 		// The normal renderer
 		_renderer.begin();
-		_renderer.submit(torch);
-		_renderer.submit(torch2);
+		//_renderer.submit(torch);
+		//_renderer.submit(torch2);
 		_renderer.submit(dide);
+		//_renderer.submit(cat);
 		_renderer.flush();
 
 		// Particles
-		pool.process(dt);
-		pr->begin();
-		pr->submit(pool);
-		pr->flush();
+		//pool.process(dt);
+		//pr->begin();
+		//pr->submit(pool);
+		//pr->flush();
 		
 		myWindow.display(); 
 	}

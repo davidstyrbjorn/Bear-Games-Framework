@@ -1,5 +1,6 @@
 #pragma once
 
+#include<vector>
 #include<deque>
 
 #include"../vertex.h"
@@ -41,7 +42,12 @@ namespace bear { namespace graphics {
 		unsigned int m_UnlitVertCount = 0;
 		// Used by default if none is submitted by the caller
 		static View& defaultView;
-		
+
+		std::vector<int> samplerIndexList;
+
+	private:
+		int getTextureSlot(const int a_TID);
+
 	public:
 		BatchRenderer();
 		~BatchRenderer();

@@ -9,6 +9,7 @@ namespace bear { namespace graphics {
 		core::Vector2f Position;
 		core::Color Color;
 		core::Vector2f TextureCoordinates;
+		int sampler_index;
 
 		//Vertex(core::Vector2f pos, core::Color col, core::Vector2f ts) {
 		//	Position = pos;
