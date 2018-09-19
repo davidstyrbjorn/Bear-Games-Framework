@@ -44,16 +44,21 @@ int main()
 	graphics::Renderable torch2(graphics::renderable_type::Rectangle);
 	torch2.transform().m_Position = v2;
 	torch2.transform().m_Size = core::Vector2f(30, 30);
-	torch2.setColor(core::Color::Blue());
+	torch2.setColor(core::Color::Green());
 
-	graphics::Image testImage("shaders\\dide.png", graphics::image_format::RGBA);
-	graphics::Renderable dide(testImage);
-	dide.transform().m_Position = core::Vector2f(100, 100);
+	graphics::Renderable lightCube(graphics::renderable_type::Rectangle);
+	lightCube.transform().m_Position = core::Vector2f(300, 300);
+	lightCube.transform().m_Size = core::Vector2f(10, 10);
+	lightCube.setColor(core::Color::White());
 
-	graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
-	graphics::Renderable cat(testImage2);
-	cat.transform().m_Size.scale(0.1f);
-	cat.setColor(core::Color(0.4f, 0.2f, 1.0f, 0.2f));
+	//graphics::Image testImage("shaders\\dide.png", graphics::image_format::RGBA);
+	//graphics::Renderable dide(testImage);
+	//dide.transform().m_Position = core::Vector2f(100, 100);
+	//
+	//graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
+	//graphics::Renderable cat(testImage2);
+	//cat.transform().m_Size.scale(0.1f);
+	//cat.setColor(core::Color(0.4f, 0.2f, 1.0f, 0.2f));
 	
 	while (myWindow.isOpen()) 
 	{
@@ -80,48 +85,43 @@ int main()
 			v2.y -= .1 * dt;
 		}
 		if (myWindow.isKeyDown(Key::UP)) {
-			cat.transform().m_Size.scale(1.1f);
+			//cat.transform().m_Size.scale(1.1f);
 		}
 		if (myWindow.isKeyDown(Key::DOWN)) {
-			cat.transform().m_Size.scale(0.9f);
+			//cat.transform().m_Size.scale(0.9f);
 		}
 
 		//if (myWindow.isKeyDown(Key::X))
 		{
-			graphics::ParticleConfig config;
-			config.color = core::Color::White();
-			config.makeColorRandom();
-			config.size = core::randomIntegerInterval(5, 50);
-			config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(200);
-			//config.velocity = core::Vector2f(0, -0.1f);
-
-			pool.addParticles(1, config, core::randomIntegerInterval(1000, 3000));
+			//graphics::ParticleConfig config;
+			//config.color = core::Color::White();
+			//config.makeColorRandom();
+			//config.size = core::randomIntegerInterval(5, 50);
+			//config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(200);
+			////config.velocity = core::Vector2f(0, -0.1f);
+			//
+			//pool.addParticles(1, config, core::randomIntegerInterval(1000, 3000));
 		}
 
 		// Vector test thingy
-		dide.transform().m_Position = v2;
-		directionVector = v2 - v1;
-		v1 += directionVector.normalize() * speed;
+		//dide.transform().m_Position = v2;
+		//directionVector = v2 - v1;
+		//v1 += directionVector.normalize() * speed;
 		//std::cout << v1 << std::endl;
 		torch.transform().m_Position = v1;
 		torch2.transform().m_Position = v2;
-			
+		
 		// RENDERING BEGINS HERE
-		myWindow.clear(core::Color(0.09f,0.09f,0.12f)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.0, 0.0, 0.0)); // Here is where the window is cleared and we can now render to the fresh window
 		
 		// The normal renderer
 		_renderer.begin();
 		_renderer.submit(torch);
 		_renderer.submit(torch2);
-		_renderer.submit(cat);
-		_renderer.submit(dide);
+		_renderer.submit(lightCube);
+
 		_renderer.flush();
 
-		// Particles
-		pool.process(dt);
-		//pr->begin();
-		//pr->submit(pool);
-		//pr->flush();
 		
 		myWindow.display(); 
 	}

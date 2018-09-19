@@ -177,9 +177,9 @@ void bear::graphics::Shader::setUniformIntegerArray(const char * a_UniformName, 
 	glUniform1iv(getUniformLocation(a_UniformName), a_Count, a_Integers);
 }
 
-void bear::graphics::Shader::setUniformVector4f(const char * a_UniformName, core::Vector2<float>& a_Vector)
+void bear::graphics::Shader::setUniformVector4f(const char * a_UniformName, core::Color& a_Vector)
 {
-	glUniform4f(getUniformLocation(a_UniformName), )
+	glUniform4f(getUniformLocation(a_UniformName), a_Vector.r, a_Vector.g, a_Vector.b, a_Vector.a);
 }
 
 bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a_ErrMsg)
@@ -191,7 +191,7 @@ bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a
 		GLint _maxLength = 0;
 		glGetShaderiv(a_ShaderID, GL_INFO_LOG_LENGTH, &_maxLength);
 		
-		GLchar infoLog[200];
+		GLchar infoLog[1000];
 		glGetShaderInfoLog(a_ShaderID, _maxLength, &_maxLength, &infoLog[0]);
 		a_ErrMsg = infoLog;
 

@@ -1,6 +1,7 @@
 #include "../include/graphics/graphics.h"
 
 #include"../include/core/matrix4x4.h"
+#include"../include/memory/resource_manager.h"
 
 #define GLEW_STATIC
 #include"GL\glew.h"
@@ -8,7 +9,9 @@
 using namespace bear;
 using namespace bear::graphics;
 
-Shader* Graphics::s_DefaultShader = new Shader();
+Shader* Graphics::s_DefaultShader = nullptr;
+//Shader* Graphics::s_DefaultShader = new Shader();
+
 Shader* Graphics::s_DefaultShaderText = new Shader();
 Shader* Graphics::s_DefaultParticleShader = new Shader();
 
@@ -30,24 +33,40 @@ bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Stringify the default_frag/vert_shader_source arrays
-	size_t _length = sizeof(default_vertex_shader_source) / sizeof(std::string);
-	for (int i = 0; i < _length; i++) {
-		default_vertex_shader_source_stringified += default_vertex_shader_source[i] + "\n";
+	#pragma region STRINGIFY SHADERS	
+	size_t count;
+	int i = 0;
+	count = sizeof(default_vertex_shader_source) / sizeof(std::string);
+	for (i = 0; i < count; i++) {
+		default_vertex_shader_stringified += default_vertex_shader_source[i] + "\n";
 	}
-	_length = sizeof(default_fragment_shader_source) / sizeof(std::string);
-	for (int i = 0; i < _length; i++) {
-		default_fragment_shader_source_stringified += default_fragment_shader_source[i] + "\n";
+	count = sizeof(default_fragment_shader_source) / sizeof(std::string);
+	for (i = 0; i < count; i++) {
+		default_fragment_shader_stringified += default_fragment_shader_source[i] + "\n";
 	}
+	// Text shader
+	count = sizeof(text_vertex_shader_source) / sizeof(std::string);
+	for (i = 0; i < count; i++) {
+		text_vertex_shader_stringified += text_vertex_shader_source[i] + "\n";
+	}
+	count = sizeof(text_fragment_shader_source) / sizeof(std::string);
+	for (i = 0; i < count; i++) {
+		text_fragment_shader_stringified += text_fragment_shader_source[i] + "\n";
+	}
+	#pragma endregion
 
 	// Setup the default shaders used by the renderers
-	s_DefaultShader->setSource(default_vertex_shader_source_stringified, default_fragment_shader_source_stringified);
-	s_DefaultShader->compile();
+	ResourceManager::Instance()->CreateShaderFromSource("default_shader",
+		default_vertex_shader_stringified, default_fragment_shader_stringified, "");
+	s_DefaultShader = ResourceManager::Instance()->GetShader("default_shader");
 	s_DefaultShader->enable();
-	s_DefaultShader->setUniformVector2f("light_pos", core::Vector2f(100, 100));
+	s_DefaultShader->setUniformVector2f("light_pos", core::Vector2f(300, 300));
+	s_DefaultShader->setUniformVector4f("light_color", core::Color::White());
 	
-	s_DefaultShaderText->setSource(text_vertex_shader_source, text_fragment_shader_source);
-	s_DefaultShaderText->compile();
+	ResourceManager::Instance()->CreateShaderFromSource("text_shader",
+		text_vertex_shader_stringified,
+		text_fragment_shader_stringified, "");
+	s_DefaultShaderText = ResourceManager::Instance()->GetShader("text_shader");
 	
 	s_DefaultParticleShader->setSourceFromFile("shaders\\particle_vertex.txt", "shaders\\particle_frag.txt");
 	s_DefaultParticleShader->setGeometrySourcePath("shaders\\particle_geometry.txt");
@@ -60,7 +79,7 @@ bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 
 bool bear::graphics::Graphics::exit()
 {
-	delete s_DefaultShader;
+	//delete s_DefaultShader;
 	delete s_DefaultShaderText;
 	delete s_DefaultParticleShader;
 	return true;

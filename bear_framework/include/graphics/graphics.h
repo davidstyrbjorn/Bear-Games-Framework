@@ -12,6 +12,8 @@
 #include"text.h"
 #include"view.h"
 
+#include"../core/file_utility.h"
+
 namespace bear { namespace graphics {
 
 	class Graphics {
@@ -50,19 +52,19 @@ namespace bear { namespace graphics {
 	static int default_shader_col_location = 1;
 	static int default_shader_uv_location = 2;
 	static std::string default_vertex_shader_source[] = {
-		"#version 330", 
+		"#version 330",
 
 		"layout(location=0) in vec2 in_pos;",
-		"layout(location=1) in vec4 in_color;", 
+		"layout(location=1) in vec4 in_color;",
 		"layout(location=2) in vec2 in_uv;",
 
-		"uniform mat4 projection_matrix;", 
-		"uniform mat4 model_matrix = mat4(1.0);", 
+		"uniform mat4 projection_matrix;",
+		"uniform mat4 model_matrix = mat4(1.0);",
 		"uniform mat4 view_matrix = mat4(1.0);",
 
-		"out vec4 color;", 
-		"out vec2 uv;", 
-		"out vec2 pos",
+		"out vec4 color;",
+		"out vec2 uv;",
+		"out vec2 pos;",
 
 		"void main() {",
 		    "gl_Position = projection_matrix * model_matrix * view_matrix * vec4(in_pos.x, in_pos.y, 0, 1.0);",
@@ -76,23 +78,23 @@ namespace bear { namespace graphics {
 
 		"in vec4 color;",
 		"in vec2 uv;",
-		"in vec2 pos",
+		"in vec2 pos;",
 
 		"uniform sampler2D texture_sampler;",
 		"uniform int texture_mode;",
 
 		"uniform vec2 light_pos;",
-		"uniform vec4 directional_light_color;",
+		"uniform vec4 light_color;",
 		"uniform float max_distance = 200;",
 
 		"void main() {",
 
 			"float d = distance(pos, light_pos);",
-			"float ration = clamp(1 - (d/max_distance), 0.0, 1.0);",
-			"vec4 lightColor = directional_light_color * ratio;",
+			"float ratio = clamp(1 - (d/max_distance), 0.0, 1.0);",
+			"vec4 lightColor = light_color * ratio;",
 
 			"if(texture_mode == 0) {",
-			    "gl_FragColor = color;", 
+			    "gl_FragColor = color * lightColor;", 
 			"}", 
 			"else {", 
 			    "gl_FragColor = texture(texture_sampler, uv) * color;", 
@@ -100,10 +102,40 @@ namespace bear { namespace graphics {
 		"}" 
 	};
 
-	static std::string default_fragment_shader_source_stringified = "";
-	static std::string default_vertex_shader_source_stringified = "";
 	// Used by Graphics::s_DefaultShaderText
-	static std::string text_vertex_shader_source = "#version 330 core \n layout(location = 0) in vec4 vertex; \n out vec2 TexCoords; \n uniform mat4 projection_matrix; \n uniform mat4 view_matrix = mat4(1.0f); \n void main() \n{ \n gl_Position = projection_matrix * view_matrix * vec4(vertex.xy, 0, 1); \n TexCoords = vertex.zw; \n }";
-	static std::string text_fragment_shader_source = "#version 330 core \n in vec2 TexCoords; \n uniform sampler2D texture; \n uniform vec3 text_color; \n out vec4 color; \n void main() \n { \n color = vec4(1,1,1,texture2D(texture, TexCoords).r) * vec4(text_color,1); \n }";
-	
+	static std::string text_vertex_shader_source[] = {
+		"#version 330 core",
+
+		"layout(location = 0) in vec4 vertex;",
+
+		"out vec2 TexCoords;",
+
+		"uniform mat4 projection_matrix;",
+		"uniform mat4 view_matrix = mat4(1.0f);",
+
+		"void main() {",
+		    "gl_Position = projection_matrix * view_matrix * vec4(vertex.xy, 0, 1);",
+		    "TexCoords = vertex.zw;",
+		"}" 
+	};
+	static std::string text_fragment_shader_source[] = {
+		"#version 330 core",
+
+		"in vec2 TexCoords;",
+
+		"uniform sampler2D texture;",
+		"uniform vec3 text_color;",
+
+		"out vec4 color;",
+
+		"void main() {",
+		    "color = vec4(1,1,1,texture2D(texture, TexCoords).r) * vec4(text_color,1);",
+		"}"
+	};
+	 
+	// Stringify the shader arrays above
+	static std::string default_vertex_shader_stringified = "";
+	static std::string default_fragment_shader_stringified = "";
+	static std::string text_vertex_shader_stringified = "";
+	static std::string text_fragment_shader_stringified = "";
 } }
