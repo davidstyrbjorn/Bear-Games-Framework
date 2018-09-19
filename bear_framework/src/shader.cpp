@@ -108,7 +108,6 @@ void bear::graphics::Shader::compile()
 		geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 		glShaderSource(geometryShader, 1, &geometrySource, 0);
 		glCompileShader(geometryShader);
-		std::cout << "MAKING A GEOMETRY SHADER!\n";
 		std::string geometryCompileLog = "";
 		if (!didCompile(geometryShader, geometryCompileLog)) {
 			std::cout << "GEOMETRY SHADER COMPILE ERROR\n" << geometryCompileLog << "\n";
@@ -176,6 +175,11 @@ void bear::graphics::Shader::setUniformInteger(const char * a_UniformName, int a
 void bear::graphics::Shader::setUniformIntegerArray(const char * a_UniformName, unsigned int a_Count, int * a_Integers)
 {
 	glUniform1iv(getUniformLocation(a_UniformName), a_Count, a_Integers);
+}
+
+void bear::graphics::Shader::setUniformVector4f(const char * a_UniformName, core::Vector2<float>& a_Vector)
+{
+	glUniform4f(getUniformLocation(a_UniformName), )
 }
 
 bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a_ErrMsg)

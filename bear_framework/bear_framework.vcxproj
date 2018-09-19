@@ -146,7 +146,6 @@
     <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
     <ClInclude Include="include\graphics\renderers\particle_renderer.h" />
     <ClInclude Include="include\graphics\shader.h" />
-    <ClInclude Include="include\graphics\shape.h" />
     <ClInclude Include="include\graphics\text.h" />
     <ClInclude Include="include\graphics\texture.h" />
     <ClInclude Include="include\graphics\transform.h" />
@@ -179,7 +178,6 @@
     <ClCompile Include="src\particle_renderer.cpp" />
     <ClCompile Include="src\renderable.cpp" />
     <ClCompile Include="src\shader.cpp" />
-    <ClCompile Include="src\shape.cpp" />
     <ClCompile Include="src\sound.cpp" />
     <ClCompile Include="src\sound_context.cpp" />
     <ClCompile Include="src\text.cpp" />

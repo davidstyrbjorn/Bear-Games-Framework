@@ -52,7 +52,8 @@ int main()
 
 	graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
 	graphics::Renderable cat(testImage2);
-	cat.transform().m_Size * 0.2f;
+	cat.transform().m_Size.scale(0.1f);
+	cat.setColor(core::Color(0.4f, 0.2f, 1.0f, 0.2f));
 	
 	while (myWindow.isOpen()) 
 	{
@@ -77,6 +78,12 @@ int main()
 		}
 		if (myWindow.isKeyDown(Key::W)) {
 			v2.y -= .1 * dt;
+		}
+		if (myWindow.isKeyDown(Key::UP)) {
+			cat.transform().m_Size.scale(1.1f);
+		}
+		if (myWindow.isKeyDown(Key::DOWN)) {
+			cat.transform().m_Size.scale(0.9f);
 		}
 
 		//if (myWindow.isKeyDown(Key::X))
@@ -104,14 +111,14 @@ int main()
 		
 		// The normal renderer
 		_renderer.begin();
-		//_renderer.submit(torch);
-		//_renderer.submit(torch2);
+		_renderer.submit(torch);
+		_renderer.submit(torch2);
+		_renderer.submit(cat);
 		_renderer.submit(dide);
-		//_renderer.submit(cat);
 		_renderer.flush();
 
 		// Particles
-		//pool.process(dt);
+		pool.process(dt);
 		//pr->begin();
 		//pr->submit(pool);
 		//pr->flush();

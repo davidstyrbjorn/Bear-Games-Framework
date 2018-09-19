@@ -30,12 +30,21 @@ bool bear::graphics::Graphics::init(unsigned int a_Width, unsigned int a_Height)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	// Stringify the default_frag/vert_shader_source arrays
+	size_t _length = sizeof(default_vertex_shader_source) / sizeof(std::string);
+	for (int i = 0; i < _length; i++) {
+		default_vertex_shader_source_stringified += default_vertex_shader_source[i] + "\n";
+	}
+	_length = sizeof(default_fragment_shader_source) / sizeof(std::string);
+	for (int i = 0; i < _length; i++) {
+		default_fragment_shader_source_stringified += default_fragment_shader_source[i] + "\n";
+	}
+
 	// Setup the default shaders used by the renderers
-	s_DefaultShader->setSource(default_vertex_shader_source, default_fragment_shader_source);
+	s_DefaultShader->setSource(default_vertex_shader_source_stringified, default_fragment_shader_source_stringified);
 	s_DefaultShader->compile();
 	s_DefaultShader->enable();
-	int x[] = { 0, 1, 2, 4 };
-	s_DefaultShader->setUniformIntegerArray("sampler_list", 4, x);
+	s_DefaultShader->setUniformVector2f("light_pos", core::Vector2f(100, 100));
 	
 	s_DefaultShaderText->setSource(text_vertex_shader_source, text_fragment_shader_source);
 	s_DefaultShaderText->compile();

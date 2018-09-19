@@ -19,6 +19,10 @@ namespace bear { namespace core {
 		Vector2<T> normalize() {
 			return Vector2<T>(x / this->magnitude(), y / this->magnitude());
 		}
+		void scale(T factor) {
+			x = x * factor;
+			y = y * factor;
+		}
 
 		static T distance(Vector2<T> &a_V1, Vector2<T> &a_V2) {
 			return std::sqrt(std::pow<T, int>(a_V2.x - a_V1.x, 2) + std::pow<T, int>(a_V2.y - a_V1.y, 2));

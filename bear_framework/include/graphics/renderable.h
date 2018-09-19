@@ -22,8 +22,8 @@ namespace bear { namespace graphics {
 
 	public:
 		/* Constructor(s) */
-		Renderable() : m_Type(renderable_type::Triangle) { } // default constructor 
-		Renderable(renderable_type a_T) : m_Type(a_T) { } 
+		Renderable() : m_Type(renderable_type::Triangle), m_Color(core::Color::White()) { } // default constructor 
+		Renderable(renderable_type a_T) : m_Type(a_T), m_Color(core::Color::White()) { } 
 		Renderable(Image& a_Image); // Sprite constructor 
 
 		/* Destructor */

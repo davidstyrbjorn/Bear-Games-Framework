@@ -42,7 +42,6 @@ void bear::graphics::BatchRenderer::init()
 		{ default_shader_pos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0 },
 		{ default_shader_col_location, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f)) },
 		{ default_shader_uv_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f) + sizeof(core::Color)) },
-		{ 3, 1, GL_INT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f)*2 + sizeof(core::Color)) }
 	};
 	
 	m_UnlitBatch = new UnlitBatcher(UNLIT_BUFFER_SIZE, temp, 3);
@@ -65,7 +64,7 @@ void bear::graphics::BatchRenderer::init()
 	glEnableVertexAttribArray(2); // uv							   
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(core::Vector2f) + sizeof(core::Color)));
 
-	//glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0);
 
 	unsigned int indicies[] = { 0, 1, 2, 0, 2, 3 };
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _textured_buffers.IBO);
@@ -88,8 +87,7 @@ void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
 		submit_unlit(a_Renderable);
 	}
 	else {
-		//submit_texture(&a_Renderable);
-		submit_unlit(a_Renderable);
+		submit_texture(&a_Renderable);
 	}
 }
 
@@ -98,7 +96,7 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	// Unlit flush
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
-	//Graphics::s_DefaultShader->setUniformInteger("texture_mode", 0);
+	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 0);
 	for (int i = 0; i < samplerIndexList.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, samplerIndexList[i]);
@@ -151,32 +149,19 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 
 	std::vector<Vertex> vertList;
 	if (a_UnlitRenderable.getType() == renderable_type::Triangle) {
-		vertList.push_back(Vertex{ pos, col,  uv, -1 });
-		vertList.push_back(Vertex{ core::Vector2f(pos.x, pos.y + size.y), col, uv, -1 });
-		vertList.push_back(Vertex{ pos + size, col, uv, -1 });
-	}
-	else if (a_UnlitRenderable.getType() == renderable_type::Sprite) {
-
-		const int tsID = a_UnlitRenderable.getTextureID();
-		int slot = getTextureSlot(tsID);
-
-		vertList.push_back({ pos, col,  core::Vector2f(0,0), slot });
-		vertList.push_back({ core::Vector2f(pos.x, pos.y + size.y), col, core::Vector2f(0,1), slot });
-		vertList.push_back({ pos + size, col, core::Vector2f(1,1), slot });
-
-		vertList.push_back({ pos, col, core::Vector2f(0,0), slot });
-		vertList.push_back({ core::Vector2f(pos.x + size.x, pos.y), col, core::Vector2f(1,0), slot });
-		vertList.push_back({ pos + size, col, core::Vector2f(1,1), slot });
+		vertList.push_back(Vertex{ pos, col,  uv, });
+		vertList.push_back(Vertex{ core::Vector2f(pos.x, pos.y + size.y), col, uv, });
+		vertList.push_back(Vertex{ pos + size, col, uv, });
 	}
 	else {
 		// No indices so we're doing 2 triangles
-		vertList.push_back({ pos, col,  uv, -1 });
-		vertList.push_back({ core::Vector2f(pos.x, pos.y + size.y), col, uv, -1 });
-		vertList.push_back({ pos + size, col, uv, -1 });
+		vertList.push_back({ pos, col,  uv, });
+		vertList.push_back({ core::Vector2f(pos.x, pos.y + size.y), col, uv, });
+		vertList.push_back({ pos + size, col, uv, });
 
-		vertList.push_back({ pos, col, uv, -1 });
-		vertList.push_back({ core::Vector2f(pos.x + size.x, pos.y), col, uv, -1 });
-		vertList.push_back({ pos + size, col, uv, -1 });
+		vertList.push_back({ pos, col, uv, });
+		vertList.push_back({ core::Vector2f(pos.x + size.x, pos.y), col, uv, });
+		vertList.push_back({ pos + size, col, uv, });
 	}
 
 	m_UnlitBatch->updateBatch(&vertList[0], sizeof(Vertex)*vertList.size());

@@ -7,7 +7,8 @@
 #include<GL\glew.h>
 
 bear::graphics::Renderable::Renderable(Image& a_Image) :
-	m_Type(bear::graphics::renderable_type::Sprite)
+	m_Type(bear::graphics::renderable_type::Sprite),
+	m_Color(core::Color::White())
 {
 	m_Texture = new Texture(a_Image);
 	m_Transform.m_Size = core::Vector2f(a_Image.m_ImageSize.x, a_Image.m_ImageSize.y);

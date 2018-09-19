@@ -29,18 +29,6 @@ UnlitBatcher::UnlitBatcher(size_t a_BatchSize, VertexAttribute* a_VertexAttribut
 		glEnableVertexAttribArray(a_VertexAttributes[i].index);
 		glVertexAttribPointer(a_VertexAttributes[i].index, a_VertexAttributes[i].count, a_VertexAttributes[i].type, a_VertexAttributes[i].normalize, a_VertexAttributes[i].stride, a_VertexAttributes[i].starting_offset);
 	}
-	// Specifying layout
-	/*
-	glEnableVertexAttribArray(default_shader_pos_location);
-	glEnableVertexAttribArray(default_shader_col_location);
-	glEnableVertexAttribArray(default_shader_uv_location);
-	glVertexAttribPointer(default_shader_pos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), 
-		(void*)0);
-	glVertexAttribPointer(default_shader_col_location, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void*)(sizeof(core::Vector2f)));
-	glVertexAttribPointer(default_shader_uv_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void*)(sizeof(core::Vector2f) + sizeof(core::Color)));
-	*/
 }
 
 void bear::graphics::UnlitBatcher::clearBatch()
