@@ -62,13 +62,13 @@ namespace bear { namespace graphics {
 		"uniform mat4 model_matrix = mat4(1.0);",
 		"uniform mat4 view_matrix = mat4(1.0);",
 
-		"out vec4 color;",
+		"out vec4 out_color;",
 		"out vec2 uv;",
 		"out vec2 pos;",
 
 		"void main() {",
 		    "gl_Position = projection_matrix * model_matrix * view_matrix * vec4(in_pos.x, in_pos.y, 0, 1.0);",
-		    "color = in_color;", 
+		    "out_color = in_color;", 
 			"uv = in_uv;", 
 			"pos = in_pos;",
 		"}" 
@@ -76,7 +76,10 @@ namespace bear { namespace graphics {
 	static std::string default_fragment_shader_source[] = {
 		"#version 330",
 
-		"in vec4 color;",
+		//"layout(location = 0) out vec3 color;", // This means that the variable color will write in the render target 0
+		// Which happens to be our texture because DrawBuffers[0] is GL_COLOR_ATTATCHMENT, which is, renderedTexture
+
+		"in vec4 out_color;",
 		"in vec2 uv;",
 		"in vec2 pos;",
 
@@ -88,16 +91,12 @@ namespace bear { namespace graphics {
 		"uniform float max_distance = 200;",
 
 		"void main() {",
-
-			"float d = distance(pos, light_pos);",
-			"float ratio = clamp(1 - (d/max_distance), 0.0, 1.0);",
-			"vec4 lightColor = light_color * ratio;",
-
 			"if(texture_mode == 0) {",
-			    "gl_FragColor = color * lightColor;", 
+			    "gl_FragColor = out_color;", 
 			"}", 
 			"else {", 
-			    "gl_FragColor = texture(texture_sampler, uv) * color;", 
+			    "gl_FragColor = texture(texture_sampler, uv) * out_color;", 
+				//"color = texture(texture_sampler, uv) * out_color;",
 			"}",  
 		"}" 
 	};

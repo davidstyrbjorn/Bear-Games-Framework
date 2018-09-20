@@ -13,8 +13,8 @@
 
 using namespace bear;
 
-constexpr auto WIDTH = 720;
-constexpr auto HEIGHT = 510;
+constexpr auto WIDTH = 600;
+constexpr auto HEIGHT = 600;
 
 int main()
 {
@@ -54,11 +54,11 @@ int main()
 	//graphics::Image testImage("shaders\\dide.png", graphics::image_format::RGBA);
 	//graphics::Renderable dide(testImage);
 	//dide.transform().m_Position = core::Vector2f(100, 100);
-	//
-	//graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
-	//graphics::Renderable cat(testImage2);
-	//cat.transform().m_Size.scale(0.1f);
-	//cat.setColor(core::Color(0.4f, 0.2f, 1.0f, 0.2f));
+	
+	graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
+	graphics::Renderable cat(testImage2);
+	cat.transform().m_Size.scale(0.1f);
+	cat.setColor(core::Color(0.4f, 0.2f, 1.0f, 0.8f));
 	
 	while (myWindow.isOpen()) 
 	{
@@ -85,10 +85,10 @@ int main()
 			v2.y -= .1 * dt;
 		}
 		if (myWindow.isKeyDown(Key::UP)) {
-			//cat.transform().m_Size.scale(1.1f);
+			cat.transform().m_Size.scale(1.1f);
 		}
 		if (myWindow.isKeyDown(Key::DOWN)) {
-			//cat.transform().m_Size.scale(0.9f);
+			cat.transform().m_Size.scale(0.9f);
 		}
 
 		//if (myWindow.isKeyDown(Key::X))
@@ -112,12 +112,13 @@ int main()
 		torch2.transform().m_Position = v2;
 		
 		// RENDERING BEGINS HERE
-		myWindow.clear(core::Color(0.0, 0.0, 0.0)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.1, 0.1, 0.1)); // Here is where the window is cleared and we can now render to the fresh window
 		
 		// The normal renderer
 		_renderer.begin();
 		_renderer.submit(torch);
 		_renderer.submit(torch2);
+		_renderer.submit(cat);
 		_renderer.submit(lightCube);
 
 		_renderer.flush();

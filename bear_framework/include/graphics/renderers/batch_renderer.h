@@ -11,6 +11,8 @@ namespace bear { namespace core {
 	class Matrix4x4;
 } }
 
+typedef unsigned int GLenum;
+
 namespace bear { namespace graphics {
 
 #define VERTEX_SIZE sizeof(Vertex)
@@ -35,6 +37,10 @@ namespace bear { namespace graphics {
 		std::deque<Renderable*> m_TextureBatch;
 	};
 
+	struct framebuffer_quad {
+		unsigned int VAO, VBO;
+	};
+
 	class BatchRenderer {
 	private:
 		UnlitBatcher *m_UnlitBatch;
@@ -44,6 +50,14 @@ namespace bear { namespace graphics {
 		static View& defaultView;
 
 		std::vector<int> samplerIndexList;
+
+#define GL_COLOR_ATTACHMENT0 0x8CE0
+		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+		unsigned int FramebufferName;
+		unsigned int RenderedTexture;
+		unsigned int DepthRenderBuffer;
+		framebuffer_quad fbquad;
+		Shader* fbShader;
 
 	private:
 		int getTextureSlot(const int a_TID);
