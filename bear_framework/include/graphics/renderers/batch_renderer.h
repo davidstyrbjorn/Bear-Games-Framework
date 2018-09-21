@@ -7,6 +7,8 @@
 #include"../types.h"
 #include"unlit_batch.h"
 
+#include"../framebuffer.h"
+
 namespace bear { namespace core {
 	class Matrix4x4;
 } }
@@ -37,30 +39,15 @@ namespace bear { namespace graphics {
 		std::deque<Renderable*> m_TextureBatch;
 	};
 
-	struct framebuffer_quad {
-		unsigned int VAO, VBO;
-	};
-
 	class BatchRenderer {
 	private:
 		UnlitBatcher *m_UnlitBatch;
 		texuted_buffers _textured_buffers;
 		unsigned int m_UnlitVertCount = 0;
-		// Used by default if none is submitted by the caller
+		// Used by default if none is submitted by the caller		
+		Framebuffer* m_Framebuffer;
+
 		static View& defaultView;
-
-		std::vector<int> samplerIndexList;
-
-#define GL_COLOR_ATTACHMENT0 0x8CE0
-		GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-		unsigned int FramebufferName;
-		unsigned int RenderedTexture;
-		unsigned int DepthRenderBuffer;
-		framebuffer_quad fbquad;
-		Shader* fbShader;
-
-	private:
-		int getTextureSlot(const int a_TID);
 
 	public:
 		BatchRenderer();

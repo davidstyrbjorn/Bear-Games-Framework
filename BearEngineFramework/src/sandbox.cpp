@@ -9,6 +9,8 @@
 #include<graphics/renderers/batch_renderer.h>
 #include<graphics/renderers/particle_renderer.h>
 
+#include<memory/resource_manager.h>
+
 #include<core/random.h>
 
 using namespace bear;
@@ -23,6 +25,13 @@ int main()
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
+
+
+	ResourceManager::Instance()->CreateShaderFromFile("fbShader", "shaders\\fb_vertex.txt", "shaders\\fb_fragment.txt", "");
+	
+	graphics::Shader* fbShader = ResourceManager::Instance()->GetShader("fbShader");
+	fbShader->enable();
+	fbShader->setUniformInteger("texFramebuffer", 0);
 
 	graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
 	pr->init();
@@ -96,7 +105,7 @@ int main()
 			//graphics::ParticleConfig config;
 			//config.color = core::Color::White();
 			//config.makeColorRandom();
-			//config.size = core::randomIntegerInterval(5, 50);
+			//config.size = core::randomIntegerInter'val(5, 50);
 			//config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(200);
 			////config.velocity = core::Vector2f(0, -0.1f);
 			//
@@ -112,7 +121,7 @@ int main()
 		torch2.transform().m_Position = v2;
 		
 		// RENDERING BEGINS HERE
-		myWindow.clear(core::Color(0.1, 0.1, 0.1)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.6, 0.6, 0.6)); // Here is where the window is cleared and we can now render to the fresh window
 		
 		// The normal renderer
 		_renderer.begin();

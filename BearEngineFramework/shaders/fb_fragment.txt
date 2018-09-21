@@ -6,5 +6,12 @@ uniform sampler2D texFramebuffer;
 
 void main()
 {
-    outColor = texture(texFramebuffer, UV);    
+    vec2 uv = UV;
+    uv *= 1.0 - uv.yx;
+    float vig = uv.x*uv.y* 80.0;
+    vig = pow(vig, 0.8);
+
+    vec4 vignetteCol = texture(texFramebuffer, UV)*vig;
+
+    gl_FragColor = vignetteCol;
 }

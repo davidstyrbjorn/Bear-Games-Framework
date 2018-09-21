@@ -5,7 +5,7 @@
 #include"unlit_batch.h"
 
 #define PARTICLE_SIZE sizeof(bear::graphics::Vertex)*4
-#define MAX_PARTICLES 5000
+#define MAX_PARTICLES 10000
 #define PARTICLE_BUFFER_SIZE PARTICLE_SIZE * MAX_PARTICLES
 #define INDICES_COUNT MAX_PARTICLES*6
 

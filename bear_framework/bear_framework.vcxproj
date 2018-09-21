@@ -139,6 +139,7 @@
     <ClInclude Include="include\core\random.h" />
     <ClInclude Include="include\core\vector2.h" />
     <ClInclude Include="include\core\vector3.h" />
+    <ClInclude Include="include\graphics\framebuffer.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\image.h" />
     <ClInclude Include="include\graphics\particle.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="src\clock.cpp" />
     <ClCompile Include="src\file_utility.cpp" />
     <ClCompile Include="src\font.cpp" />
+    <ClCompile Include="src\framebuffer.cpp" />
     <ClCompile Include="src\graphics.cpp" />
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\matrix4x4.cpp" />

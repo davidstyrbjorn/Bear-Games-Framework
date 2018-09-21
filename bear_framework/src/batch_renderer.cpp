@@ -40,66 +40,11 @@ bear::graphics::BatchRenderer::~BatchRenderer()
 
 void bear::graphics::BatchRenderer::init()
 {
-	// FRAMEBUFFER TEST
-
-	// 1. Create the render tearget
-	// We're going to render to a Framebuffer. It's a container for textures and an optional depth buffer.
-	// FramebufferName regroups 0, 1 or more textures and 0 or 1 depth buffers
-	glGenFramebuffers(1, &FramebufferName);
-	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-
-	glActiveTexture(GL_TEXTURE0);
-	// 2. Create the texture which will contain the RGB output of our 'regular' render shader
-	// Basic, simply create an empty texture
-	glGenTextures(1, &RenderedTexture);
-	glBindTexture(GL_TEXTURE_2D, RenderedTexture); // All future texture calls will now modify RenderedTexture
-	// Give an "empty" image to the texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 600, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-	// Poor filtering. Needed !
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	// We might also want to attatch a depth buffer, if we do this is how we would do it
-	//glGenRenderbuffers(1, &DepthRenderBuffer);
-	//glBindRenderbuffer(GL_RENDERBUFFER, DepthRenderBuffer);
-	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 600, 600);
-	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, DepthRenderBuffer);
-	
-	// 3. Configure our framebuffer
-	// Set RenderedTexture as color attatchement 0
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, RenderedTexture, 0);
-	glDrawBuffers(1, DrawBuffers); // 1 is the size of the DrawBuffers
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	ResourceManager::Instance()->CreateShaderFromFile("fbShader", "shaders\\fb_vertex.txt", "shaders\\fb_fragment.txt", "");
-	fbShader = ResourceManager::Instance()->GetShader("fbShader");
-	fbShader->enable();
-	fbShader->setUniformInteger("texFramebuffer", 0);
-
-	// Setup our framebuffer quad!
-	glGenVertexArrays(1, &fbquad.VAO);
-	glBindVertexArray(fbquad.VAO);
-
-	glGenBuffers(1, &fbquad.VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, fbquad.VBO);
-
-	float buffer_data[] = {
-		// pos              uv
-		-1.0f, -1.0f,    0.0, 0.0,
-		1.0f,  -1.0f,    1.0, 0.0,
-		-1.0f,  1.0f,    0.0, 1.0,
-		-1.0f,  1.0f,    0.0, 1.0,
-		1.0f,  -1.0f,    1.0, 0.0,
-		1.0f,   1.0f,    1.0, 1.0
-	};
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(buffer_data), buffer_data, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, 0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (void*)(sizeof(float) * 2));
-	
-	glBindVertexArray(0);
+	m_Framebuffer = new Framebuffer();
+	ResourceManager::Instance()->CreateShaderFromFile("framebuffer_shader", "shaders\\fb_vertex.txt", "shaders\\fb_fragment.txt", "");
+	Shader* m_FramebufferShader = ResourceManager::Instance()->GetShader("framebuffer_shader");
+	m_FramebufferShader->setUniformInteger("texFramebuffer", 0);
+	m_Framebuffer->setShader("framebuffer_shader");
 
 	VertexAttribute temp[] = {
 		{ default_shader_pos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0 },
@@ -140,8 +85,6 @@ void bear::graphics::BatchRenderer::begin()
 {
 	m_UnlitVertCount = 0; 
 	m_UnlitBatch->clearBatch();
-
-	samplerIndexList.clear();
 }
 
 void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
@@ -156,7 +99,8 @@ void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
 
 void bear::graphics::BatchRenderer::flush(View& a_View)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+	//glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+	m_Framebuffer->bind();
 
 	// Unlit flush
 	Graphics::s_DefaultShader->enable();
@@ -201,12 +145,10 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	glBindVertexArray(0);
 
 	// Bind default framebuffer and draw the contents of our framebuffer 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	m_Framebuffer->drawFramebufferTextureToScreen();
+
+	m_Framebuffer->bind();
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBindVertexArray(fbquad.VAO);
-	fbShader->enable();
-	glBindTexture(GL_TEXTURE_2D, RenderedTexture);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
@@ -246,24 +188,4 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 void bear::graphics::BatchRenderer::submit_texture(Renderable * a_TexturedRenderable)
 {
 	_textured_buffers.m_TextureBatch.push_back(a_TexturedRenderable);
-}
-
-int bear::graphics::BatchRenderer::getTextureSlot(const int a_TID)
-{
-	int foundSamplerIndex = 0;
-	bool found = false;
-	for (int i = 0; i < samplerIndexList.size(); i++) {
-		if (samplerIndexList[i] = a_TID) {
-			found = true;
-			foundSamplerIndex = i;
-			break;
-		}
-	}
-
-	if (!found) {
-		samplerIndexList.push_back(a_TID);
-		foundSamplerIndex = samplerIndexList.size()-1;
-	}
-
-	return foundSamplerIndex;
 }
