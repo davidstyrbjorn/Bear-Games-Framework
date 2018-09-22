@@ -39,8 +39,8 @@ namespace bear {
 		\param3 Path to the fragment shader source
 		\param4 Path to the geometry shader source (optional) leave empty for no geometry shader
 		*/
-		void CreateShaderFromFile(std::string a_Name, std::string a_File1, std::string a_File2, std::string a_File3);
-		void CreateShaderFromSource(std::string a_Name, std::string a_Source1, std::string a_Source2, std::string a_Source3);
+		graphics::Shader* CreateShaderFromFile(std::string a_Name, std::string a_File1, std::string a_File2, std::string a_File3);
+		graphics::Shader* CreateShaderFromSource(std::string a_Name, std::string a_Source1, std::string a_Source2, std::string a_Source3);
 
 		/* Resource getters */
 		graphics::Shader* GetShader(std::string a_Name);

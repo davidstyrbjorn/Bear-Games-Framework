@@ -11,6 +11,7 @@
 #include"image.h"
 #include"text.h"
 #include"view.h"
+#include"framebuffer.h"
 
 #include"../core/file_utility.h"
 

@@ -40,12 +40,6 @@ bear::graphics::BatchRenderer::~BatchRenderer()
 
 void bear::graphics::BatchRenderer::init()
 {
-	m_Framebuffer = new Framebuffer();
-	ResourceManager::Instance()->CreateShaderFromFile("framebuffer_shader", "shaders\\fb_vertex.txt", "shaders\\fb_fragment.txt", "");
-	Shader* m_FramebufferShader = ResourceManager::Instance()->GetShader("framebuffer_shader");
-	m_FramebufferShader->setUniformInteger("texFramebuffer", 0);
-	m_Framebuffer->setShader("framebuffer_shader");
-
 	VertexAttribute temp[] = {
 		{ default_shader_pos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0 },
 		{ default_shader_col_location, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f)) },
@@ -99,9 +93,6 @@ void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
 
 void bear::graphics::BatchRenderer::flush(View& a_View)
 {
-	//glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-	m_Framebuffer->bind();
-
 	// Unlit flush
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
@@ -143,12 +134,6 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	Graphics::s_DefaultShader->disable();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
-
-	// Bind default framebuffer and draw the contents of our framebuffer 
-	m_Framebuffer->drawFramebufferTextureToScreen();
-
-	m_Framebuffer->bind();
-	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)

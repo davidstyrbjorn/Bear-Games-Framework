@@ -44,9 +44,8 @@ namespace bear { namespace graphics {
 		UnlitBatcher *m_UnlitBatch;
 		texuted_buffers _textured_buffers;
 		unsigned int m_UnlitVertCount = 0;
-		// Used by default if none is submitted by the caller		
-		Framebuffer* m_Framebuffer;
 
+		// Used by default if none is submitted by the flush caller	
 		static View& defaultView;
 
 	public:

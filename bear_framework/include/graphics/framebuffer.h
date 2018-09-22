@@ -17,15 +17,16 @@ namespace bear { namespace graphics {
 		unsigned int m_QuadVBO, m_QuadVAO;
 		Shader* m_FramebufferShader;
 
-		Framebuffer* m_FramebufferDrawTarget;
+		unsigned int m_TargetFBO = 0;
 
 	public:            
-		Framebuffer();
+		Framebuffer(unsigned int a_Width, unsigned int a_Height);
 		~Framebuffer();
 
 		void setShader(std::string a_ShaderName);
-		void setFramebufferRenderTarget();
+		void setFramebufferRenderTarget(unsigned int a_FBO);
 
+		void clearFBO();               // binds and clears the framebuffer color buffer
 		void bind();				   // bind the framebuffer to be rendered
 		void unbind();				   // unbind the framebuffer
 		static void FBOunbind();	   // Dummy method for unbding and drawing to the screen

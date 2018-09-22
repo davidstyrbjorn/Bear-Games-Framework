@@ -16,7 +16,7 @@ ResourceManager* ResourceManager::Instance()
 
 void bear::ResourceManager::Init()
 {
-	// Nothing?
+	// Pass
 }
 
 void bear::ResourceManager::Exit()
@@ -29,7 +29,7 @@ void bear::ResourceManager::CreateTexture(std::string a_Name, std::string a_File
 
 }
 
-void bear::ResourceManager::CreateShaderFromFile(std::string a_Name, std::string a_File1, std::string a_File2, std::string a_File3)
+graphics::Shader* bear::ResourceManager::CreateShaderFromFile(std::string a_Name, std::string a_File1, std::string a_File2, std::string a_File3)
 {
 	// Create & compile & insert a new shader into the map
 	graphics::Shader* shader = new Shader();
@@ -39,9 +39,10 @@ void bear::ResourceManager::CreateShaderFromFile(std::string a_Name, std::string
 	}
 	shader->compile();
 	m_ShaderMap.insert(std::pair<std::string, Shader*>(a_Name, shader));
+	return shader;
 }
 
-void bear::ResourceManager::CreateShaderFromSource(std::string a_Name, std::string a_Source1, std::string a_Source2, std::string a_Source3)
+graphics::Shader* bear::ResourceManager::CreateShaderFromSource(std::string a_Name, std::string a_Source1, std::string a_Source2, std::string a_Source3)
 {
 	// Create & compile & insert a new shader into the map
 	graphics::Shader* shader = new Shader();
@@ -51,6 +52,7 @@ void bear::ResourceManager::CreateShaderFromSource(std::string a_Name, std::stri
 	}
 	shader->compile();
 	m_ShaderMap.insert(std::pair<std::string, Shader*>(a_Name, shader));
+	return shader;
 }
 
 graphics::Shader * bear::ResourceManager::GetShader(std::string a_Name)
