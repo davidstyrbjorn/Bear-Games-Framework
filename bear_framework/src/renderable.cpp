@@ -2,16 +2,18 @@
 
 #include"../include/graphics/image.h"
 #include"../include/graphics/texture.h"
+#include"../include/memory/resource_manager.h"
 
 #define GLEW_STATIC
 #include<GL\glew.h>
 
-bear::graphics::Renderable::Renderable(Image& a_Image) :
+bear::graphics::Renderable::Renderable(const std::string& a_TextureName) :
 	m_Type(bear::graphics::renderable_type::Sprite),
-	m_Color(core::Color::White())
+	m_Color(core::Color::White()),
+	m_TextureName(a_TextureName)
 {
-	m_Texture = new Texture(a_Image);
-	m_Transform.m_Size = core::Vector2f(a_Image.m_ImageSize.x, a_Image.m_ImageSize.y);
+	Texture* texture = ResourceManager::Instance()->GetTexture(m_TextureName);
+	m_Transform.m_Size = core::Vector2f(texture->getTextureSize().x, texture->getTextureSize().y);
 }
 
 bear::graphics::Renderable::~Renderable()
@@ -42,14 +44,4 @@ const bear::graphics::renderable_type bear::graphics::Renderable::getType()
 void bear::graphics::Renderable::setType(renderable_type a_Type)
 {
 	m_Type = a_Type;
-}
-
-int bear::graphics::Renderable::getTextureID()
-{
-	return m_Texture->getTextureID();
-}
-
-void bear::graphics::Renderable::setTextureImage(const Image & a_Image)
-{
-	
 }

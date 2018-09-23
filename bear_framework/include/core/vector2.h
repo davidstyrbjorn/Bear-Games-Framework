@@ -23,6 +23,13 @@ namespace bear { namespace core {
 			x = x * factor;
 			y = y * factor;
 		}
+		void moveTowards(core::Vector2<T> target, float speed) {
+			if (Vector2<T>::distance(*this, target) > 0.01f) {
+				Vector2<T> dir = Vector2<T>(target.x - this->x, target.y - this->y);
+				Vector2<T> norm_dir = dir.normalize();
+				*this = (*this) + (norm_dir*speed);
+			}
+		}
 
 		static T distance(Vector2<T> &a_V1, Vector2<T> &a_V2) {
 			return std::sqrt(std::pow<T, int>(a_V2.x - a_V1.x, 2) + std::pow<T, int>(a_V2.y - a_V1.y, 2));

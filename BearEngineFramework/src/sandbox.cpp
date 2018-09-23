@@ -58,21 +58,15 @@ int main()
 	pr->init();
 	graphics::ParticlePool pool;
 
-	// Create some render objects
-	graphics::Renderable torch2(graphics::renderable_type::Rectangle);
-	torch2.transform().m_Position = core::Vector2f(300, 300);
-	torch2.transform().m_Size = core::Vector2f(30, 30);
-	torch2.setColor(core::Color::Green());
+	// Create some render objects	&     textures
+	ResourceManager::Instance()->CreateTexture("cat_texture", "shaders\\cat.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("dide_texture", "shaders\\dide.png", graphics::image_format::RGBA);
 
-	graphics::Renderable lightCube(graphics::renderable_type::Rectangle);
-	lightCube.transform().m_Position = core::Vector2f(300, 300);
-	lightCube.transform().m_Size = core::Vector2f(10, 10);
-	lightCube.setColor(core::Color::White());
-	
-	graphics::Image testImage2("shaders\\big_cat_image.png", graphics::image_format::RGBA);
-	graphics::Renderable cat(testImage2);
+	graphics::Renderable cat("cat_texture");
 	cat.transform().m_Size.scale(0.1f);
 	cat.setColor(core::Color(0.4f, 0.2f, 1.0f, 0.8f));
+
+	//graphics::Renderable
 	
 	while (myWindow.isOpen()) 
 	{
@@ -80,46 +74,46 @@ int main()
 		for (Event event : myWindow.getRegisteredEvents()) { // Process the events here
 			if (event.type == EventType::WindowReiszed) {
 				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
+				fb1->windowResize(event.size.x, event.size.y);
+				fb2->windowResize(event.size.x, event.size.y);
 			}
 		}	
 
 		if (myWindow.isKeyDown(Key::UP)) {
 			cat.transform().m_Size.scale(1.1f);
+			cat.m_TextureName = "cat_texture";
 		}
 		if (myWindow.isKeyDown(Key::DOWN)) {
 			cat.transform().m_Size.scale(0.9f);
+			cat.m_TextureName = "dide_texture";
 		}
 
 		{
-			//graphics::ParticleConfig config;
-			//config.color = core::Color::White();
-			//config.makeColorRandom();
-			//config.size = core::randomIntegerInter'val(5, 50);
-			//config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(200);
-			////config.velocity = core::Vector2f(0, -0.1f);
-			//
-			//pool.addParticles(1, config, core::randomIntegerInterval(1000, 3000));
+			graphics::ParticleConfig config;
+			config.color = core::Color::White();
+			config.makeColorRandom();
+			config.size = core::randomIntegerInterval(5, 50);
+			config.position = core::Vector2f(WIDTH/2,HEIGHT/2) + core::randomPointInsideCircle(200);
+			config.velocity = core::Vector2f(0, -0.1f);
+			
+			pool.addParticles(1, config, core::randomIntegerInterval(1000, 2000));
 		}
-		
+
 		// RENDERING BEGINS HERE
 		myWindow.clear(core::Color(0.1, 0.1, 0.1)); // Here is where the window is cleared and we can now render to the fresh window
 		
 		// The normal renderer
 		_renderer.begin();
-		_renderer.submit(torch2);
 		_renderer.submit(cat);
-		_renderer.submit(lightCube);
+		
+		pool.process(dt);
+		pr->begin();
+		pr->submit(pool);
 
-		//vignetteFramebuffer->bind();
-		//_renderer.flush();
-		//vignetteFramebuffer->unbind();
-		//
-		//vignetteFramebuffer->drawFramebufferTextureToScreen();
-		//vignetteFramebuffer->clearFBO();
-
-		// Perform the normal render
+		// Perform the normal render flush, which will be to the currently bound framebuffer
 		fb2->bind();
 		_renderer.flush();
+		pr->flush();
 		fb2->unbind();
 
 		// Render the vignetteFramebuffer texture then clear it

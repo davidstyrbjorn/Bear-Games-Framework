@@ -8,6 +8,7 @@ namespace bear { namespace graphics {
 	class Texture {
 	private:
 		unsigned int m_TBO;
+		core::Vector2i m_Size;
 
 	public:
 		Texture(Image& a_Image);
@@ -15,6 +16,7 @@ namespace bear { namespace graphics {
 		Texture();
 		~Texture();
 
+		core::Vector2i getTextureSize();
 		void setData(Image& a_Image);
 		void bind();
 		void unbind();

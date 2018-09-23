@@ -25,6 +25,7 @@ namespace bear { namespace graphics {
 
 		void setShader(std::string a_ShaderName);
 		void setFramebufferRenderTarget(unsigned int a_FBO);
+		void windowResize(unsigned int a_Width, unsigned int a_Height);
 
 		void clearFBO();               // binds and clears the framebuffer color buffer
 		void bind();				   // bind the framebuffer to be rendered

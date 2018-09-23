@@ -63,6 +63,11 @@ Framebuffer::Framebuffer(unsigned int a_Width, unsigned int a_Height)
 Framebuffer::~Framebuffer()
 {
 	// @TODO Delete the FBO and related buffers
+	unbind();
+	glDeleteFramebuffers(1, &m_FBO);
+	glDeleteTextures(1, &m_TBO);
+	glDeleteVertexArrays(1, &m_QuadVAO);
+	glDeleteBuffers(1, &m_QuadVBO);
 }
 
 void bear::graphics::Framebuffer::setShader(std::string a_ShaderName)
@@ -73,6 +78,14 @@ void bear::graphics::Framebuffer::setShader(std::string a_ShaderName)
 void bear::graphics::Framebuffer::setFramebufferRenderTarget(unsigned int a_FBO)
 {
 	m_TargetFBO = a_FBO;
+}
+
+void bear::graphics::Framebuffer::windowResize(unsigned int a_Width, unsigned int a_Height)
+{
+	std::cout << "Asshole\n";
+	glBindTexture(GL_TEXTURE_2D, m_TBO);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, a_Width, a_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void bear::graphics::Framebuffer::clearFBO()

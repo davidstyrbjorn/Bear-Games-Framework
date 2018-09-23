@@ -8,7 +8,6 @@
 namespace bear { namespace graphics { 
 
 	struct Image;
-	class Texture;
 
 	class Renderable {
 	protected:
@@ -17,14 +16,14 @@ namespace bear { namespace graphics {
 		core::Color m_Color;
 		renderable_type m_Type;
 
-	private:
-		Texture* m_Texture;
+	public:
+		std::string m_TextureName;
 
 	public:
 		/* Constructor(s) */
 		Renderable() : m_Type(renderable_type::Triangle), m_Color(core::Color::White()) { } // default constructor 
 		Renderable(renderable_type a_T) : m_Type(a_T), m_Color(core::Color::White()) { } 
-		Renderable(Image& a_Image); // Sprite constructor 
+		Renderable(const std::string& a_TextureName); // Sprite constructor 
 
 		/* Destructor */
 		virtual ~Renderable();
@@ -35,10 +34,6 @@ namespace bear { namespace graphics {
 		Transform& transform();
 		const renderable_type getType();
 		void setType(renderable_type a_Type);
-
-		int getTextureID();
-		void setTextureImage(const Image& a_Image);
-
 	};
 
 }} 

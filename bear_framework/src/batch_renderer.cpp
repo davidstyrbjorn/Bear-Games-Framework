@@ -93,7 +93,7 @@ void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
 
 void bear::graphics::BatchRenderer::flush(View& a_View)
 {
-	// Unlit flush
+	// ================== Unlit flush
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
 	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 0);
@@ -101,7 +101,7 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	m_UnlitBatch->bindBatch();
 	glDrawArrays(GL_TRIANGLES, 0, m_UnlitVertCount);
 	
-	// Texture flush
+	// ================== Texture flush
 	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 1);
 	glBindVertexArray(_textured_buffers.VAO);
 	while (!_textured_buffers.m_TextureBatch.empty()) 
@@ -110,9 +110,10 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 		core::Vector2f pos = renderable->transform().m_Position;
 		core::Vector2f size = renderable->transform().m_Size;
 		core::Color col = renderable->getColor();
+		unsigned int TBO = ResourceManager::Instance()->GetTexture(renderable->m_TextureName)->getTextureID();
 	
 		// Bind
-		glBindTexture(GL_TEXTURE_2D, renderable->getTextureID());
+		glBindTexture(GL_TEXTURE_2D, TBO);
 		glBindBuffer(GL_ARRAY_BUFFER, _textured_buffers.VBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _textured_buffers.IBO);
 	

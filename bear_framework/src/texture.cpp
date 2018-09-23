@@ -40,9 +40,15 @@ bear::graphics::Texture::Texture()
 	unbind();
 }
 
+bear::core::Vector2i bear::graphics::Texture::getTextureSize()
+{
+	return m_Size;
+}
+
 void bear::graphics::Texture::setData(Image & a_Image)
 {
 	bind();
+	m_Size = a_Image.m_ImageSize;
 	glTexImage2D(GL_TEXTURE_2D, 0, a_Image.m_Format, a_Image.m_ImageSize.x, a_Image.m_ImageSize.y,
 		0, a_Image.m_Format, GL_UNSIGNED_BYTE, a_Image.m_ImageData);
 	unbind();

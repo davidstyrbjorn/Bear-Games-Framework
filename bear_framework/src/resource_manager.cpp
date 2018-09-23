@@ -21,12 +21,24 @@ void bear::ResourceManager::Init()
 
 void bear::ResourceManager::Exit()
 {
-	// TODO@ Delete all resources allocated on the heap on exit
+	for (auto it = m_ShaderMap.begin(); it != m_ShaderMap.end(); ++it) {
+		delete it->second;
+		m_ShaderMap.erase(it);
+	}
+	m_ShaderMap.clear();
+
+	for (auto it = m_TextureMap.begin(); it != m_TextureMap.end(); ++it) {
+		delete it->second;
+		m_TextureMap.erase(it);
+	}
+	m_TextureMap.clear();
 }
 
 void bear::ResourceManager::CreateTexture(std::string a_Name, std::string a_File, graphics::image_format a_Format)
 {
-
+	Image image(a_File, a_Format);
+	Texture* texture = new graphics::Texture(image);
+	m_TextureMap.insert(std::pair<std::string, Texture*>(a_Name, texture));
 }
 
 graphics::Shader* bear::ResourceManager::CreateShaderFromFile(std::string a_Name, std::string a_File1, std::string a_File2, std::string a_File3)
@@ -62,5 +74,5 @@ graphics::Shader * bear::ResourceManager::GetShader(std::string a_Name)
 
 graphics::Texture * bear::ResourceManager::GetTexture(std::string a_Name)
 {
-	return nullptr;
+	return m_TextureMap[a_Name];
 }
