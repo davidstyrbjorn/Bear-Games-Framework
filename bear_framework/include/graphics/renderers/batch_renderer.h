@@ -4,7 +4,6 @@
 #include<deque>
 
 #include"../vertex.h"
-#include"../types.h"
 #include"unlit_batch.h"
 
 #include"../framebuffer.h"
@@ -63,11 +62,11 @@ namespace bear { namespace graphics {
 		* flush renders the submitted data
 		*/
 		void begin();
-		void submit(Renderable& a_Renderable);
+		void submit(Renderable* a_Renderable, unsigned int a_VertCount);
 		void flush(View& a_View = defaultView);
 
 	private:
-		void submit_unlit(Renderable& a_UnlitRenderable);
+		void submit_unlit(Renderable* a_UnlitRenderable, unsigned int a_VertCount);
 		void submit_texture(Renderable* a_TexturedRenderable);
 	};
 

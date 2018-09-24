@@ -7,41 +7,16 @@
 #define GLEW_STATIC
 #include<GL\glew.h>
 
-bear::graphics::Renderable::Renderable(const std::string& a_TextureName) :
-	m_Type(bear::graphics::renderable_type::Sprite),
+bear::graphics::Renderable::Renderable() :
+	m_Transform(),
 	m_Color(core::Color::White()),
-	m_TextureName(a_TextureName)
+	m_TextureName("")
 {
-	Texture* texture = ResourceManager::Instance()->GetTexture(m_TextureName);
-	m_Transform.m_Size = core::Vector2f(texture->getTextureSize().x, texture->getTextureSize().y);
 }
 
-bear::graphics::Renderable::~Renderable()
+void bear::graphics::Renderable::setTextureNameWData(const std::string & a_TextureName)
 {
-
-}
-
-void bear::graphics::Renderable::setColor(core::Color & a_C)
-{
-	m_Color = a_C;
-}
-
-const bear::core::Color bear::graphics::Renderable::getColor()
-{
-	return m_Color;
-}
-
-bear::graphics::Transform & bear::graphics::Renderable::transform()
-{
-	return m_Transform;
-}
-
-const bear::graphics::renderable_type bear::graphics::Renderable::getType()
-{
-	return m_Type;
-}
-
-void bear::graphics::Renderable::setType(renderable_type a_Type)
-{
-	m_Type = a_Type;
+	m_TextureName = a_TextureName;
+	Texture* texture = ResourceManager::Instance()->GetTexture(a_TextureName);
+	m_Transform.m_Size = core::Vector2f(texture->getTextureSize().x, texture->getTextureSize().y); // Set renderable size to the texture size
 }

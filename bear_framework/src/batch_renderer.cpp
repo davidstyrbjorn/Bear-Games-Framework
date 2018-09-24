@@ -81,13 +81,13 @@ void bear::graphics::BatchRenderer::begin()
 	m_UnlitBatch->clearBatch();
 }
 
-void bear::graphics::BatchRenderer::submit(Renderable & a_Renderable)
+void bear::graphics::BatchRenderer::submit(Renderable * a_Renderable, unsigned int a_VertCount)
 {
-	if (a_Renderable.getType() != renderable_type::Sprite) {
-		submit_unlit(a_Renderable);
+	if (a_Renderable->m_TextureName.empty()) {
+		submit_unlit(a_Renderable, a_VertCount);
 	}
 	else {
-		submit_texture(&a_Renderable);
+		submit_texture(a_Renderable);
 	}
 }
 
@@ -107,9 +107,9 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	while (!_textured_buffers.m_TextureBatch.empty()) 
 	{
 		graphics::Renderable* renderable = _textured_buffers.m_TextureBatch.back();
-		core::Vector2f pos = renderable->transform().m_Position;
-		core::Vector2f size = renderable->transform().m_Size;
-		core::Color col = renderable->getColor();
+		core::Vector2f pos = renderable->m_Transform.m_Position;
+		core::Vector2f size = renderable->m_Transform.m_Size;
+		core::Color col = renderable->m_Color;
 		unsigned int TBO = ResourceManager::Instance()->GetTexture(renderable->m_TextureName)->getTextureID();
 	
 		// Bind
@@ -137,15 +137,15 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	glBindVertexArray(0);
 }
 
-void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
+void bear::graphics::BatchRenderer::submit_unlit(Renderable * a_UnlitRenderable, unsigned int a_VertCount)
 {
-	core::Vector2f pos = a_UnlitRenderable.transform().m_Position;
-	core::Vector2f size = a_UnlitRenderable.transform().m_Size;
-	core::Color col = a_UnlitRenderable.getColor();
+	core::Vector2f pos = a_UnlitRenderable->m_Transform.m_Position;
+	core::Vector2f size = a_UnlitRenderable->m_Transform.m_Size;
+	core::Color col = a_UnlitRenderable->m_Color;
 	core::Vector2f uv = core::Vector2f(0, 0);
 
 	std::vector<Vertex> vertList;
-	if (a_UnlitRenderable.getType() == renderable_type::Triangle) {
+	if (a_VertCount == 3) {
 		vertList.push_back(Vertex{ pos, col,  uv, });
 		vertList.push_back(Vertex{ core::Vector2f(pos.x, pos.y + size.y), col, uv, });
 		vertList.push_back(Vertex{ pos + size, col, uv, });
@@ -163,7 +163,7 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable & a_UnlitRenderable)
 
 	m_UnlitBatch->updateBatch(&vertList[0], sizeof(Vertex)*vertList.size());
 
-	if (a_UnlitRenderable.getType() == renderable_type::Rectangle) {
+	if (a_VertCount == 4) {
 		m_UnlitVertCount += 6;
 	}
 	else {
