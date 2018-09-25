@@ -47,6 +47,8 @@ namespace bear { namespace graphics {
 		// Used by default if none is submitted by the flush caller	
 		static View& defaultView;
 
+		std::vector<unsigned int> textureSlots;
+
 	public:
 		BatchRenderer();
 		~BatchRenderer();
@@ -65,8 +67,8 @@ namespace bear { namespace graphics {
 		void submit(Renderable* a_Renderable, unsigned int a_VertCount);
 		void flush(View& a_View = defaultView);
 
-	private:
-		void submit_unlit(Renderable* a_UnlitRenderable, unsigned int a_VertCount);
+	public:
+		void submit_unlit(Renderable* a_UnlitRenderable, unsigned int a_VertCount, float texture_slot);
 		void submit_texture(Renderable* a_TexturedRenderable);
 	};
 

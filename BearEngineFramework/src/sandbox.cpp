@@ -60,6 +60,8 @@ int main()
 	//graphics::ParticlePool pool;
 
 	// Create some render objects	&     textures
+	ResourceManager::Instance()->CreateTexture("torch", "shaders\\torch.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("cat", "shaders\\cat.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("wall_up", "shaders\\wallTop.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("wall_down", "shaders\\wallBottom.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("wall_right", "shaders\\wallRight.png", graphics::image_format::RGBA);
@@ -130,6 +132,19 @@ int main()
 		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*(i-15), WALL_SIZE.y*5);
 	}
 
+	graphics::Renderable cat;
+	cat.setTextureNameWData("cat");
+	cat.m_Transform.m_Size.scale(0.25f);
+
+	graphics::Renderable torch;
+	torch.setTextureNameWData("torch");
+	torch.m_Transform.m_Position.x += torch.m_Transform.m_Size.x;
+
+	graphics::Renderable rectangle;
+	rectangle.m_Transform.m_Size = core::Vector2f(150, 75);
+	rectangle.m_Color = core::Color::Red();
+	rectangle.m_Transform.m_Position = core::Vector2f(100, 100);
+
 	core::Clock fpsTimer;
 	unsigned int fps = 0;
 	fpsTimer.reset();
@@ -139,7 +154,7 @@ int main()
 	{
 		if (fpsTimer.getTicks() >= 1000) {
 			fpsTimer.reset();
-			//std::cout << "Measured FPS: " << fps << std::endl;
+			std::cout << "Measured FPS: " << fps << std::endl;
 			fps = 0;
 		}
 
@@ -181,10 +196,15 @@ int main()
 		// The normal renderer
 		_renderer.begin();
 
-		for (graphics::Renderable& r : walls) {
-			_renderer.submit(&r, 4);
-		}
-		_renderer.submit(&animation_sprite, 4);
+		//for (graphics::Renderable& r : walls) {
+		//	_renderer.submit(&r, 4);
+		//}
+		//_renderer.submit(&animation_sprite, 4);
+		//_renderer.submit(&cat, 4);
+		//_renderer.submit(&torch, 4);
+		//_renderer.submit_unlit(&rectangle, 4, 123);
+		_renderer.submit_unlit(&torch, 4, 0);
+		_renderer.submit_unlit(&cat, 4, 0);
 
 		// Perform the normal render flush, which will be to the currently bound framebuffer
 		//fb2->bind();

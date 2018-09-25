@@ -9,6 +9,7 @@ namespace bear { namespace graphics {
 		core::Vector2f Position;
 		core::Color Color;
 		core::Vector2f TextureCoordinates;
+		float TextureSlot;
 	};
 
 }} 

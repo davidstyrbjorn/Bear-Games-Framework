@@ -58,11 +58,13 @@ namespace bear { namespace graphics {
 		"layout(location=0) in vec2 in_pos;",
 		"layout(location=1) in vec4 in_color;",
 		"layout(location=2) in vec2 in_uv;",
+		"layout(location=3) in float texture_slot;",
 
 		"uniform mat4 projection_matrix;",
 		"uniform mat4 model_matrix = mat4(1.0);",
 		"uniform mat4 view_matrix = mat4(1.0);",
 
+		"out float ts;",
 		"out vec4 out_color;",
 		"out vec2 uv;",
 		"out vec2 pos;",
@@ -72,6 +74,7 @@ namespace bear { namespace graphics {
 		    "out_color = in_color;", 
 			"uv = in_uv;", 
 			"pos = in_pos;",
+			"ts = texture_slot;",
 		"}" 
 	};
 	static std::string default_fragment_shader_source[] = {
@@ -83,20 +86,20 @@ namespace bear { namespace graphics {
 		"in vec4 out_color;",
 		"in vec2 uv;",
 		"in vec2 pos;",
+		"in float ts;"
 
 		"uniform sampler2D texture_sampler;",
 		"uniform int texture_mode;",
 
-		"uniform vec2 light_pos;",
-		"uniform vec4 light_color;",
-		"uniform float max_distance = 200;",
+		"uniform sampler2D texture_samplers[4];",
 
 		"void main() {",
-			"if(texture_mode == 0) {",
+			"if(ts == -1) {",
 			    "gl_FragColor = out_color;", 
 			"}", 
 			"else {", 
-			    "gl_FragColor = texture(texture_sampler, uv) * out_color;", 
+		        "highp int _ts = int(ts);"
+			    "gl_FragColor = texture(texture_samplers[_ts], uv) * out_color;", 
 				//"color = texture(texture_sampler, uv) * out_color;",
 			"}",  
 		"}" 

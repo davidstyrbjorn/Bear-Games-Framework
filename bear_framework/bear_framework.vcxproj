@@ -163,7 +163,6 @@
     <ClInclude Include="include\window\GLFW_event.h" />
     <ClInclude Include="include\window\GLFW_window.h" />
     <ClInclude Include="include\window\window.h" />
-    <ClInclude Include="include\window\window_framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\batch_renderer.cpp" />
