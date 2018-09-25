@@ -91,7 +91,7 @@ namespace bear { namespace graphics {
 		"uniform sampler2D texture_sampler;",
 		"uniform int texture_mode;",
 
-		"uniform sampler2D texture_samplers[4];",
+		"uniform sampler2D texture_samplers[14];",
 
 		"void main() {",
 			"if(ts == -1) {",

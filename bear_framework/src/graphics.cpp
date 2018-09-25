@@ -10,7 +10,6 @@ using namespace bear;
 using namespace bear::graphics;
 
 Shader* Graphics::s_DefaultShader = nullptr;
-//Shader* Graphics::s_DefaultShader = new Shader();
 
 Shader* Graphics::s_DefaultShaderText = new Shader();
 Shader* Graphics::s_DefaultParticleShader = new Shader();

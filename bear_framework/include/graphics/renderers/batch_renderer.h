@@ -32,23 +32,16 @@ namespace bear { namespace graphics {
 	class Renderable;
 	class View;
 
-	struct texuted_buffers 
-	{
-		unsigned int VAO, VBO, IBO;
-		std::deque<Renderable*> m_TextureBatch;
-	};
-
 	class BatchRenderer {
 	private:
 		UnlitBatcher *m_UnlitBatch;
-		texuted_buffers _textured_buffers;
-		unsigned int m_UnlitVertCount = 0;
+		unsigned int m_IndicesCount = 0;
+		std::vector<Renderable*> m_RenderableList;
+		std::vector<unsigned int> textureSlots;
 
 		// Used by default if none is submitted by the flush caller	
 		static View& defaultView;
-
-		std::vector<unsigned int> textureSlots;
-
+		
 	public:
 		BatchRenderer();
 		~BatchRenderer();
@@ -64,12 +57,12 @@ namespace bear { namespace graphics {
 		* flush renders the submitted data
 		*/
 		void begin();
-		void submit(Renderable* a_Renderable, unsigned int a_VertCount);
+		void submit(Renderable* a_Renderable);
+		void fill_buffer();
 		void flush(View& a_View = defaultView);
 
-	public:
-		void submit_unlit(Renderable* a_UnlitRenderable, unsigned int a_VertCount, float texture_slot);
-		void submit_texture(Renderable* a_TexturedRenderable);
+	private:
+		static bool _layer_compare(Renderable* a_R1, Renderable* a_R2);
 	};
 
 } }

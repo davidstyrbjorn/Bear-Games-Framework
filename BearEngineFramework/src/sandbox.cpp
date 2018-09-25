@@ -21,7 +21,7 @@ constexpr auto HEIGHT = 640;
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
-	myWindow.setVSync(true);
+	myWindow.setVSync(false);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -93,7 +93,7 @@ int main()
 	animation_sprite.m_Transform.m_Size = core::Vector2f(100, 100);
 	animation_sprite.m_Transform.m_Position = core::Vector2f(110, 110);
 
-	static core::Vector2f WALL_SIZE = core::Vector2f(100, 100);
+	static core::Vector2f WALL_SIZE = core::Vector2f(64, 64);
 	graphics::Renderable walls[20];
 	// Top
 	for (int i = 0; i < 5; i++) {
@@ -101,6 +101,7 @@ int main()
 		walls[i].m_TextureName = "wall_up";
 		walls[i].m_Transform.m_Size = WALL_SIZE;
 		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*i, 0);
+		walls[i].m_VertexCount = 4;
 		if (i == 0)
 			walls[i].m_TextureName = "top_left";
 		if (i == 4)
@@ -112,6 +113,7 @@ int main()
 		walls[i].m_TextureName = "wall_left";
 		walls[i].m_Transform.m_Size = WALL_SIZE;
 		walls[i].m_Transform.m_Position = core::Vector2f(0, WALL_SIZE.y + WALL_SIZE.y*(i-5));
+		walls[i].m_VertexCount = 4;
 		if (i == 9)
 			walls[i].m_TextureName = "bottom_left";
 	}
@@ -121,6 +123,7 @@ int main()
 		walls[i].m_TextureName = "wall_right";
 		walls[i].m_Transform.m_Size = WALL_SIZE;
 		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*4, WALL_SIZE.y + WALL_SIZE.y*(i-10));
+		walls[i].m_VertexCount = 4;
 		if (i == 14)
 			walls[i].m_TextureName = "bottom_right";
 	}
@@ -130,20 +133,24 @@ int main()
 		walls[i].m_TextureName = "wall_down";
 		walls[i].m_Transform.m_Size = WALL_SIZE;
 		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*(i-15), WALL_SIZE.y*5);
+		walls[i].m_VertexCount = 4;
 	}
-
-	graphics::Renderable cat;
-	cat.setTextureNameWData("cat");
-	cat.m_Transform.m_Size.scale(0.25f);
-
-	graphics::Renderable torch;
-	torch.setTextureNameWData("torch");
-	torch.m_Transform.m_Position.x += torch.m_Transform.m_Size.x;
 
 	graphics::Renderable rectangle;
 	rectangle.m_Transform.m_Size = core::Vector2f(150, 75);
 	rectangle.m_Color = core::Color::Red();
-	rectangle.m_Transform.m_Position = core::Vector2f(100, 100);
+	rectangle.m_Transform.m_Position = core::Vector2f(200, 200);
+	rectangle.m_VertexCount = 4;
+
+	graphics::Renderable cat1;
+	cat1.setTextureNameWData("cat");
+	cat1.m_Transform.m_Size.scale(0.3f);
+	cat1.m_Layer = 10;
+
+	graphics::Renderable torch1;
+	torch1.setTextureNameWData("torch");
+	torch1.m_Transform.m_Position = core::Vector2f(50, 10);
+	torch1.m_Layer = 1;
 
 	core::Clock fpsTimer;
 	unsigned int fps = 0;
@@ -165,6 +172,12 @@ int main()
 				fb1->windowResize(event.size.x, event.size.y);
 				fb2->windowResize(event.size.x, event.size.y);
 			}
+			if (myWindow.isKeyDown(Key::X)) {
+				torch1.m_Layer = 11;
+			}
+			if (myWindow.isKeyDown(Key::Z)) {
+				torch1.m_Layer = 9;
+			}
 		}	
 
 		if (myWindow.isKeyDown(Key::D))
@@ -179,32 +192,29 @@ int main()
 		// RENDERING BEGINS HERE
 		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 		
-		sprite_anim_timer += .3f * dt;
+		//sprite_anim_timer += .3f * dt;
 		//std::cout << sprite_anim_timer << std::endl;
-		if (sprite_anim_timer >= sprite_anim_timer_break) {
-			sprite_anim_timer = 0;
-			sprite_animation_index = 0;
-			animation_sprite.m_TextureName = keyframes[sprite_animation_index].image_name;
-		}
-		if (sprite_animation_index != keyframes.size()-1) {
-			if (sprite_anim_timer >= keyframes[sprite_animation_index + 1].time_stamp) {
-				sprite_animation_index++;
-				animation_sprite.m_TextureName = keyframes[sprite_animation_index].image_name;
-			}
-		}
+		//if (sprite_anim_timer >= sprite_anim_timer_break) {
+		//	sprite_anim_timer = 0;
+		//	sprite_animation_index = 0;
+		//	animation_sprite.m_TextureName = keyframes[sprite_animation_index].image_name;
+		//}
+		//if (sprite_animation_index != keyframes.size()-1) {
+		//	if (sprite_anim_timer >= keyframes[sprite_animation_index + 1].time_stamp) {
+		//		sprite_animation_index++;
+		//		animation_sprite.m_TextureName = keyframes[sprite_animation_index].image_name;
+		//	}
+		//}
 
 		// The normal renderer
 		_renderer.begin();
 
 		//for (graphics::Renderable& r : walls) {
-		//	_renderer.submit(&r, 4);
+		//	_renderer.submit(&r);
 		//}
-		//_renderer.submit(&animation_sprite, 4);
-		//_renderer.submit(&cat, 4);
-		//_renderer.submit(&torch, 4);
-		//_renderer.submit_unlit(&rectangle, 4, 123);
-		_renderer.submit_unlit(&torch, 4, 0);
-		_renderer.submit_unlit(&cat, 4, 0);
+		//_renderer.submit(&rectangle);
+		_renderer.submit(&cat1);
+		_renderer.submit(&torch1);
 
 		// Perform the normal render flush, which will be to the currently bound framebuffer
 		//fb2->bind();

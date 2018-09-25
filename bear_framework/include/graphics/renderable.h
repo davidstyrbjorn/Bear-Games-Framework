@@ -10,6 +10,8 @@ namespace bear { namespace graphics {
 		Transform m_Transform;
 		core::Color m_Color;
 		std::string m_TextureName;
+		unsigned short int m_VertexCount = 4;
+		unsigned short int m_Layer = 0;
 
 		/* Constructor(s) */
 		Renderable();
