@@ -99,6 +99,10 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
 	Graphics::s_DefaultShader->setUniformInteger("texture_mode", 0);
+	for (int i = 0; i < textureSlots.size(); i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, textureSlots[i]);
+	}
 	
 	m_UnlitBatch->bindBatch();
 	glDrawArrays(GL_TRIANGLES, 0, m_UnlitVertCount);
@@ -161,6 +165,10 @@ void bear::graphics::BatchRenderer::submit_unlit(Renderable * a_UnlitRenderable,
 				texture_slot = i;
 				foundTexture = true;
 			} 
+		}
+		if (!foundTexture) {
+			textureSlots.push_back(TBO);
+			texture_slot = textureSlots.size();
 		}
 		//glBindTexture(GL_TEXTURE_2D, TBO);
 	}
