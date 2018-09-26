@@ -15,6 +15,8 @@
 
 #include<graphics/animated_sprite.h>
 
+#include<SDL_mixer.h>
+
 using namespace bear;
 
 constexpr auto WIDTH = 1280;
@@ -193,7 +195,7 @@ int main()
 		animation_sprite.m_TextureName = anim.m_CurrentTextureName;
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
-		myWindow.clear(core::Color(0.05, 0.05, 0.1)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 
 		// The normal renderer
 		_renderer.begin();
