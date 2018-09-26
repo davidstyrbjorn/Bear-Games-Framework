@@ -13,6 +13,8 @@
 
 #include<core/random.h>
 
+#include<graphics/animated_sprite.h>
+
 using namespace bear;
 
 constexpr auto WIDTH = 1280;
@@ -21,7 +23,7 @@ constexpr auto HEIGHT = 640;
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
-	myWindow.setVSync(false);
+	myWindow.setVSync(true);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -70,23 +72,26 @@ int main()
 	ResourceManager::Instance()->CreateTexture("top_right", "shaders\\topRightCorner.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("bottom_left", "shaders\\bottomLeftCorner.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("bottom_right", "shaders\\bottomRightCorner.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("man1", "shaders\\Hat_man1.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("man2", "shaders\\Hat_man2.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("man3", "shaders\\Hat_man3.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("man4", "shaders\\Hat_man4.png", graphics::image_format::RGBA);
 
-	struct sprite_animation_keyframe {
-		const char* image_name;
-		float time_stamp;
+	std::vector<graphics::AnimatedKeyframe> keyframes = { 
+		{ "wall_up" }, 
+		{ "wall_down" }, 
+		{ "wall_left" },
+		{ "wall_right" },
+		{ "top_right" },
+		{ "top_left" },
+		{ "bottom_left" },
+		{ "bottom_right" }
 	};
 
-	std::vector<sprite_animation_keyframe> keyframes = { 
-		{ "wall_up", 0 }, 
-		{ "wall_right", 200 }, 
-		{ "wall_down", 400 },
-		{ "wall_left", 600 }
-	};
-	unsigned int sprite_anim_timer = 0;
-	unsigned int sprite_anim_timer_break = 800;
-
-	unsigned int sprite_animation_index = 0;
-	sprite_animation_keyframe current_keyframe = keyframes[sprite_animation_index];
+	graphics::AnimatedSprite anim;
+	anim.m_Keyframes = keyframes;
+	anim.m_TickBreak = 100;
+	anim.m_IsLooping = true;
 
 	graphics::Renderable animation_sprite;
 	animation_sprite.m_TextureName = "wall_up";
@@ -156,7 +161,7 @@ int main()
 	unsigned int fps = 0;
 	fpsTimer.reset();
 	fpsTimer.start();
-	
+
 	while (myWindow.isOpen()) 
 	{
 		if (fpsTimer.getTicks() >= 1000) {
@@ -173,10 +178,11 @@ int main()
 				fb2->windowResize(event.size.x, event.size.y);
 			}
 			if (myWindow.isKeyDown(Key::X)) {
-				torch1.m_Layer = 11;
+				anim.play();
 			}
 			if (myWindow.isKeyDown(Key::Z)) {
-				torch1.m_Layer = 9;
+				anim.stop();
+				anim.reset();
 			}
 		}	
 
@@ -189,22 +195,11 @@ int main()
 		if (myWindow.isKeyDown(Key::W))
 			view.translate(core::Vector2f(0, 1 * dt));
 
-		// RENDERING BEGINS HERE
-		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
-		
-		//sprite_anim_timer += .3f * dt;
-		//std::cout << sprite_anim_timer << std::endl;
-		//if (sprite_anim_timer >= sprite_anim_timer_break) {
-		//	sprite_anim_timer = 0;
-		//	sprite_animation_index = 0;
-		//	animation_sprite.m_TextureName = keyframes[sprite_animation_index].image_name;
-		//}
-		//if (sprite_animation_index != keyframes.size()-1) {
-		//	if (sprite_anim_timer >= keyframes[sprite_animation_index + 1].time_stamp) {
-		//		sprite_animation_index++;
-		//		animation_sprite.m_TextureName = keyframes[sprite_animation_index].image_name;
-		//	}
-		//}
+		anim.update(dt);
+		animation_sprite.m_TextureName = anim.m_CurrentTextureName;
+
+		// =================================== RENDERING BEGINS HERE ===========================================0
+		myWindow.clear(core::Color(1, 1, 1)); // Here is where the window is cleared and we can now render to the fresh window
 
 		// The normal renderer
 		_renderer.begin();
@@ -213,8 +208,9 @@ int main()
 		//	_renderer.submit(&r);
 		//}
 		//_renderer.submit(&rectangle);
-		_renderer.submit(&cat1);
-		_renderer.submit(&torch1);
+		//_renderer.submit(&cat1);
+		//_renderer.submit(&torch1);
+		_renderer.submit(&animation_sprite);
 
 		// Perform the normal render flush, which will be to the currently bound framebuffer
 		//fb2->bind();

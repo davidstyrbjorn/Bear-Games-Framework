@@ -139,6 +139,7 @@
     <ClInclude Include="include\core\random.h" />
     <ClInclude Include="include\core\vector2.h" />
     <ClInclude Include="include\core\vector3.h" />
+    <ClInclude Include="include\graphics\animated_sprite.h" />
     <ClInclude Include="include\graphics\framebuffer.h" />
     <ClInclude Include="include\graphics\graphics.h" />
     <ClInclude Include="include\graphics\image.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="include\window\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\animated_sprite.cpp" />
     <ClCompile Include="src\batch_renderer.cpp" />
     <ClCompile Include="src\clock.cpp" />
     <ClCompile Include="src\file_utility.cpp" />

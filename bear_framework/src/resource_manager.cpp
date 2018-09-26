@@ -69,10 +69,18 @@ graphics::Shader* bear::ResourceManager::CreateShaderFromSource(std::string a_Na
 
 graphics::Shader * bear::ResourceManager::GetShader(std::string a_Name)
 {
-	return m_ShaderMap[a_Name];
+	auto shdr = m_ShaderMap[a_Name];
+	if (shdr == nullptr) {
+		std::cout << "RESOURCE_MANAGER, returning a null Shader object" << std::endl;
+	}
+	return shdr;
 }
 
 graphics::Texture * bear::ResourceManager::GetTexture(std::string a_Name)
 {
-	return m_TextureMap[a_Name];
+	auto txtr = m_TextureMap[a_Name];
+	if (txtr == nullptr) {
+		std::cout << "RESOURCE_MANAGER, returning a null Texture object!" << std::endl;
+	}
+	return txtr;
 }
