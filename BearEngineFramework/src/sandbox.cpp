@@ -62,8 +62,8 @@ int main()
 	//graphics::ParticlePool pool;
 
 	// Create some render objects	&     textures
-	ResourceManager::Instance()->CreateTexture("torch", "shaders\\torch.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("cat", "shaders\\cat.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("floor1", "shaders\\floor1.png", graphics::image_format::RGBA);
+	ResourceManager::Instance()->CreateTexture("floor2", "shaders\\floor2.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("wall_up", "shaders\\wallTop.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("wall_down", "shaders\\wallBottom.png", graphics::image_format::RGBA);
 	ResourceManager::Instance()->CreateTexture("wall_right", "shaders\\wallRight.png", graphics::image_format::RGBA);
@@ -99,63 +99,57 @@ int main()
 	animation_sprite.m_Transform.m_Position = core::Vector2f(110, 110);
 
 	static core::Vector2f WALL_SIZE = core::Vector2f(64, 64);
-	graphics::Renderable walls[20];
-	// Top
-	for (int i = 0; i < 5; i++) {
-		walls[i].m_Color = core::Color::White();
-		walls[i].m_TextureName = "wall_up";
-		walls[i].m_Transform.m_Size = WALL_SIZE;
-		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*i, 0);
-		walls[i].m_VertexCount = 4;
-		if (i == 0)
-			walls[i].m_TextureName = "top_left";
-		if (i == 4)
-			walls[i].m_TextureName = "top_right";
-	}
-	// Left
-	for (int i = 5; i < 10; i++) {
-		walls[i].m_Color = core::Color::White();
-		walls[i].m_TextureName = "wall_left";
-		walls[i].m_Transform.m_Size = WALL_SIZE;
-		walls[i].m_Transform.m_Position = core::Vector2f(0, WALL_SIZE.y + WALL_SIZE.y*(i-5));
-		walls[i].m_VertexCount = 4;
-		if (i == 9)
-			walls[i].m_TextureName = "bottom_left";
-	}
-	// Right
-	for (int i = 10; i < 15; i++) {
-		walls[i].m_Color = core::Color::White();
-		walls[i].m_TextureName = "wall_right";
-		walls[i].m_Transform.m_Size = WALL_SIZE;
-		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*4, WALL_SIZE.y + WALL_SIZE.y*(i-10));
-		walls[i].m_VertexCount = 4;
-		if (i == 14)
-			walls[i].m_TextureName = "bottom_right";
-	}
-	// Bottom
-	for (int i = 15; i < 20; i++) {
-		walls[i].m_Color = core::Color::White();
-		walls[i].m_TextureName = "wall_down";
-		walls[i].m_Transform.m_Size = WALL_SIZE;
-		walls[i].m_Transform.m_Position = core::Vector2f(WALL_SIZE.x*(i-15), WALL_SIZE.y*5);
-		walls[i].m_VertexCount = 4;
+	unsigned int WIDTH = 6;
+	unsigned int HEIGHT = 5;
+	std::vector<graphics::Renderable> walls;
+	for (int x = 0; x <= WIDTH; x++) {
+		for (int y = 0; y <= HEIGHT; y++) {
+			if (x == 0 || x == WIDTH || y == 0 || y == HEIGHT) {
+				walls.push_back(graphics::Renderable());
+				walls.back().m_Transform.m_Size = WALL_SIZE;
+				walls.back().m_Transform.m_Position = core::Vector2f(x*WALL_SIZE.x, y*WALL_SIZE.y);
+				if (x == 0 && y == 0) {
+					walls.back().m_TextureName = "top_left";
+					walls.back().m_Layer = 2;
+				}
+				else if (x == WIDTH && y == 0) {
+					walls.back().m_TextureName = "top_right";
+					walls.back().m_Layer = 2;
+				}
+				else if (x == 0 && y == HEIGHT) {
+					walls.back().m_TextureName = "bottom_left";
+					walls.back().m_Layer = 2;
+				}
+				else if (x == WIDTH && y == HEIGHT) {
+					walls.back().m_TextureName = "bottom_right";
+					walls.back().m_Layer = 2;
+				}
+				else if (x == 0) {
+					walls.back().m_TextureName = "wall_left";
+				}
+				else if (x == WIDTH) {
+					walls.back().m_TextureName = "wall_right";
+				}
+				else if (y == 0) {
+					walls.back().m_TextureName = "wall_up";
+				}
+				else if (y == HEIGHT) {
+					walls.back().m_TextureName = "wall_down";
+				}
+			}
+			else {
+				walls.push_back(graphics::Renderable());
+				walls.back().m_Transform.m_Size = WALL_SIZE;
+				walls.back().m_Transform.m_Position = core::Vector2f(x*WALL_SIZE.x, y*WALL_SIZE.y);
+				if ((x+y) % 2 == 0)
+					walls.back().m_TextureName = "floor2";
+				else
+					walls.back().m_TextureName = "floor1";
+			}
+		}
 	}
 
-	graphics::Renderable rectangle;
-	rectangle.m_Transform.m_Size = core::Vector2f(150, 75);
-	rectangle.m_Color = core::Color::Red();
-	rectangle.m_Transform.m_Position = core::Vector2f(200, 200);
-	rectangle.m_VertexCount = 4;
 
-	graphics::Renderable cat1;
-	cat1.setTextureNameWData("cat");
-	cat1.m_Transform.m_Size.scale(0.3f);
-	cat1.m_Layer = 10;
-
-	graphics::Renderable torch1;
-	torch1.setTextureNameWData("torch");
-	torch1.m_Transform.m_Position = core::Vector2f(50, 10);
-	torch1.m_Layer = 1;
 
 	core::Clock fpsTimer;
 	unsigned int fps = 0;
@@ -199,18 +193,15 @@ int main()
 		animation_sprite.m_TextureName = anim.m_CurrentTextureName;
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
-		myWindow.clear(core::Color(1, 1, 1)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.05, 0.05, 0.1)); // Here is where the window is cleared and we can now render to the fresh window
 
 		// The normal renderer
 		_renderer.begin();
 
-		//for (graphics::Renderable& r : walls) {
-		//	_renderer.submit(&r);
-		//}
-		//_renderer.submit(&rectangle);
-		//_renderer.submit(&cat1);
-		//_renderer.submit(&torch1);
-		_renderer.submit(&animation_sprite);
+		for (graphics::Renderable& r : walls) {
+			_renderer.submit(&r);
+		}
+		//_renderer.submit(&animation_sprite);
 
 		// Perform the normal render flush, which will be to the currently bound framebuffer
 		//fb2->bind();
