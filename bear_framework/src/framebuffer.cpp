@@ -117,6 +117,7 @@ void Framebuffer::drawFramebufferTextureToScreen()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glBindVertexArray(m_QuadVAO);
 	m_FramebufferShader->enable();
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_TBO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

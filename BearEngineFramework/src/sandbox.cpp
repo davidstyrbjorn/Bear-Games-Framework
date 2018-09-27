@@ -15,7 +15,7 @@
 
 #include<graphics/animated_sprite.h>
 
-#include<SDL_mixer.h>
+//#include<SDL_mixer.h>
 
 using namespace bear;
 
@@ -30,7 +30,6 @@ int main()
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
 
-
 	// Create the framebuffer shader 
 	graphics::Shader* fbShader = ResourceManager::Instance()->CreateShaderFromFile("fbShader",
 		"shaders\\fb_vertex.txt", 
@@ -39,19 +38,9 @@ int main()
 	fbShader->enable();
 	fbShader->setUniformInteger("texFramebuffer", 0);
 
-	graphics::Shader* fbShader2 = ResourceManager::Instance()->CreateShaderFromFile("fbShader2", 
-		"shaders\\fb_vertex.txt",
-		"shaders\\fb_fragment2.txt",
-		"");
-	fbShader2->enable();
-	fbShader2->setUniformInteger("texFramebuffer", 0);
-
-	graphics::Framebuffer* fb1 = new graphics::Framebuffer(1600, 900);
+	// Create the framebuffer
+	graphics::Framebuffer* fb1 = new graphics::Framebuffer(WIDTH, HEIGHT);
 	fb1->setShader("fbShader");
-	graphics::Framebuffer* fb2 = new graphics::Framebuffer(1600, 900);
-	fb2->setShader("fbShader2");
-
-	fb2->setFramebufferRenderTarget(fb1->getFBO()); // VignetteFramebuffer will now render to the fb2 texture
 
 	// Create the batch renderer
 	graphics::BatchRenderer _renderer;
@@ -151,8 +140,6 @@ int main()
 		}
 	}
 
-
-
 	core::Clock fpsTimer;
 	unsigned int fps = 0;
 	fpsTimer.reset();
@@ -171,7 +158,6 @@ int main()
 			if (event.type == EventType::WindowReiszed) {
 				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
 				fb1->windowResize(event.size.x, event.size.y);
-				fb2->windowResize(event.size.x, event.size.y);
 			}
 			if (myWindow.isKeyDown(Key::X)) {
 				anim.play();
@@ -206,19 +192,14 @@ int main()
 		//_renderer.submit(&animation_sprite);
 
 		// Perform the normal render flush, which will be to the currently bound framebuffer
-		//fb2->bind();
+		fb1->bind();
 		_renderer.flush(view);
 		//pr->flush();
-		//fb2->unbind();
+		fb1->unbind();
 
-		/*
-		// Render the vignetteFramebuffer texture then clear it
-		fb2->drawFramebufferTextureToScreen();
-		fb2->clearFBO();
-		
+		// Render the vignetteFramebuffer texture then clear it		
 		fb1->drawFramebufferTextureToScreen();
 		fb1->clearFBO();
-		*/
 
 		myWindow.display(); 
 
