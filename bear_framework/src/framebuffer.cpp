@@ -62,7 +62,6 @@ Framebuffer::Framebuffer(unsigned int a_Width, unsigned int a_Height)
 
 Framebuffer::~Framebuffer()
 {
-	// @TODO Delete the FBO and related buffers
 	unbind();
 	glDeleteFramebuffers(1, &m_FBO);
 	glDeleteTextures(1, &m_TBO);

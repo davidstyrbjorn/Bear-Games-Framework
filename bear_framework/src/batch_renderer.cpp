@@ -140,7 +140,7 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	// ================== Unlit flush ========================= //
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
-
+	
 	for (int i = 0; i < textureSlots.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, textureSlots[i]);

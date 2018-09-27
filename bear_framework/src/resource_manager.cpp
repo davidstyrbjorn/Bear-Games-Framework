@@ -37,6 +37,12 @@ void bear::ResourceManager::Exit()
 void bear::ResourceManager::CreateTexture(std::string a_Name, std::string a_File, graphics::image_format a_Format)
 {
 	Image image(a_File, a_Format);
+	// Is the image data invalid? Message that to the caller through the console (for now)
+	if (image.m_ImageData == nullptr) {
+		std::cout << "TEXTURE CREATION ERROR!" << std::endl;
+		std::cout << "Creating a null-texture!" << std::endl;
+		std::cout << "Name: " << a_Name << " File: " << a_File << a_File << std::endl;
+	}
 	Texture* texture = new graphics::Texture(image);
 	m_TextureMap.insert(std::pair<std::string, Texture*>(a_Name, texture));
 }

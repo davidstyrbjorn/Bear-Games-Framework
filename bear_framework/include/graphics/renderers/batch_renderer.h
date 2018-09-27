@@ -17,9 +17,8 @@ typedef unsigned int GLenum;
 namespace bear { namespace graphics {
 
 #define VERTEX_SIZE sizeof(Vertex)
-#define TRIANGLE_SIZE VERTEX_SIZE * 3
-#define QUAD_SIZE VERTEX_SIZE * 6
-#define QUAD_MAX_COUNT 500
+#define QUAD_SIZE VERTEX_SIZE * 6 // 6 indices
+#define QUAD_MAX_COUNT 40963 // 64*64
 #define UNLIT_BUFFER_SIZE QUAD_SIZE * QUAD_MAX_COUNT
 
 	/*

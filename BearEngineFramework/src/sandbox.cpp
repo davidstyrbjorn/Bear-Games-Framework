@@ -22,10 +22,12 @@ using namespace bear;
 constexpr auto WIDTH = 1280;
 constexpr auto HEIGHT = 640;
 
+#define CREATE_TEXTURE(name, path, format) bear::ResourceManager::Instance()->CreateTexture(name, path, format)
+
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
-	myWindow.setVSync(true);
+	myWindow.setVSync(false);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -53,21 +55,19 @@ int main()
 	//graphics::ParticlePool pool;
 
 	// Create some render objects	&     textures
-	ResourceManager::Instance()->CreateTexture("floor1", "shaders\\floor1.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("floor2", "shaders\\floor2.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("wall_up", "shaders\\wallTop.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("wall_down", "shaders\\wallBottom.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("wall_right", "shaders\\wallRight.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("wall_left", "shaders\\wallLeft.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("top_left", "shaders\\topLeftCorner.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("top_right", "shaders\\topRightCorner.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("bottom_left", "shaders\\bottomLeftCorner.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("bottom_right", "shaders\\bottomRightCorner.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("man1", "shaders\\Hat_man1.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("man2", "shaders\\Hat_man2.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("man3", "shaders\\Hat_man3.png", graphics::image_format::RGBA);
-	ResourceManager::Instance()->CreateTexture("man4", "shaders\\Hat_man4.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("floor", "shaders\\floor.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("wall_up", "shaders\\wallTop.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("wall_down", "shaders\\wallBottom.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("wall_right", "shaders\\wallRight.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("wall_left", "shaders\\wallLeft.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("top_left", "shaders\\topLeftCorner.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("top_right", "shaders\\topRightCorner.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("bottom_left", "shaders\\bottomLeftCorner.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("bottom_right", "shaders\\bottomRightCorner.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("fire", "shaders\\fire.png", graphics::image_format::RGBA);
 
+	// Animation object creation example
+	/*
 	std::vector<graphics::AnimatedKeyframe> keyframes = { 
 		{ "wall_up" }, 
 		{ "wall_down" }, 
@@ -88,10 +88,11 @@ int main()
 	animation_sprite.m_TextureName = "wall_up";
 	animation_sprite.m_Transform.m_Size = core::Vector2f(100, 100);
 	animation_sprite.m_Transform.m_Position = core::Vector2f(110, 110);
+	*/
 
 	static core::Vector2f WALL_SIZE = core::Vector2f(64, 64);
-	unsigned int WIDTH = 6;
-	unsigned int HEIGHT = 5;
+	unsigned int WIDTH = 12;
+	unsigned int HEIGHT = 12;
 	std::vector<graphics::Renderable> walls;
 	for (int x = 0; x <= WIDTH; x++) {
 		for (int y = 0; y <= HEIGHT; y++) {
@@ -132,10 +133,7 @@ int main()
 				walls.push_back(graphics::Renderable());
 				walls.back().m_Transform.m_Size = WALL_SIZE;
 				walls.back().m_Transform.m_Position = core::Vector2f(x*WALL_SIZE.x, y*WALL_SIZE.y);
-				if ((x+y) % 2 == 0)
-					walls.back().m_TextureName = "floor2";
-				else
-					walls.back().m_TextureName = "floor1";
+				walls.back().m_TextureName = "floor";
 			}
 		}
 	}
@@ -144,6 +142,19 @@ int main()
 	unsigned int fps = 0;
 	fpsTimer.reset();
 	fpsTimer.start();
+
+	// Creat an ASS load of quads
+	static int size = 32;
+	std::vector<graphics::Renderable*> reestList;
+	for (int x = 0; x < 64; x++) {
+		for (int y = 0; y < 64; y++) {
+			reestList.push_back(new graphics::Renderable());
+			reestList.back()->m_Color = core::Color(core::randomFloatZeroToOne(), core::randomFloatZeroToOne(), core::randomFloatZeroToOne());
+			reestList.back()->m_Transform.m_Size = core::Vector2f(size, size);
+			reestList.back()->m_Transform.m_Position = core::Vector2f(x*size, y*size);
+			reestList.back()->m_TextureName = "fire";
+		}
+	}
 
 	while (myWindow.isOpen()) 
 	{
@@ -159,13 +170,6 @@ int main()
 				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
 				fb1->windowResize(event.size.x, event.size.y);
 			}
-			if (myWindow.isKeyDown(Key::X)) {
-				anim.play();
-			}
-			if (myWindow.isKeyDown(Key::Z)) {
-				anim.stop();
-				anim.reset();
-			}
 		}	
 
 		if (myWindow.isKeyDown(Key::D))
@@ -177,9 +181,6 @@ int main()
 		if (myWindow.isKeyDown(Key::W))
 			view.translate(core::Vector2f(0, 1 * dt));
 
-		anim.update(dt);
-		animation_sprite.m_TextureName = anim.m_CurrentTextureName;
-
 		// =================================== RENDERING BEGINS HERE ===========================================0
 		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 
@@ -189,17 +190,23 @@ int main()
 		for (graphics::Renderable& r : walls) {
 			_renderer.submit(&r);
 		}
-		//_renderer.submit(&animation_sprite);
+		//man.m_TextureName = "fire";
+		//_renderer.submit(&man);
+
+		// Render an ASS load of quads
+		//for (graphics::Renderable* r : reestList) {
+		//	_renderer.submit(r);
+		//}
 
 		// Perform the normal render flush, which will be to the currently bound framebuffer
-		fb1->bind();
+		//fb1->bind();
 		_renderer.flush(view);
 		//pr->flush();
-		fb1->unbind();
+		//fb1->unbind();
 
 		// Render the vignetteFramebuffer texture then clear it		
-		fb1->drawFramebufferTextureToScreen();
-		fb1->clearFBO();
+		//fb1->drawFramebufferTextureToScreen();
+		//fb1->clearFBO();
 
 		myWindow.display(); 
 

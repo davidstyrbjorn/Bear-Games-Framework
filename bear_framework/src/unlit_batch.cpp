@@ -39,14 +39,17 @@ void bear::graphics::UnlitBatcher::clearBatch()
 	m_ByteSizeOffset = 0; // Reset the offset
 }
 
-void bear::graphics::UnlitBatcher::updateBatch(void * a_Data, size_t a_Size)
+bool bear::graphics::UnlitBatcher::updateBatch(void * a_Data, size_t a_Size)
 {
-	// @ TODO: Put in checking for overshooting batch size!
+	// Batch size check before we add
+	if ( m_ByteSizeOffset + a_Size >= c_BatchSize )
+		return false;
 
 	// Insert a_Data, taking up a_Size space (bytes)
 	bindBatch();
 	glBufferSubData(GL_ARRAY_BUFFER, m_ByteSizeOffset, a_Size, a_Data);
 	m_ByteSizeOffset += a_Size; // Update the offset
+	return true;
 }
 
 void bear::graphics::UnlitBatcher::bindBatch()

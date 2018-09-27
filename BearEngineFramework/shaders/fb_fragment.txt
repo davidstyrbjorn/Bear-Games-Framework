@@ -7,9 +7,6 @@ uniform sampler2D texFramebuffer;
 void main()
 {
     vec4 texColor = texture(texFramebuffer, UV);
-    vec2 position = gl_FragCoord.xy - vec2(0.5);
 
-    float len = length(position);
-
-    gl_FragColor = vec(;
+    gl_FragColor = texColor;
 }

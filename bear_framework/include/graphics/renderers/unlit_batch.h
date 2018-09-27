@@ -35,7 +35,7 @@ namespace bear { namespace graphics {
 		void clearBatch();
 
 		// Method for adding to the batch
-		void updateBatch(void *a_Data, size_t a_Size);
+		bool updateBatch(void *a_Data, size_t a_Size);
 
 		// Binds the batch 
 		// Binds to: OpenGL VertexArray & GL_ARRAY_BUFFER
