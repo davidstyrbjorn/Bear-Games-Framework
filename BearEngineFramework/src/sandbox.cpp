@@ -7,7 +7,7 @@
 #include<graphics\graphics.h>
 
 #include<graphics/renderers/batch_renderer.h>
-#include<graphics/renderers/particle_renderer.h>
+#include<graphics/renderers/particle_source.h>
 
 #include<memory/resource_manager.h>
 
@@ -50,12 +50,22 @@ int main()
 	graphics::View view;
 	
 	// Create the particle renderer
-	//graphics::ParticleRenderer *pr = new graphics::ParticleRenderer();
-	//pr->init();
-	//graphics::ParticlePool pool;
+	graphics::ParticleSource pr;
+	pr.init();
+	graphics::ParticleSource pr2;
+	pr2.init();
+	graphics::ParticlePool pool;
+	graphics::ParticlePool pool2;
 
 	// Create some render objects	&     textures
+
 	CREATE_TEXTURE("floor", "shaders\\floor.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("floor1", "shaders\\floor1.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("floor2", "shaders\\floor2.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("floor3", "shaders\\floor3.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("floor4", "shaders\\floor4.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("placeholder", "shaders\\placeholder.png", graphics::image_format::RGBA);
+
 	CREATE_TEXTURE("wall_up", "shaders\\wallTop.png", graphics::image_format::RGBA);
 	CREATE_TEXTURE("wall_down", "shaders\\wallBottom.png", graphics::image_format::RGBA);
 	CREATE_TEXTURE("wall_right", "shaders\\wallRight.png", graphics::image_format::RGBA);
@@ -133,7 +143,7 @@ int main()
 				walls.push_back(graphics::Renderable());
 				walls.back().m_Transform.m_Size = WALL_SIZE;
 				walls.back().m_Transform.m_Position = core::Vector2f(x*WALL_SIZE.x, y*WALL_SIZE.y);
-				walls.back().m_TextureName = "floor";
+				walls.back().m_TextureName = "placeholder";
 			}
 		}
 	}
@@ -180,16 +190,28 @@ int main()
 			view.translate(core::Vector2f(0, -1 * dt));
 		if (myWindow.isKeyDown(Key::W))
 			view.translate(core::Vector2f(0, 1 * dt));
+		if (myWindow.isKeyDown(Key::F)) {
+			graphics::ParticleConfig config;
+			config.position = core::Vector2f(400, 400) + core::randomPointInsideCircle(150);
+			config.makeSizeRandom(5, 50);
+			config.makeColorRandom();
+			pool.addParticles(1, config, 300);
+		}
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
 		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 
-		// The normal renderer
-		_renderer.begin();
+		pool.process(dt);
 
-		for (graphics::Renderable& r : walls) {
-			_renderer.submit(&r);
-		}
+		// Rendering begin
+		_renderer.begin();
+		pr.begin();
+
+		// Rendering submit
+		//for (graphics::Renderable& r : walls) {
+		//	_renderer.submit(&r);
+		//}
+		pr.submit(pool);
 		//man.m_TextureName = "fire";
 		//_renderer.submit(&man);
 
@@ -198,12 +220,15 @@ int main()
 		//	_renderer.submit(r);
 		//}
 
-		// Perform the normal render flush, which will be to the currently bound framebuffer
-		//fb1->bind();
-		_renderer.flush(view);
-		//pr->flush();
-		//fb1->unbind();
 
+		// Rendering flush
+		//fb1->bind();
+		
+		pr.flush(view);
+		_renderer.flush(view);
+
+		//fb1->unbind();
+		
 		// Render the vignetteFramebuffer texture then clear it		
 		//fb1->drawFramebufferTextureToScreen();
 		//fb1->clearFBO();

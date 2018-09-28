@@ -21,7 +21,7 @@ namespace bear { namespace graphics {
 		// Define some friendships between graphics classes
 		friend class BatchRenderer;
 		friend class TextLabel;
-		friend class ParticleRenderer;
+		friend class ParticleSource;
 	
 	private:
 		// Used by: BatchRenderer

@@ -12,16 +12,26 @@
 namespace bear { namespace graphics {
 
 	struct Image;
+	class Texture;
+	class View;
 
-	class ParticleRenderer {
+	struct ParticleSourceConfiguration {
+		core::Vector2f gravity_vector;
+		std::string texture_name;
+	};
+
+	class ParticleSource {
 	private:
 		UnlitBatcher* m_Batch;
-		unsigned int m_TBO;
 		unsigned int m_ParticleCount = 0;
+		ParticleSourceConfiguration m_Config;
+		Texture* m_Texture;
+
+		static View &defaultView;
 
 	public:
-		ParticleRenderer() { }
-		~ParticleRenderer();
+		ParticleSource() { }
+		~ParticleSource();
 
 		// Init required stuff for particle buffer
 		void init();
@@ -29,12 +39,11 @@ namespace bear { namespace graphics {
 		// Render routines
 		void begin();
 		void submit(ParticlePool& a_ParticlePool);
-		void flush();
+		void flush(View& a_View = defaultView);
 
 		// Config methods
 		void setGravityAcceleration(core::Vector2f& a_Vector);
-		void setUseTexture(bool a_UseTexture);
-		void setActiveTexture(const Image& a_Image);
+		void setActiveTexture(const std::string& a_TextureName);
 	};
 
 } }

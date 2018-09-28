@@ -146,7 +146,7 @@
     <ClInclude Include="include\graphics\particle.h" />
     <ClInclude Include="include\graphics\renderable.h" />
     <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
-    <ClInclude Include="include\graphics\renderers\particle_renderer.h" />
+    <ClInclude Include="include\graphics\renderers\particle_source.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\text.h" />
     <ClInclude Include="include\graphics\texture.h" />
@@ -177,7 +177,7 @@
     <ClCompile Include="src\matrix4x4.cpp" />
     <ClCompile Include="src\openal.cpp" />
     <ClCompile Include="src\particle.cpp" />
-    <ClCompile Include="src\particle_renderer.cpp" />
+    <ClCompile Include="src\particle_source.cpp" />
     <ClCompile Include="src\renderable.cpp" />
     <ClCompile Include="src\resource_manager.cpp" />
     <ClCompile Include="src\shader.cpp" />
