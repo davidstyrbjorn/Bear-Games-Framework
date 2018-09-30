@@ -31,6 +31,30 @@ void ParticleSource::init()
 	};
 
 	m_Batch = new UnlitBatcher(PARTICLE_BUFFER_SIZE, temp, 6);
+	m_EmissionClock.start();
+}
+
+void ParticleSource::update(float dt)
+{
+	std::cout << m_ParticlePool.particle_list.size() << std::endl;
+	// Check if we want to perform an emission of particles
+	if (m_EmissionClock.getTicks() >= m_Emitter.repeat_interval) {
+		// Insert n number of particles with the correct configuration
+		m_ParticlePool.addParticles(m_Emitter.count, m_ParticleConfig, m_ConfigFlags);
+		// Reset the clock 
+		m_EmissionClock.reset();
+	}
+	
+	m_ParticlePool.process(dt);
+}
+
+void bear::graphics::ParticleSource::render(View& a_View)
+{
+	// Perform a render routine on the particle source
+	// Rendering every particle currently inside the m_ParticlePool
+	begin();
+	submit(m_ParticlePool);
+	flush(a_View);
 }
 
 void bear::graphics::ParticleSource::begin()
@@ -57,15 +81,21 @@ void bear::graphics::ParticleSource::flush(View& a_View)
 	// Bind
 	Graphics::s_DefaultParticleShader->enable();
 	Graphics::s_DefaultParticleShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
-	Graphics::s_DefaultParticleShader->setUniformVector2f("gravity", m_Config.gravity_vector);
-	if(m_Texture != nullptr)
-		Graphics::s_
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_Texture->getTextureID());
+	Graphics::s_DefaultParticleShader->setUniformVector2f("gravity", m_SourceConfig.gravity_vector);
+	// Render with texture?
+	if (m_Texture != nullptr) {
+		// Tell shader to render with texture
+		Graphics::s_DefaultParticleShader->setUniformInteger("texture_mode", 1);
+		// Activate + bind texture target
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_Texture->getTextureID());
+	}
+	else {
+		Graphics::s_DefaultParticleShader->setUniformInteger("texture_mode", 0);
+	}
 
 	m_Batch->bindBatch();
-	// Draw
+	// Drawcall
 	glDrawArrays(GL_POINTS, 0, m_ParticleCount);
 
 	// Unbind
@@ -77,11 +107,22 @@ void bear::graphics::ParticleSource::flush(View& a_View)
 
 void bear::graphics::ParticleSource::setGravityAcceleration(core::Vector2f & a_Vector)
 {
-	m_Config.gravity_vector = a_Vector;
+	m_SourceConfig.gravity_vector = a_Vector;
 }
 
 void bear::graphics::ParticleSource::setActiveTexture(const std::string& a_TextureName)
 {
-	m_Config.texture_name = a_TextureName;
-	m_Texture = ResourceManager::Instance()->GetTexture(m_Config.texture_name);
+	m_SourceConfig.texture_name = a_TextureName;
+	m_Texture = ResourceManager::Instance()->GetTexture(m_SourceConfig.texture_name);
+}
+
+void bear::graphics::ParticleSource::setParticleEmitter(ParticleEmission & a_ParticleEmitter)
+{
+	m_Emitter = a_ParticleEmitter;
+}
+
+void bear::graphics::ParticleSource::setParticleConfiguration(ParticleConfig & a_ParticleConfig, ParticleConfigFlags::Value m_Flags)
+{
+	m_ParticleConfig = a_ParticleConfig;
+	m_ConfigFlags = m_Flags;
 }

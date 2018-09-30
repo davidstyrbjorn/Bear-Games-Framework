@@ -27,7 +27,7 @@ constexpr auto HEIGHT = 640;
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
-	myWindow.setVSync(false);
+	myWindow.setVSync(true);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -52,13 +52,26 @@ int main()
 	// Create the particle renderer
 	graphics::ParticleSource pr;
 	pr.init();
-	graphics::ParticleSource pr2;
-	pr2.init();
-	graphics::ParticlePool pool;
-	graphics::ParticlePool pool2;
+	
+	graphics::ParticleEmission e;
+	e.count = 6;
+	e.repeat_interval = 400;
+	e.cycle_count = 0;
+	pr.setParticleEmitter(e);
 
-	// Create some render objects	&     textures
+	graphics::ParticleConfig c;
+	c.circlePositionCenter = core::Vector2f(400, 400);
+	c.circlePositionRadius = 10;
+	c.color = core::Color::Red();
+	c.deathTime = 1000;
+	c.min_size = 5;
+	c.max_size = 15;
+	c.velocity = core::Vector2f(0, 0);
+	pr.setParticleConfiguration(c, (graphics::ParticleConfigFlags::Value)(graphics::ParticleConfigFlags::RANDOM_POSITION_CIRCLE | graphics::ParticleConfigFlags::RANDOM_SIZE));
+	
+	pr.setGravityAcceleration(core::Vector2f(0.0002, -0.0005f));
 
+	// Create textures
 	CREATE_TEXTURE("floor", "shaders\\floor.png", graphics::image_format::RGBA);
 	CREATE_TEXTURE("floor1", "shaders\\floor1.png", graphics::image_format::RGBA);
 	CREATE_TEXTURE("floor2", "shaders\\floor2.png", graphics::image_format::RGBA);
@@ -190,28 +203,19 @@ int main()
 			view.translate(core::Vector2f(0, -1 * dt));
 		if (myWindow.isKeyDown(Key::W))
 			view.translate(core::Vector2f(0, 1 * dt));
-		if (myWindow.isKeyDown(Key::F)) {
-			graphics::ParticleConfig config;
-			config.position = core::Vector2f(400, 400) + core::randomPointInsideCircle(150);
-			config.makeSizeRandom(5, 50);
-			config.makeColorRandom();
-			pool.addParticles(1, config, 300);
-		}
+
+		pr.update(dt);
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
 		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 
-		pool.process(dt);
-
 		// Rendering begin
 		_renderer.begin();
-		pr.begin();
 
 		// Rendering submit
 		//for (graphics::Renderable& r : walls) {
 		//	_renderer.submit(&r);
 		//}
-		pr.submit(pool);
 		//man.m_TextureName = "fire";
 		//_renderer.submit(&man);
 
@@ -224,7 +228,7 @@ int main()
 		// Rendering flush
 		//fb1->bind();
 		
-		pr.flush(view);
+		pr.render(view);
 		_renderer.flush(view);
 
 		//fb1->unbind();

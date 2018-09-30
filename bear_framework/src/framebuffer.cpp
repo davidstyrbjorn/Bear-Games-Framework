@@ -81,7 +81,6 @@ void bear::graphics::Framebuffer::setFramebufferRenderTarget(unsigned int a_FBO)
 
 void bear::graphics::Framebuffer::windowResize(unsigned int a_Width, unsigned int a_Height)
 {
-	std::cout << "Asshole\n";
 	glBindTexture(GL_TEXTURE_2D, m_TBO);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, a_Width, a_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glBindTexture(GL_TEXTURE_2D, 0);

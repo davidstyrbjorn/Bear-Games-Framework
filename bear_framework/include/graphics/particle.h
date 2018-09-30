@@ -19,6 +19,35 @@ namespace bear { namespace graphics {
 		float deathTime;
 	};
 
+	struct ParticleConfigFlags {
+		enum Value {
+			RANDOM_SIZE				 = 0x01,
+			RANDOM_COLOR			 = 0x02,
+			RANDOM_VELOCITY			 = 0x04,
+			RANDOM_DEATHTIME		 = 0x08,
+			RANDOM_POSITION		   	 = 0x10,
+			RANDOM_POSITION_CIRCLE	 = 0x20,
+		};
+	};
+
+	struct ParticleConfig {
+		core::Vector2f position;
+		core::Vector2f position1, position2;
+		core::Vector2f circlePositionCenter;
+		unsigned int circlePositionRadius;   // Used when RANDOM_POSITION_INSIDE_CIRCLE flag is set
+		
+		int size;
+		int min_size, max_size;
+
+		core::Color color;
+
+		core::Vector2f velocity1, velocity2;
+		core::Vector2f velocity;
+
+		float deathTime1, deathTime2;
+		float deathTime;		
+	};
+
 	struct Particle {
 		core::Vector2f position;
 		int size;
@@ -29,27 +58,14 @@ namespace bear { namespace graphics {
 
 		// Constructor
 		Particle() { }
-		Particle(core::Vector2f& _position, int _size, core::Color& _color, core::Vector2f& _velocity, float _life_time);
+		Particle(ParticleConfig& a_Config, ParticleConfigFlags::Value a_Flags);
 	};
 
-	struct ParticleConfig {
-		core::Vector2f position;
-		int size;
-		core::Color color;
-		core::Vector2f velocity;
-
-		/* Makes particle size a random integer between min/max */
-		void makeSizeRandom(int min, int max);
-		/* Makes the particle color a random RGB color value */
-		void makeColorRandom();
-		/* Makes velocity a random vector with set min/max values */
-		void makeVelocityRandom(float min_x, float max_x, float min_y, float max_y);
-	};
 
 	struct ParticlePool {
 		std::vector<Particle> particle_list;
 
-		void addParticles(int num, ParticleConfig& config, int life_time);
+		void addParticles(int num, ParticleConfig& config, ParticleConfigFlags::Value a_Flags);
 		void process(float delta_time);
 	};
 
