@@ -36,7 +36,6 @@ void ParticleSource::init()
 
 void ParticleSource::update(float dt)
 {
-	std::cout << m_ParticlePool.particle_list.size() << std::endl;
 	// Check if we want to perform an emission of particles
 	if (m_EmissionClock.getTicks() >= m_Emitter.repeat_interval) {
 		// Insert n number of particles with the correct configuration

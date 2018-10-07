@@ -53,23 +53,23 @@ int main()
 	graphics::ParticleSource pr;
 	pr.init();
 	
-	graphics::ParticleEmission e;
-	e.count = 6;
-	e.repeat_interval = 400;
-	e.cycle_count = 0;
-	pr.setParticleEmitter(e);
-
-	graphics::ParticleConfig c;
-	c.circlePositionCenter = core::Vector2f(400, 400);
-	c.circlePositionRadius = 10;
-	c.color = core::Color::Red();
-	c.deathTime = 1000;
-	c.min_size = 5;
-	c.max_size = 15;
-	c.velocity = core::Vector2f(0, 0);
-	pr.setParticleConfiguration(c, (graphics::ParticleConfigFlags::Value)(graphics::ParticleConfigFlags::RANDOM_POSITION_CIRCLE | graphics::ParticleConfigFlags::RANDOM_SIZE));
-	
-	pr.setGravityAcceleration(core::Vector2f(0.0002, -0.0005f));
+	//5graphics::ParticleEmission e;
+	//5e.count = 100;
+	//5e.repeat_interval = 400;
+	//5e.cycle_count = 0;
+	//5pr.setParticleEmitter(e);
+	//5
+	//5graphics::ParticleConfig c;
+	//5c.circlePositionCenter = core::Vector2f(400, 400);
+	//5c.circlePositionRadius = 10;
+	//5c.color = core::Color::Red();
+	//5c.deathTime = 1000;
+	//5c.min_size = 5;
+	//5c.max_size = 15;
+	//5c.velocity = core::Vector2f(0, 0);
+	//5pr.setParticleConfiguration(c, (graphics::ParticleConfigFlags::Value)(graphics::ParticleConfigFlags::RANDOM_POSITION_CIRCLE | graphics::ParticleConfigFlags::RANDOM_SIZE));
+	//5
+	//5pr.setGravityAcceleration(core::Vector2f(0.0002, -0.0005f));
 
 	// Create textures
 	CREATE_TEXTURE("floor", "shaders\\floor.png", graphics::image_format::RGBA);
@@ -175,7 +175,7 @@ int main()
 			reestList.back()->m_Color = core::Color(core::randomFloatZeroToOne(), core::randomFloatZeroToOne(), core::randomFloatZeroToOne());
 			reestList.back()->m_Transform.m_Size = core::Vector2f(size, size);
 			reestList.back()->m_Transform.m_Position = core::Vector2f(x*size, y*size);
-			reestList.back()->m_TextureName = "fire";
+			//reestList.back()->m_TextureName = "fire";
 		}
 	}
 
@@ -220,9 +220,9 @@ int main()
 		//_renderer.submit(&man);
 
 		// Render an ASS load of quads
-		//for (graphics::Renderable* r : reestList) {
-		//	_renderer.submit(r);
-		//}
+		for (graphics::Renderable* r : reestList) {
+			_renderer.submit(r);
+		}
 
 
 		// Rendering flush
