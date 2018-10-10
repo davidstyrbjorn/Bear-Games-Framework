@@ -169,13 +169,13 @@ int main()
 	// Creat an ASS load of quads
 	static int size = 32;
 	std::vector<graphics::Renderable*> reestList;
-	for (int x = 0; x < 64; x++) {
-		for (int y = 0; y < 64; y++) {
+	for (int x = 0; x < 256; x++) {
+		for (int y = 0; y < 256; y++) {
 			reestList.push_back(new graphics::Renderable());
 			reestList.back()->m_Color = core::Color(core::randomFloatZeroToOne(), core::randomFloatZeroToOne(), core::randomFloatZeroToOne());
 			reestList.back()->m_Transform.m_Size = core::Vector2f(size, size);
 			reestList.back()->m_Transform.m_Position = core::Vector2f(x*size, y*size);
-			//reestList.back()->m_TextureName = "fire";
+			reestList.back()->m_TextureName = "fire";
 		}
 	}
 
@@ -204,7 +204,7 @@ int main()
 		if (myWindow.isKeyDown(Key::W))
 			view.translate(core::Vector2f(0, 1 * dt));
 
-		pr.update(dt);
+		//pr.update(dt);
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
 		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
@@ -221,6 +221,7 @@ int main()
 
 		// Render an ASS load of quads
 		for (graphics::Renderable* r : reestList) {
+			//r->m_Transform.m_Position = r->m_Transform.m_Position + core::randomPointInsideCircle(5);
 			_renderer.submit(r);
 		}
 
@@ -228,7 +229,7 @@ int main()
 		// Rendering flush
 		//fb1->bind();
 		
-		pr.render(view);
+		//pr.render(view);
 		_renderer.flush(view);
 
 		//fb1->unbind();
