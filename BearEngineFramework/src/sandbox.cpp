@@ -90,28 +90,24 @@ int main()
 	CREATE_TEXTURE("fire", "shaders\\fire.png", graphics::image_format::RGBA);
 
 	// Animation object creation example
-	/*
+	
 	std::vector<graphics::AnimatedKeyframe> keyframes = { 
 		{ "wall_up" }, 
 		{ "wall_down" }, 
 		{ "wall_left" },
-		{ "wall_right" },
-		{ "top_right" },
-		{ "top_left" },
-		{ "bottom_left" },
-		{ "bottom_right" }
 	};
 
 	graphics::AnimatedSprite anim;
 	anim.m_Keyframes = keyframes;
-	anim.m_TickBreak = 100;
+	anim.m_TickBreak = 30;
 	anim.m_IsLooping = true;
+	anim.play();
 
 	graphics::Renderable animation_sprite;
 	animation_sprite.m_TextureName = "wall_up";
 	animation_sprite.m_Transform.m_Size = core::Vector2f(100, 100);
 	animation_sprite.m_Transform.m_Position = core::Vector2f(110, 110);
-	*/
+	
 
 	static core::Vector2f WALL_SIZE = core::Vector2f(64, 64);
 	unsigned int WIDTH = 12;
@@ -218,12 +214,15 @@ int main()
 		//}
 		//man.m_TextureName = "fire";
 		//_renderer.submit(&man);
+		anim.update(dt);
+		animation_sprite.m_TextureName = anim.m_CurrentTextureName;
+		_renderer.submit(&animation_sprite);
 
 		// Render an ASS load of quads
-		for (graphics::Renderable* r : reestList) {
-			//r->m_Transform.m_Position = r->m_Transform.m_Position + core::randomPointInsideCircle(5);
-			_renderer.submit(r);
-		}
+		//for (graphics::Renderable* r : reestList) {
+		//	//r->m_Transform.m_Position = r->m_Transform.m_Position + core::randomPointInsideCircle(5);
+		//	_renderer.submit(r);
+		//}
 
 
 		// Rendering flush

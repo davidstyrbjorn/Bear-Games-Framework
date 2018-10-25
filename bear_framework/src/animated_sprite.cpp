@@ -16,7 +16,7 @@ AnimatedSprite::AnimatedSprite() :
 
 }
 
-void bear::graphics::AnimatedSprite::addKeyframe(AnimatedKeyframe & a_Keyframe)
+void bear::graphics::AnimatedSprite::addKeyframe(AnimatedKeyframe a_Keyframe)
 {
 	m_Keyframes.push_back(a_Keyframe);
 }
@@ -40,7 +40,7 @@ void bear::graphics::AnimatedSprite::update(float a_Delta)
 		if (m_CurrentKeyframeIndex == m_Keyframes.size() - 1) {
 			if (m_CurrentTick >= m_TickBreak) {
 				reset();
-				if(!m_IsLooping)
+				if(!m_IsLooping)			
 					m_IsPlaying = false;
 			}
 		}
@@ -56,7 +56,6 @@ void bear::graphics::AnimatedSprite::update(float a_Delta)
 
 void bear::graphics::AnimatedSprite::reset()
 {
-	std::cout << "Reset has been caleed!" << std::endl;
 	m_CurrentKeyframeIndex = 0;
 	m_CurrentTick = 0;
 }
