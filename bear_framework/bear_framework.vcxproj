@@ -147,6 +147,7 @@
     <ClInclude Include="include\graphics\renderable.h" />
     <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
     <ClInclude Include="include\graphics\renderers\particle_source.h" />
+    <ClInclude Include="include\graphics\renderers\simple_renderer.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\text.h" />
     <ClInclude Include="include\graphics\texture.h" />

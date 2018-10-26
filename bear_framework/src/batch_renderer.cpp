@@ -43,8 +43,8 @@ void bear::graphics::BatchRenderer::init()
 	m_UnlitBatch = new UnlitBatcher(UNLIT_BUFFER_SIZE, temp, 4);
 
 	Graphics::s_DefaultShader->enable();
-	int samplers[14] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-	Graphics::s_DefaultShader->setUniformIntegerArray("texture_samplers", 13, samplers);
+	int samplers[21] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+	Graphics::s_DefaultShader->setUniformIntegerArray("texture_samplers", 21, samplers);
 }
 
 void bear::graphics::BatchRenderer::begin()
@@ -73,6 +73,7 @@ void bear::graphics::BatchRenderer::fill_buffer()
 		core::Vector2f uv4 = core::Vector2f(1.0f, 0);
 		float texture_slot; // To  be initalized later
 
+		// Texture slot 
 		if (r->m_TextureName.empty()) // Is there no texture for this renderable?
 			texture_slot = -1;
 		else {
@@ -141,10 +142,13 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 	Graphics::s_DefaultShader->enable();
 	Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", a_View.getViewMatrix());
 	
+	int bound_textures = 0;
 	for (int i = 0; i < textureSlots.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, textureSlots[i]);
+		bound_textures++;
 	}
+	std::cout << bound_textures << std::endl;
 	
 	m_UnlitBatch->bindBatch();
 	glDrawArrays(GL_TRIANGLES, 0, m_IndicesCount);
