@@ -148,6 +148,7 @@
     <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
     <ClInclude Include="include\graphics\renderers\particle_source.h" />
     <ClInclude Include="include\graphics\renderers\simple_renderer.h" />
+    <ClInclude Include="include\graphics\renderers\slow_renderer.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\text.h" />
     <ClInclude Include="include\graphics\texture.h" />
@@ -182,6 +183,7 @@
     <ClCompile Include="src\renderable.cpp" />
     <ClCompile Include="src\resource_manager.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\slow_renderer.cpp" />
     <ClCompile Include="src\sound.cpp" />
     <ClCompile Include="src\sound_context.cpp" />
     <ClCompile Include="src\text.cpp" />

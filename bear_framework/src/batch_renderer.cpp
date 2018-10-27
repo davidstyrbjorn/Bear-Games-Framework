@@ -43,8 +43,12 @@ void bear::graphics::BatchRenderer::init()
 	m_UnlitBatch = new UnlitBatcher(UNLIT_BUFFER_SIZE, temp, 4);
 
 	Graphics::s_DefaultShader->enable();
-	int samplers[21] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-	Graphics::s_DefaultShader->setUniformIntegerArray("texture_samplers", 21, samplers);
+	int samplers[32];
+	for (int i = 0; i < 32; i++) {
+		samplers[i] = i;
+	}
+
+	Graphics::s_DefaultShader->setUniformIntegerArray("texture_samplers", 32, samplers);
 }
 
 void bear::graphics::BatchRenderer::begin()
@@ -82,7 +86,7 @@ void bear::graphics::BatchRenderer::fill_buffer()
 			// Look the the renderables TBO inside the texture slot list
 			unsigned int TBO = ResourceManager::Instance()->GetTexture(r->m_TextureName)->getTextureID();
 			for (int i = 0; i < textureSlots.size(); i++) {
-				if (textureSlots[i] == TBO) {
+				if (textureSlots[i] == TBO) {			
 					texture_slot = i;
 					foundTexture = true;
 				}
@@ -95,10 +99,11 @@ void bear::graphics::BatchRenderer::fill_buffer()
 					begin();
 					submit(r);
 				}
-
-				// No texture slot corresponding with the given TBO was found so add it to the list
-				textureSlots.push_back(TBO);
-				texture_slot = textureSlots.size();
+				else {
+					// No texture slot corresponding with the given TBO was found so add it to the list and we're still under 32
+					textureSlots.push_back(TBO);
+					texture_slot = textureSlots.size();
+				}
 			}
 		}
 
@@ -148,7 +153,7 @@ void bear::graphics::BatchRenderer::flush(View& a_View)
 		glBindTexture(GL_TEXTURE_2D, textureSlots[i]);
 		bound_textures++;
 	}
-	std::cout << bound_textures << std::endl;
+	//std::cout << bound_textures << std::endl;
 	
 	m_UnlitBatch->bindBatch();
 	glDrawArrays(GL_TRIANGLES, 0, m_IndicesCount);

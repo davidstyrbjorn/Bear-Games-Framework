@@ -8,14 +8,13 @@
 
 #include<graphics/renderers/batch_renderer.h>
 #include<graphics/renderers/particle_source.h>
+#include<graphics/renderers/slow_renderer.h>
 
 #include<memory/resource_manager.h>
 
 #include<core/random.h>
 
 #include<graphics/animated_sprite.h>
-
-//#include<SDL_mixer.h>
 
 using namespace bear;
 
@@ -48,132 +47,28 @@ int main()
 	graphics::BatchRenderer _renderer;
 	_renderer.init();
 	graphics::View view;
+
+	graphics::SlowRenderer slow_fuck;
+	slow_fuck.init();
 	
 	// Create the particle renderer
 	graphics::ParticleSource pr;
 	pr.init();
-	
-	//5graphics::ParticleEmission e;
-	//5e.count = 100;
-	//5e.repeat_interval = 400;
-	//5e.cycle_count = 0;
-	//5pr.setParticleEmitter(e);
-	//5
-	//5graphics::ParticleConfig c;
-	//5c.circlePositionCenter = core::Vector2f(400, 400);
-	//5c.circlePositionRadius = 10;
-	//5c.color = core::Color::Red();
-	//5c.deathTime = 1000;
-	//5c.min_size = 5;
-	//5c.max_size = 15;
-	//5c.velocity = core::Vector2f(0, 0);
-	//5pr.setParticleConfiguration(c, (graphics::ParticleConfigFlags::Value)(graphics::ParticleConfigFlags::RANDOM_POSITION_CIRCLE | graphics::ParticleConfigFlags::RANDOM_SIZE));
-	//5
-	//5pr.setGravityAcceleration(core::Vector2f(0.0002, -0.0005f));
 
-	// Create textures
-	CREATE_TEXTURE("floor", "shaders\\floor.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("floor1", "shaders\\floor1.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("floor2", "shaders\\floor2.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("floor3", "shaders\\floor3.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("floor4", "shaders\\floor4.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("placeholder", "shaders\\placeholder.png", graphics::image_format::RGBA);
-
-	CREATE_TEXTURE("wall_up", "shaders\\wallTop.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("wall_down", "shaders\\wallBottom.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("wall_right", "shaders\\wallRight.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("wall_left", "shaders\\wallLeft.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("top_left", "shaders\\topLeftCorner.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("top_right", "shaders\\topRightCorner.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("bottom_left", "shaders\\bottomLeftCorner.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("bottom_right", "shaders\\bottomRightCorner.png", graphics::image_format::RGBA);
-	CREATE_TEXTURE("fire", "shaders\\fire.png", graphics::image_format::RGBA);
-
-	// Animation object creation example
-	
-	std::vector<graphics::AnimatedKeyframe> keyframes = { 
-		{ "wall_up" }, 
-		{ "wall_down" }, 
-		{ "wall_left" },
-	};
-
-	graphics::AnimatedSprite anim;
-	anim.m_Keyframes = keyframes;
-	anim.m_TickBreak = 30;
-	anim.m_IsLooping = true;
-	anim.play();
-
-	graphics::Renderable animation_sprite;
-	animation_sprite.m_TextureName = "wall_up";
-	animation_sprite.m_Transform.m_Size = core::Vector2f(100, 100);
-	animation_sprite.m_Transform.m_Position = core::Vector2f(110, 110);
-	
-
-	static core::Vector2f WALL_SIZE = core::Vector2f(64, 64);
-	unsigned int WIDTH = 12;
-	unsigned int HEIGHT = 12;
-	std::vector<graphics::Renderable> walls;
-	for (int x = 0; x <= WIDTH; x++) {
-		for (int y = 0; y <= HEIGHT; y++) {
-			if (x == 0 || x == WIDTH || y == 0 || y == HEIGHT) {
-				walls.push_back(graphics::Renderable());
-				walls.back().m_Transform.m_Size = WALL_SIZE;
-				walls.back().m_Transform.m_Position = core::Vector2f(x*WALL_SIZE.x, y*WALL_SIZE.y);
-				if (x == 0 && y == 0) {
-					walls.back().m_TextureName = "top_left";
-					walls.back().m_Layer = 2;
-				}
-				else if (x == WIDTH && y == 0) {
-					walls.back().m_TextureName = "top_right";
-					walls.back().m_Layer = 2;
-				}
-				else if (x == 0 && y == HEIGHT) {
-					walls.back().m_TextureName = "bottom_left";
-					walls.back().m_Layer = 2;
-				}
-				else if (x == WIDTH && y == HEIGHT) {
-					walls.back().m_TextureName = "bottom_right";
-					walls.back().m_Layer = 2;
-				}
-				else if (x == 0) {
-					walls.back().m_TextureName = "wall_left";
-				}
-				else if (x == WIDTH) {
-					walls.back().m_TextureName = "wall_right";
-				}
-				else if (y == 0) {
-					walls.back().m_TextureName = "wall_up";
-				}
-				else if (y == HEIGHT) {
-					walls.back().m_TextureName = "wall_down";
-				}
-			}
-			else {
-				walls.push_back(graphics::Renderable());
-				walls.back().m_Transform.m_Size = WALL_SIZE;
-				walls.back().m_Transform.m_Position = core::Vector2f(x*WALL_SIZE.x, y*WALL_SIZE.y);
-				walls.back().m_TextureName = "placeholder";
-			}
-		}
+	std::vector<graphics::Renderable> renderable_list;
+	const int SIZE = 128;
+	for (int i = 1; i <= 16; i++) {
+		CREATE_TEXTURE(std::to_string(i), "shaders\\" + std::to_string(i) + ".png", graphics::image_format::RGBA);
+		renderable_list.push_back(graphics::Renderable());
+		renderable_list.back().setTextureNameWData(std::to_string(i));
+		renderable_list.back().m_Transform.m_Size = core::Vector2f(SIZE, SIZE);
+		renderable_list.back().m_Transform.m_Position.x = i * SIZE;
 	}
 
 	core::Clock fpsTimer;
 	unsigned int fps = 0;
 	fpsTimer.reset();
 	fpsTimer.start();
-
-	// Creat an ASS load of quads
-	static int size = 32;
-	std::vector<graphics::Renderable*> reestList;
-	for (int x = 0; x < 256; x++) {
-		for (int y = 0; y < 256; y++) {
-			reestList.push_back(new graphics::Renderable());
-			reestList.back()->m_Color = core::Color(core::randomFloatZeroToOne(), core::randomFloatZeroToOne(), core::randomFloatZeroToOne());
-			reestList.back()->m_Transform.m_Size = core::Vector2f(size, size);
-			reestList.back()->m_Transform.m_Position = core::Vector2f(x*size, y*size);
-			reestList.back()->m_TextureName = "fire";
-		}
-	}
 
 	while (myWindow.isOpen()) 
 	{
@@ -191,7 +86,7 @@ int main()
 			}
 		}	
 
-		if (myWindow.isKeyDown(Key::D))
+		if (myWindow.isKeyDown(Key::D))				   
 			view.translate(core::Vector2f(-1 * dt, 0));
 		if (myWindow.isKeyDown(Key::A))
 			view.translate(core::Vector2f(1 * dt, 0));
@@ -203,7 +98,7 @@ int main()
 		//pr.update(dt);
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
-		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.2, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 
 		// Rendering begin
 		_renderer.begin();
@@ -214,9 +109,6 @@ int main()
 		//}
 		//man.m_TextureName = "fire";
 		//_renderer.submit(&man);
-		anim.update(dt);
-		animation_sprite.m_TextureName = anim.m_CurrentTextureName;
-		_renderer.submit(&animation_sprite);
 
 		// Render an ASS load of quads
 		//for (graphics::Renderable* r : reestList) {
@@ -225,11 +117,20 @@ int main()
 		//}
 
 
+		// Slow rendering BITCH
+		slow_fuck.begin();
+
+		slow_fuck.submit(renderable_list.at(0));	
+		slow_fuck.submit(renderable_list.at(1));
+		slow_fuck.submit(renderable_list.at(2));
+
+		slow_fuck.flush();
+
 		// Rendering flush
 		//fb1->bind();
 		
 		//pr.render(view);
-		_renderer.flush(view);
+		//_renderer.flush(view);
 
 		//fb1->unbind();
 		
