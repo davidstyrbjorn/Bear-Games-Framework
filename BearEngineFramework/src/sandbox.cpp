@@ -26,7 +26,7 @@ constexpr auto HEIGHT = 640;
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
-	myWindow.setVSync(true);
+	myWindow.setVSync(false);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -63,6 +63,7 @@ int main()
 		renderable_list.back().setTextureNameWData(std::to_string(i));
 		renderable_list.back().m_Transform.m_Size = core::Vector2f(SIZE, SIZE);
 		renderable_list.back().m_Transform.m_Position.x = i * SIZE;
+		renderable_list.back().m_Color = core::Color(core::randomFloatZeroToOne(), core::randomFloatZeroToOne(), core::randomFloatZeroToOne());
 	}
 
 	core::Clock fpsTimer;
@@ -72,7 +73,14 @@ int main()
 
 	graphics::Renderable test;
 	test.m_Color = core::Color::Red();
-	test.m_Transform.m_Size = core::Vector2f(200, 75);
+	test.m_Transform.m_Size = core::Vector2f(200,200);
+	//test.m_TextureName = "cat";
+
+	graphics::Renderable test2;
+	test2.m_Color = core::Color::Blue();
+	test2.m_Transform.m_Position = core::Vector2f(200, 200);
+	test2.m_Transform.m_Size = core::Vector2f(100, 100);
+	test2.m_VertexCount = 3;
 
 	while (myWindow.isOpen()) 
 	{
@@ -123,9 +131,15 @@ int main()
 
 		// Slow rendering BITCH
 		slow_fuck.begin();
-		
+
 		slow_fuck.submit(test);
 		
+		for (graphics::Renderable &r : renderable_list) {
+			slow_fuck.submit(r);
+		}
+		//slow_fuck.submit(test2);
+		//slow_fuck.submit(test);
+		//
 		slow_fuck.flush();
 
 		// Rendering flush

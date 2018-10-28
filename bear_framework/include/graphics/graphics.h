@@ -92,12 +92,14 @@ namespace bear { namespace graphics {
 		"in float ts;"
 
 		"uniform sampler2D texture_sampler;",
-		"uniform int texture_mode;",
 
-		"uniform sampler2D texture_samplers[14];",
+		//"uniform sampler2D texture_samplers[14];",
 
 		"void main() {",
-			"gl_FragColor = out_color;",
+			"if(uv.x > 0) { gl_FragColor = texture(texture_sampler, uv) * out_color; }",
+			"else { gl_FragColor = out_color; }",
+			//"gl_FragColor = out_color;",
+
 			//"if(ts == -1) {",
 			//    "gl_FragColor = out_color;", 
 			//"}", 
