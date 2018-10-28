@@ -44,16 +44,16 @@ int main()
 	fb1->setShader("fbShader");
 
 	// Create the batch renderer
-	graphics::BatchRenderer _renderer;
-	_renderer.init();
-	graphics::View view;
+	//graphics::BatchRenderer _renderer;
+	//_renderer.init();
+	//graphics::View view;
 
 	graphics::SlowRenderer slow_fuck;
 	slow_fuck.init();
 	
 	// Create the particle renderer
-	graphics::ParticleSource pr;
-	pr.init();
+	//graphics::ParticleSource pr;
+	//pr.init();
 
 	std::vector<graphics::Renderable> renderable_list;
 	const int SIZE = 128;
@@ -69,6 +69,10 @@ int main()
 	unsigned int fps = 0;
 	fpsTimer.reset();
 	fpsTimer.start();
+
+	graphics::Renderable test;
+	test.m_Color = core::Color::Red();
+	test.m_Transform.m_Size = core::Vector2f(200, 75);
 
 	while (myWindow.isOpen()) 
 	{
@@ -86,22 +90,22 @@ int main()
 			}
 		}	
 
-		if (myWindow.isKeyDown(Key::D))				   
-			view.translate(core::Vector2f(-1 * dt, 0));
-		if (myWindow.isKeyDown(Key::A))
-			view.translate(core::Vector2f(1 * dt, 0));
-		if (myWindow.isKeyDown(Key::S))
-			view.translate(core::Vector2f(0, -1 * dt));
-		if (myWindow.isKeyDown(Key::W))
-			view.translate(core::Vector2f(0, 1 * dt));
+		//if (myWindow.isKeyDown(Key::D))				   
+		//	view.translate(core::Vector2f(-1 * dt, 0));
+		//if (myWindow.isKeyDown(Key::A))
+		//	view.translate(core::Vector2f(1 * dt, 0));
+		//if (myWindow.isKeyDown(Key::S))
+		//	view.translate(core::Vector2f(0, -1 * dt));
+		//if (myWindow.isKeyDown(Key::W))
+		//	view.translate(core::Vector2f(0, 1 * dt));
 
 		//pr.update(dt);
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
-		myWindow.clear(core::Color(0.2, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
 
 		// Rendering begin
-		_renderer.begin();
+		//_renderer.begin();
 
 		// Rendering submit
 		//for (graphics::Renderable& r : walls) {
@@ -119,11 +123,9 @@ int main()
 
 		// Slow rendering BITCH
 		slow_fuck.begin();
-
-		slow_fuck.submit(renderable_list.at(0));	
-		slow_fuck.submit(renderable_list.at(1));
-		slow_fuck.submit(renderable_list.at(2));
-
+		
+		slow_fuck.submit(test);
+		
 		slow_fuck.flush();
 
 		// Rendering flush
