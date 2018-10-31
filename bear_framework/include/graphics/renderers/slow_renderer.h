@@ -3,6 +3,7 @@
 #include<deque>
 
 #include"../renderable.h"
+#include"../view.h"
 
 namespace bear { namespace graphics {
 
@@ -13,6 +14,8 @@ private:
 	unsigned int VAO; // Vertex array object
 	unsigned int IBO; // Index buffer object
 	std::deque<Renderable> render_poll;
+
+	static View unit_view; 
 
 public:
 	/* Constructor */
@@ -26,7 +29,7 @@ public:
 	/* Rendering routines */
 	void begin();
 	void submit(Renderable& renderable);
-	void flush();
+	void flush(View& view = unit_view);
 
 	/* Other */
 	int get_indicies_count(int vertex_count);

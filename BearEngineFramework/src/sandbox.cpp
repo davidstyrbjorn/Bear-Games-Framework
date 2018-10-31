@@ -16,6 +16,11 @@
 
 #include<graphics/animated_sprite.h>
 
+
+
+#include<math.h>
+
+
 using namespace bear;
 
 constexpr auto WIDTH = 1280;
@@ -46,7 +51,9 @@ int main()
 	// Create the batch renderer
 	//graphics::BatchRenderer _renderer;
 	//_renderer.init();
-	//graphics::View view;
+	graphics::View view;
+	view.setPosition({ 500,500 });
+	core::Vector2f _x = { -500,-500 };
 
 	graphics::SlowRenderer slow_fuck;
 	slow_fuck.init();
@@ -55,32 +62,32 @@ int main()
 	//graphics::ParticleSource pr;
 	//pr.init();
 
+	CREATE_TEXTURE("fire", "shaders\\fire.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("cat", "shaders\\cat.png", graphics::image_format::RGBA);
+
 	std::vector<graphics::Renderable> renderable_list;
-	const int SIZE = 128;
-	for (int i = 1; i <= 16; i++) {
-		CREATE_TEXTURE(std::to_string(i), "shaders\\" + std::to_string(i) + ".png", graphics::image_format::RGBA);
-		renderable_list.push_back(graphics::Renderable());
-		renderable_list.back().setTextureNameWData(std::to_string(i));
-		renderable_list.back().m_Transform.m_Size = core::Vector2f(SIZE, SIZE);
-		renderable_list.back().m_Transform.m_Position.x = i * SIZE;
-		renderable_list.back().m_Color = core::Color(core::randomFloatZeroToOne(), core::randomFloatZeroToOne(), core::randomFloatZeroToOne());
+	const int SIZE = 32;
+	for (int i = 0; i <= 24; i++) {
+		for (int j = 0; j <= 24; j++) {
+			renderable_list.push_back(graphics::Renderable());
+			renderable_list.back().m_TextureName = "fire";
+			renderable_list.back().m_Transform.m_Size = core::Vector2f(SIZE, SIZE);
+			renderable_list.back().m_Transform.m_Position = core::Vector2f(i*SIZE, j*SIZE);
+		}
 	}
+
+	graphics::Renderable renderable;
+	renderable.m_Layer = 10;
+	renderable.setTextureNameWData("fire");
+
+	graphics::Renderable cat;
+	cat.m_Layer = 11;
+	cat.setTextureNameWData("cat");
 
 	core::Clock fpsTimer;
 	unsigned int fps = 0;
 	fpsTimer.reset();
 	fpsTimer.start();
-
-	graphics::Renderable test;
-	test.m_Color = core::Color::Red();
-	test.m_Transform.m_Size = core::Vector2f(200,200);
-	//test.m_TextureName = "cat";
-
-	graphics::Renderable test2;
-	test2.m_Color = core::Color::Blue();
-	test2.m_Transform.m_Position = core::Vector2f(200, 200);
-	test2.m_Transform.m_Size = core::Vector2f(100, 100);
-	test2.m_VertexCount = 3;
 
 	while (myWindow.isOpen()) 
 	{
@@ -98,14 +105,18 @@ int main()
 			}
 		}	
 
-		//if (myWindow.isKeyDown(Key::D))				   
-		//	view.translate(core::Vector2f(-1 * dt, 0));
-		//if (myWindow.isKeyDown(Key::A))
-		//	view.translate(core::Vector2f(1 * dt, 0));
-		//if (myWindow.isKeyDown(Key::S))
-		//	view.translate(core::Vector2f(0, -1 * dt));
-		//if (myWindow.isKeyDown(Key::W))
-		//	view.translate(core::Vector2f(0, 1 * dt));
+		if (myWindow.isKeyDown(Key::D))
+			//_x.x -= 1 * dt;
+			view.translate(core::Vector2f(-1 * dt, 0));
+		if (myWindow.isKeyDown(Key::A))
+			//_x.x += 1 * dt;			
+			view.translate(core::Vector2f(1 * dt, 0));
+		if (myWindow.isKeyDown(Key::S))
+			//_x.y += 1 * dt;			
+			view.translate(core::Vector2f(0, -1 * dt));
+		if (myWindow.isKeyDown(Key::W))
+			//_x.y -= 1 * dt;
+			view.translate(core::Vector2f(0, 1 * dt));
 
 		//pr.update(dt);
 
@@ -115,32 +126,22 @@ int main()
 		// Rendering begin
 		//_renderer.begin();
 
-		// Rendering submit
-		//for (graphics::Renderable& r : walls) {
-		//	_renderer.submit(&r);
-		//}
-		//man.m_TextureName = "fire";
-		//_renderer.submit(&man);
-
-		// Render an ASS load of quads
-		//for (graphics::Renderable* r : reestList) {
-		//	//r->m_Transform.m_Position = r->m_Transform.m_Position + core::randomPointInsideCircle(5);
-		//	_renderer.submit(r);
-		//}
-
+		core::Vector2f pos = view.getPosition();
+		pos.lerp(_x, 0.000005*dt);
+		pos.x = round(pos.x);
+		pos.y = round(pos.y);
+		view.setPosition(pos);
 
 		// Slow rendering BITCH
 		slow_fuck.begin();
-
-		slow_fuck.submit(test);
 		
-		for (graphics::Renderable &r : renderable_list) {
-			slow_fuck.submit(r);
-		}
-		//slow_fuck.submit(test2);
-		//slow_fuck.submit(test);
-		//
-		slow_fuck.flush();
+		slow_fuck.submit(renderable);
+		slow_fuck.submit(cat);
+		//for (graphics::Renderable &r : renderable_list) {
+		//	slow_fuck.submit(r);
+		//}
+
+		slow_fuck.flush(view);
 
 		// Rendering flush
 		//fb1->bind();

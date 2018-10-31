@@ -25,6 +25,7 @@ bear::graphics::Texture::Texture(void * a_Data, core::Vector2i a_Size, image_for
 {
 	// Generate a texture 
 	glGenTextures(1, &m_TBO);
+	bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	unbind();
@@ -35,6 +36,7 @@ bear::graphics::Texture::Texture()
 {
 	// Generate a texture and do nothing?
 	glGenTextures(1, &m_TBO);
+	bind();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	unbind();

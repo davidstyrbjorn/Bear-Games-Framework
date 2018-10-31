@@ -7,7 +7,11 @@
 #include"../include/graphics/graphics.h"
 #include"../include/memory/resource_manager.h"
 
+#include<algorithm>
+
 using namespace bear::graphics;
+
+View SlowRenderer::unit_view = View();
 
 SlowRenderer::SlowRenderer() {
 	// Pass
@@ -56,8 +60,12 @@ void SlowRenderer::submit(Renderable &renderable) {
 	render_poll.emplace_back(renderable);
 }
 
-void SlowRenderer::flush() {
+void SlowRenderer::flush(View& view) {
 	
+	// Sort the list
+	std::sort(render_poll.begin(), render_poll.end(),
+	[](const Renderable& a, const Renderable& b) -> bool { return a.m_Layer > b.m_Layer; });
+
 	// Bind shit
 	graphics::Graphics::s_DefaultShader->enable(); // Bind and enable shaders & buffers
 	glBindVertexArray(VAO);
@@ -65,6 +73,7 @@ void SlowRenderer::flush() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	
 	graphics::Graphics::s_DefaultShader->setUniformInteger("texture_sampler", 0);
+	graphics::Graphics::s_DefaultShader->setUniformMatrix4x4("view_matrix", view.getViewMatrix());
 
 	// Go through each renderable in the list
 	while (!render_poll.empty()) {
