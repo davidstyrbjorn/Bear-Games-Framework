@@ -182,6 +182,11 @@ void bear::graphics::Shader::setUniformVector4f(const char * a_UniformName, core
 	glUniform4f(getUniformLocation(a_UniformName), a_Vector.r, a_Vector.g, a_Vector.b, a_Vector.a);
 }
 
+void bear::graphics::Shader::setUniformFloat(const char * a_UniformName, float a_Float)
+{
+	glUniform1f(getUniformLocation(a_UniformName), a_Float);
+}
+
 bool bear::graphics::Shader::didCompile(unsigned int a_ShaderID, std::string & a_ErrMsg)
 {
 	GLint _didCompile;

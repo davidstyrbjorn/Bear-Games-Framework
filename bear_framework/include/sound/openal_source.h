@@ -12,7 +12,6 @@ namespace bear { namespace sound {
 	public:
 		// Default constructor 
 		SoundSource();
-		// 
 		SoundSource(std::string a_FilePath);
 
 		// Deconstructor

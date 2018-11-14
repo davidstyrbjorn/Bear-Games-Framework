@@ -112,12 +112,12 @@ void Framebuffer::drawFramebufferTextureToScreen()
 	// Bind to the m_FrameBufferDrawTarget if we have one or simply bind to no FBO and draw to that texture/screen
 	glBindFramebuffer(GL_FRAMEBUFFER, m_TargetFBO);
 
-	glClear(GL_COLOR_BUFFER_BIT);
 	glBindVertexArray(m_QuadVAO);
 	m_FramebufferShader->enable();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_TBO);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);	
 }
 
 unsigned int bear::graphics::Framebuffer::getFBO()

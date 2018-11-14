@@ -16,10 +16,7 @@
 
 #include<graphics/animated_sprite.h>
 
-
-
 #include<math.h>
-
 
 using namespace bear;
 
@@ -39,7 +36,7 @@ int main()
 	// Create the framebuffer shader 
 	graphics::Shader* fbShader = ResourceManager::Instance()->CreateShaderFromFile("fbShader",
 		"shaders\\fb_vertex.txt", 
-		"shaders\\fb_fragment.txt", 
+		"shaders\\fb_fragment2.txt", 
 		"");
 	fbShader->enable();
 	fbShader->setUniformInteger("texFramebuffer", 0);
@@ -52,11 +49,12 @@ int main()
 	//graphics::BatchRenderer _renderer;
 	//_renderer.init();
 	graphics::View view;
-	view.setPosition({ 500,500 });
+	view.setPosition({ 500,500 });	
 	core::Vector2f _x = { -500,-500 };
 
 	graphics::SlowRenderer slow_fuck;
 	slow_fuck.init();
+	slow_fuck.setFramebuffer(fb1);
 	
 	// Create the particle renderer
 	//graphics::ParticleSource pr;
@@ -89,8 +87,11 @@ int main()
 	fpsTimer.reset();
 	fpsTimer.start();
 
+	int counter = 0;
+
 	while (myWindow.isOpen()) 
 	{
+		counter++;
 		if (fpsTimer.getTicks() >= 1000) {
 			fpsTimer.reset();
 			std::cout << "Measured FPS: " << fps << std::endl;
@@ -118,10 +119,15 @@ int main()
 			//_x.y -= 1 * dt;
 			view.translate(core::Vector2f(0, 1 * dt));
 
+		counter += 1;
+		float mouse_x = myWindow.getMousePosition().x;
+		mouse_x /= WIDTH;
+		fbShader->setUniformFloat("vx_offset", mouse_x);
+
 		//pr.update(dt);
 
 		// =================================== RENDERING BEGINS HERE ===========================================0
-		myWindow.clear(core::Color(0.05, 0.05, 0.05)); // Here is where the window is cleared and we can now render to the fresh window
+		myWindow.clear(); // Here is where the window is cleared and we can now render to the fresh window
 
 		// Rendering begin
 		//_renderer.begin();

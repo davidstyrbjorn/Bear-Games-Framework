@@ -14,7 +14,7 @@ using namespace bear::graphics;
 View SlowRenderer::unit_view = View();
 
 SlowRenderer::SlowRenderer() {
-	// Pass
+	target_framebuffer = nullptr; // On start
 }
 
 SlowRenderer::~SlowRenderer() {
@@ -58,15 +58,20 @@ void SlowRenderer::begin() {
 
 void SlowRenderer::submit(Renderable &renderable) {
 	render_poll.emplace_back(renderable);
-}
+}				
 
 void SlowRenderer::flush(View& view) {
 	
 	// Sort the list
 	std::sort(render_poll.begin(), render_poll.end(),
-	[](const Renderable& a, const Renderable& b) -> bool { return a.m_Layer > b.m_Layer; });
+		[](const Renderable& a, const Renderable& b) -> bool { return a.m_Layer > b.m_Layer; } // Sorting with lambda
+	);
 
-	// Bind shit
+	if (target_framebuffer != nullptr) {
+		// Make sure we're drawing to this if it's set to something other than nullptr
+		target_framebuffer->bind();
+	}
+
 	graphics::Graphics::s_DefaultShader->enable(); // Bind and enable shaders & buffers
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -107,7 +112,6 @@ void SlowRenderer::flush(View& view) {
 		}
 
 		// gl draw call
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		glDrawElements(GL_TRIANGLES, indicies, GL_UNSIGNED_INT, nullptr);
 
 		render_poll.pop_back();
@@ -123,6 +127,22 @@ void SlowRenderer::flush(View& view) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	graphics::Graphics::s_DefaultShader->disable();
 
+	if (target_framebuffer != nullptr) {
+		// Unbind framebuffer and draw its texture if there is any
+		target_framebuffer->unbind();
+		target_framebuffer->drawFramebufferTextureToScreen();
+		target_framebuffer->clearFBO();
+	}
+}
+
+void SlowRenderer::setFramebuffer(Framebuffer* a_Framebuffer) 
+{
+	target_framebuffer = a_Framebuffer;
+}
+
+Framebuffer* SlowRenderer::getFramebuffer() 
+{
+	return target_framebuffer;
 }
 
 int bear::graphics::SlowRenderer::get_indicies_count(int vertex_count)
