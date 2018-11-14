@@ -10,7 +10,7 @@ void main()
     vec2 uv = UV;
     
     vec3 tc = vec3(0.0, 1.0, 1.0);
-    if (uv.x < (vx_offset-0.005))
+    if (uv.x < (vx_offset))
     {
       vec3 pixcol = texture2D(texFramebuffer, uv).rgb;
 
@@ -23,7 +23,7 @@ void main()
       int ix = (lum < 0.5) ? 0 : 1;
       tc = mix(colors[ix],colors[ix+1],(lum-float(ix)*0.5)/0.5);
     }
-    else if (uv.x>=(vx_offset+0.005))
+    else if (uv.x>=(vx_offset))
     {
       vec3 pixcol = texture2D(texFramebuffer, uv).rgb;
       float y = 0.2126*pixcol.x + 0.7152*pixcol.y + 0.0722*pixcol.z;
