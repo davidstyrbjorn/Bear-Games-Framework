@@ -22,8 +22,10 @@ bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::s
 
 	glfwSetWindowUserPointer(m_Window, this); 
 
+	// This is not needed, is automatically set during GL context creation!
 	glViewport(0, 0, a_Width, a_Height);
 
+	// Delta timer
 	m_DeltaTime = 1.0f;
 	m_DeltaClock.start();
 }

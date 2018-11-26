@@ -28,7 +28,7 @@ constexpr auto HEIGHT = 640;
 int main()
 {
 	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
-	myWindow.setVSync(false);
+	myWindow.setVSync(true);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))
 		std::cout << "Graphics failed to init send help\n";
@@ -54,7 +54,7 @@ int main()
 
 	graphics::SlowRenderer slow_fuck;
 	slow_fuck.init();
-	slow_fuck.setFramebuffer(fb1);
+	//slow_fuck.setFramebuffer(fb1);
 	
 	// Create the particle renderer
 	//graphics::ParticleSource pr;
@@ -118,6 +118,10 @@ int main()
 		if (myWindow.isKeyDown(Key::W))
 			//_x.y -= 1 * dt;
 			view.translate(core::Vector2f(0, 1 * dt));
+		if (myWindow.isKeyDown(Key::X))
+			graphics::Graphics::zoom(0.001f);
+		if (myWindow.isKeyDown(Key::Z))
+			graphics::Graphics::zoom(-0.001f);
 
 		counter += 1;
 		float mouse_x = myWindow.getMousePosition().x;
@@ -141,25 +145,13 @@ int main()
 		// Slow rendering BITCH
 		slow_fuck.begin();
 		
-		slow_fuck.submit(renderable);
-		slow_fuck.submit(cat);
-		//for (graphics::Renderable &r : renderable_list) {
-		//	slow_fuck.submit(r);
-		//}
+		//slow_fuck.submit(renderable);
+		//slow_fuck.submit(cat);
+		for (graphics::Renderable &r : renderable_list) {
+			slow_fuck.submit(r);
+		}
 
 		slow_fuck.flush(view);
-
-		// Rendering flush
-		//fb1->bind();
-		
-		//pr.render(view);
-		//_renderer.flush(view);
-
-		//fb1->unbind();
-		
-		// Render the vignetteFramebuffer texture then clear it		
-		//fb1->drawFramebufferTextureToScreen();
-		//fb1->clearFBO();
 
 		myWindow.display(); 
 

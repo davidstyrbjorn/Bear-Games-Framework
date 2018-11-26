@@ -34,6 +34,8 @@ namespace bear { namespace graphics {
 		static unsigned int m_ScreenWidth;
 		static unsigned int m_ScreenHeight;
 
+		static float m_ZoomFactor;
+
 	public:
 		/* 
 		* Initalize GLEW OpenGL bindings 
@@ -48,6 +50,11 @@ namespace bear { namespace graphics {
 		* Callback for when window size is changed
 		*/
 		static void window_resize_callback(unsigned int a_Width, unsigned int a_Height);
+
+		/*
+		* Temporary test function, zooms by a factor being the argument passed in
+		*/
+		static void zoom(float factor);
 	};
 
 	// Used by Graphics::s_DefaultShader
@@ -99,7 +106,7 @@ namespace bear { namespace graphics {
 			"if(uv.x > 0) { gl_FragColor = texture(texture_sampler, uv) * out_color; }",
 			"else { gl_FragColor = out_color; }",
 			//"gl_FragColor = out_color;",
-
+			
 			//"if(ts == -1) {",
 			//    "gl_FragColor = out_color;", 
 			//"}", 
@@ -108,7 +115,7 @@ namespace bear { namespace graphics {
 			//    "gl_FragColor = texture(texture_samplers[_ts], uv) * out_color;", 
 			//	//"color = texture(texture_sampler, uv) * out_color;",
 			//"}",  
-		"}" 
+		"}"						
 	};
 
 	// Used by Graphics::s_DefaultShaderText
