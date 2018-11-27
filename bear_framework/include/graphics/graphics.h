@@ -62,9 +62,14 @@ namespace bear { namespace graphics {
 		static void zoom(float a_ZoomFactor);
 
 		/*
-		* Sets zoom to a value, 1.0f is the default no zoom
+		* Sets zoom to a value, 1.0f is the default no zoom. 
+		* 0.5 => zoomed in
+		* 1.0 => no zoom
+		* 2.0 => zoomed out 
 		*/
 		static void set_zoom(float a_ZoomValue);
+
+		static float get_zoom();
 	};
 
 	// Used by Graphics::s_DefaultShader

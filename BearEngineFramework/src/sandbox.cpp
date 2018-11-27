@@ -62,13 +62,14 @@ int main()
 
 	CREATE_TEXTURE("fire", "shaders\\fire.png", graphics::image_format::RGBA);
 	CREATE_TEXTURE("cat", "shaders\\cat.png", graphics::image_format::RGBA);
+	CREATE_TEXTURE("floor", "shaders\\floor.png", graphics::image_format::RGBA);
 
 	std::vector<graphics::Renderable> renderable_list;
 	const int SIZE = 32;
 	for (int i = 0; i <= 24; i++) {
 		for (int j = 0; j <= 24; j++) {
 			renderable_list.push_back(graphics::Renderable());
-			renderable_list.back().m_TextureName = "fire";
+			renderable_list.back().m_TextureName = "floor";
 			renderable_list.back().m_Transform.m_Size = core::Vector2f(SIZE, SIZE);
 			renderable_list.back().m_Transform.m_Position = core::Vector2f(i*SIZE, j*SIZE);
 		}
@@ -101,9 +102,10 @@ int main()
 		float dt = myWindow.getDeltaTime(); // Get the delta time for the last frame
 		for (Event event : myWindow.getRegisteredEvents()) { // Process the events here
 			if (event.type == EventType::WindowReiszed) {
-				//graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
-				graphics::Graphics::set_uniform_size(event.size.x, event.size.y);
-				//fb1->windowResize(event.size.x, event.size.y);
+				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
+				//graphics::Graphics::set_uniform_size(event.size.x, event.size.y);
+				float temp = (WIDTH / event.size.x);
+				graphics::Graphics::set_zoom(temp);
 			}
 		}	
 
@@ -120,9 +122,11 @@ int main()
 			//_x.y -= 1 * dt;
 			view.translate(core::Vector2f(0, 1 * dt));
 		if (myWindow.isKeyDown(Key::X))
-			graphics::Graphics::zoom(0.01f);
+			graphics::Graphics::set_zoom(0.5f);
 		if (myWindow.isKeyDown(Key::Z))
-			graphics::Graphics::zoom(-0.01f);
+			graphics::Graphics::set_zoom(1.0f);
+		if (myWindow.isKeyDown(Key::C))
+			graphics::Graphics::set_zoom(1.5f);
 
 		counter += 1;
 		float mouse_x = myWindow.getMousePosition().x;

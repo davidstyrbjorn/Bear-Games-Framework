@@ -100,14 +100,15 @@ void bear::graphics::Graphics::window_resize_callback(unsigned int a_Width, unsi
 	m_ScreenWidth = a_Width;
 	m_ScreenHeight = a_Height;
 
-
-	glViewport(0, a_Width, 0, a_Height);
+	glViewport(0, 0, a_Width, a_Height);
 }
 
 void bear::graphics::Graphics::set_uniform_size(unsigned int a_Width, unsigned int a_Height)
 {
 	// Update shader matrix uniforms
-	core::Matrix4x4 ortho = core::Matrix4x4::Orthographic(0, m_ScreenWidth * m_ZoomFactor, m_ScreenHeight * m_ZoomFactor, 0, -1, 1);
+	unsigned int int_width = m_ScreenWidth * m_ZoomFactor;
+	unsigned int int_height = m_ScreenHeight * m_ZoomFactor;
+	core::Matrix4x4 ortho = core::Matrix4x4::Orthographic(0, int_width, int_height, 0, -1, 1);
 
 	s_DefaultShader->enable();
 	s_DefaultShader->setUniformMatrix4x4("projection_matrix", ortho);
@@ -129,4 +130,9 @@ void bear::graphics::Graphics::set_zoom(float a_ZoomValue)
 {
 	m_ZoomFactor = a_ZoomValue;
 	set_uniform_size(m_ScreenWidth, m_ScreenHeight);
+}
+
+float bear::graphics::Graphics::get_zoom()
+{
+	return m_ZoomFactor;
 }
