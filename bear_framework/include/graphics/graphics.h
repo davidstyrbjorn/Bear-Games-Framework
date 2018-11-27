@@ -52,9 +52,19 @@ namespace bear { namespace graphics {
 		static void window_resize_callback(unsigned int a_Width, unsigned int a_Height);
 
 		/*
-		* Temporary test function, zooms by a factor being the argument passed in
+		* Sets the default shaders uniform size
 		*/
-		static void zoom(float factor);
+		static void set_uniform_size(unsigned int a_Width, unsigned int a_Height);
+
+		/*
+		* Increases zoom
+		*/
+		static void zoom(float a_ZoomFactor);
+
+		/*
+		* Sets zoom to a value, 1.0f is the default no zoom
+		*/
+		static void set_zoom(float a_ZoomValue);
 	};
 
 	// Used by Graphics::s_DefaultShader

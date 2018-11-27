@@ -101,8 +101,9 @@ int main()
 		float dt = myWindow.getDeltaTime(); // Get the delta time for the last frame
 		for (Event event : myWindow.getRegisteredEvents()) { // Process the events here
 			if (event.type == EventType::WindowReiszed) {
-				graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
-				fb1->windowResize(event.size.x, event.size.y);
+				//graphics::Graphics::window_resize_callback(event.size.x, event.size.y);
+				graphics::Graphics::set_uniform_size(event.size.x, event.size.y);
+				//fb1->windowResize(event.size.x, event.size.y);
 			}
 		}	
 
@@ -119,9 +120,9 @@ int main()
 			//_x.y -= 1 * dt;
 			view.translate(core::Vector2f(0, 1 * dt));
 		if (myWindow.isKeyDown(Key::X))
-			graphics::Graphics::zoom(0.001f);
+			graphics::Graphics::zoom(0.01f);
 		if (myWindow.isKeyDown(Key::Z))
-			graphics::Graphics::zoom(-0.001f);
+			graphics::Graphics::zoom(-0.01f);
 
 		counter += 1;
 		float mouse_x = myWindow.getMousePosition().x;

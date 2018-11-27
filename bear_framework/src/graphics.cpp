@@ -99,22 +99,34 @@ void bear::graphics::Graphics::window_resize_callback(unsigned int a_Width, unsi
 {
 	m_ScreenWidth = a_Width;
 	m_ScreenHeight = a_Height;
-	// Update shader matrix uniforms
-	core::Matrix4x4 ortho = core::Matrix4x4::Orthographic(0, m_ScreenWidth * m_ZoomFactor, m_ScreenHeight * m_ZoomFactor, 0, -1, 1);
-	s_DefaultShader->enable();
-	s_DefaultShader->setUniformMatrix4x4("projection_matrix", ortho);
-	s_DefaultShaderText->enable();
-	s_DefaultShaderText->setUniformMatrix4x4("projection_matrix", ortho);
-	s_DefaultParticleShader->enable();
-	s_DefaultParticleShader->setUniformMatrix4x4("projection_matrix", ortho);
+
 
 	glViewport(0, a_Width, 0, a_Height);
 }
 
-void bear::graphics::Graphics::zoom(float factor)
+void bear::graphics::Graphics::set_uniform_size(unsigned int a_Width, unsigned int a_Height)
 {
-	m_ZoomFactor += factor;
+	// Update shader matrix uniforms
 	core::Matrix4x4 ortho = core::Matrix4x4::Orthographic(0, m_ScreenWidth * m_ZoomFactor, m_ScreenHeight * m_ZoomFactor, 0, -1, 1);
+
 	s_DefaultShader->enable();
 	s_DefaultShader->setUniformMatrix4x4("projection_matrix", ortho);
+	
+	s_DefaultShaderText->enable();
+	s_DefaultShaderText->setUniformMatrix4x4("projection_matrix", ortho);
+	
+	s_DefaultParticleShader->enable();
+	s_DefaultParticleShader->setUniformMatrix4x4("projection_matrix", ortho);
+}
+
+void bear::graphics::Graphics::zoom(float a_ZoomFactor)
+{
+	m_ZoomFactor += a_ZoomFactor;
+	set_uniform_size(m_ScreenWidth, m_ScreenHeight);
+}
+
+void bear::graphics::Graphics::set_zoom(float a_ZoomValue)
+{
+	m_ZoomFactor = a_ZoomValue;
+	set_uniform_size(m_ScreenWidth, m_ScreenHeight);
 }
