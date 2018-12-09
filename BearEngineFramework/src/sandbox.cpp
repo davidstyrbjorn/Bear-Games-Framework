@@ -20,14 +20,14 @@
 
 using namespace bear;
 
-constexpr auto WIDTH = 1280;
-constexpr auto HEIGHT = 640;
+constexpr auto WIDTH = 1920;
+constexpr auto HEIGHT = 1080;
 
 #define CREATE_TEXTURE(name, path, format) bear::ResourceManager::Instance()->CreateTexture(name, path, format)
 
 int main()
 {
-	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go");
+	bear::window::Window myWindow(WIDTH, HEIGHT, "Let's go", true);
 	myWindow.setVSync(true);
 
 	if (!graphics::Graphics::init(WIDTH, HEIGHT))

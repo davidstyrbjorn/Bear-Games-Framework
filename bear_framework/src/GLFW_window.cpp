@@ -4,13 +4,22 @@
 
 #include"../include/core/color.h"
 
-bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption)
+bear::window::Window::Window(unsigned int a_Width, unsigned int a_Height, std::string a_Caption, bool a_Fullscreen)
 {
 	// Init GLFW API
 	glfwInit();
 
 	// GLFWwindow creation
-	m_Window = glfwCreateWindow(a_Width, a_Height, a_Caption.c_str(), nullptr, nullptr);
+	if (a_Fullscreen) {
+		GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+		a_Width = mode->width;
+		a_Height = mode->height;
+		m_Window = glfwCreateWindow(a_Width, a_Height, a_Caption.c_str(), monitor, nullptr);
+	}
+	else {
+		m_Window = glfwCreateWindow(a_Width, a_Height, a_Caption.c_str(), nullptr, nullptr);
+	}
 	glfwMakeContextCurrent(m_Window);
 
 	glfwSetKeyCallback(m_Window, key_callback);

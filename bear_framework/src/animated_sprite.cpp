@@ -58,4 +58,5 @@ void bear::graphics::AnimatedSprite::reset()
 {
 	m_CurrentKeyframeIndex = 0;
 	m_CurrentTick = 0;
+	m_CurrentTextureName = m_Keyframes[m_CurrentKeyframeIndex].m_TextureName;
 }
