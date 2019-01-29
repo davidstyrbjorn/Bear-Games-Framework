@@ -145,10 +145,8 @@
     <ClInclude Include="include\graphics\image.h" />
     <ClInclude Include="include\graphics\particle.h" />
     <ClInclude Include="include\graphics\renderable.h" />
-    <ClInclude Include="include\graphics\renderers\batch_renderer.h" />
     <ClInclude Include="include\graphics\renderers\particle_source.h" />
-    <ClInclude Include="include\graphics\renderers\simple_renderer.h" />
-    <ClInclude Include="include\graphics\renderers\slow_renderer.h" />
+    <ClInclude Include="include\graphics\renderers\renderer.h" />
     <ClInclude Include="include\graphics\shader.h" />
     <ClInclude Include="include\graphics\text.h" />
     <ClInclude Include="include\graphics\texture.h" />
@@ -157,11 +155,6 @@
     <ClInclude Include="include\graphics\vertex.h" />
     <ClInclude Include="include\graphics\view.h" />
     <ClInclude Include="include\memory\resource_manager.h" />
-    <ClInclude Include="include\sound\decoders\wav_decoder.h" />
-    <ClInclude Include="include\sound\openal_buffer.h" />
-    <ClInclude Include="include\sound\openal_source.h" />
-    <ClInclude Include="include\sound\sound.h" />
-    <ClInclude Include="include\sound\sound_context.h" />
     <ClInclude Include="include\window\event.h" />
     <ClInclude Include="include\window\GLFW_event.h" />
     <ClInclude Include="include\window\GLFW_window.h" />
@@ -169,7 +162,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\animated_sprite.cpp" />
-    <ClCompile Include="src\batch_renderer.cpp" />
     <ClCompile Include="src\clock.cpp" />
     <ClCompile Include="src\file_utility.cpp" />
     <ClCompile Include="src\font.cpp" />
@@ -177,15 +169,12 @@
     <ClCompile Include="src\graphics.cpp" />
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\matrix4x4.cpp" />
-    <ClCompile Include="src\openal.cpp" />
     <ClCompile Include="src\particle.cpp" />
     <ClCompile Include="src\particle_source.cpp" />
     <ClCompile Include="src\renderable.cpp" />
     <ClCompile Include="src\resource_manager.cpp" />
     <ClCompile Include="src\shader.cpp" />
-    <ClCompile Include="src\slow_renderer.cpp" />
-    <ClCompile Include="src\sound.cpp" />
-    <ClCompile Include="src\sound_context.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\text.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\unlit_batch.cpp" />

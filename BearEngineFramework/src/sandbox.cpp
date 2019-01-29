@@ -1,14 +1,12 @@
 #include<iostream>
 
 #include<window\window.h>
-#include<sound\sound.h>
 #include<core\bounding_box.h>
 #include<core\vector2.h>
 #include<graphics\graphics.h>
 
-#include<graphics/renderers/batch_renderer.h>
 #include<graphics/renderers/particle_source.h>
-#include<graphics/renderers/slow_renderer.h>
+#include<graphics/renderers/renderer.h>
 
 #include<memory/resource_manager.h>
 
@@ -52,7 +50,7 @@ int main()
 	view.setPosition({ 500,500 });	
 	core::Vector2f _x = { -500,-500 };
 
-	graphics::SlowRenderer slow_fuck;
+	graphics::Renderer slow_fuck;
 	slow_fuck.init();
 	//slow_fuck.setFramebuffer(fb1);
 	

@@ -12,7 +12,7 @@
 #include"text.h"
 #include"view.h"
 #include"framebuffer.h"
-#include"renderers/slow_renderer.h"
+#include"renderers/renderer.h"
 
 #include"../core/file_utility.h"
 
@@ -20,10 +20,9 @@ namespace bear { namespace graphics {
 
 	class Graphics {
 		// Define some friendships between graphics classes
-		friend class BatchRenderer;
 		friend class TextLabel;
 		friend class ParticleSource;
-		friend class SlowRenderer;
+		friend class Renderer;
 	
 	private:
 		// Used by: BatchRenderer

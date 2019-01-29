@@ -8,7 +8,7 @@
 
 namespace bear { namespace graphics {
 
-class SlowRenderer {
+class Renderer {
 
 private:
 	unsigned int VBO; // Vertex buffer object
@@ -24,9 +24,9 @@ private:
 
 public:	
 	/* Constructor */
-	SlowRenderer();
+	Renderer();
 	/* Destructor */
-	~SlowRenderer();
+	~Renderer();
 
 	/* Framebuffer setter & getter */
 	void setFramebuffer(Framebuffer* a_Framebuffer);

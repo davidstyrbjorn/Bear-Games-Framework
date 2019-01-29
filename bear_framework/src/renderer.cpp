@@ -1,4 +1,4 @@
-#include"../include/graphics/renderers/slow_renderer.h"
+#include"../include/graphics/renderers/renderer.h"
 
 #define GLEW_STATIC
 #include<GL\glew.h>
@@ -11,20 +11,20 @@
 
 using namespace bear::graphics;
 
-View SlowRenderer::unit_view = View();
+View Renderer::unit_view = View();
 
-SlowRenderer::SlowRenderer() {
+Renderer::Renderer() {
 	target_framebuffer = nullptr; // On start
 }
 
-SlowRenderer::~SlowRenderer() {
+Renderer::~Renderer() {
 	// Delete shit
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &IBO);
 }
 
-void SlowRenderer::init() {
+void Renderer::init() {
 
 	// Create buffers and shit
 
@@ -52,15 +52,15 @@ void SlowRenderer::init() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(core::Vector2f) + sizeof(core::Color)));
 }
 
-void SlowRenderer::begin() {
+void Renderer::begin() {
 
 }
 
-void SlowRenderer::submit(Renderable &renderable) {
+void Renderer::submit(Renderable &renderable) {
 	render_poll.emplace_back(renderable);
 }				
 
-void SlowRenderer::flush(View& view) {
+void Renderer::flush(View& view) {
 	
 	// Sort the list
 	std::sort(render_poll.begin(), render_poll.end(),
@@ -135,17 +135,17 @@ void SlowRenderer::flush(View& view) {
 	}
 }
 
-void SlowRenderer::setFramebuffer(Framebuffer* a_Framebuffer) 
+void Renderer::setFramebuffer(Framebuffer* a_Framebuffer) 
 {
 	target_framebuffer = a_Framebuffer;
 }
 
-Framebuffer* SlowRenderer::getFramebuffer() 
+Framebuffer* Renderer::getFramebuffer() 
 {
 	return target_framebuffer;
 }
 
-int bear::graphics::SlowRenderer::get_indicies_count(int vertex_count)
+int bear::graphics::Renderer::get_indicies_count(int vertex_count)
 {
 	return vertex_count == 3 ? 3 : 6;
 }
